@@ -18,17 +18,6 @@ QJsonArray stringListToJsonArray(const QStringList& values)
     return array;
 }
 
-QJsonArray variantListToJsonArray(const QVariantList& values)
-{
-    QJsonArray array;
-
-    for (const QVariant& value : values) {
-        array.append(QJsonValue::fromVariant(value));
-    }
-
-    return array;
-}
-
 QJsonObject variantMapToJsonObject(const QVariantMap& values)
 {
     QJsonObject object;
@@ -140,13 +129,13 @@ QJsonObject makeEndRoundCommand(const QString& matchId)
 QJsonObject makeUseSkillCommand(
     const QString& matchId,
     int skillIndex,
-    const QVariantList& diceIndexes,
+    int elementPointCost,
     const QVariantMap& target
     )
 {
     QJsonObject command;
     command["skillIndex"] = skillIndex;
-    command["diceIndexes"] = variantListToJsonArray(diceIndexes);
+    command["elementPointCost"] = elementPointCost;
     command["target"] = variantMapToJsonObject(target);
 
     return makeGameCommand(
@@ -159,13 +148,13 @@ QJsonObject makeUseSkillCommand(
 QJsonObject makePlayCardCommand(
     const QString& matchId,
     int handIndex,
-    const QVariantList& diceIndexes,
+    int elementPointCost,
     const QVariantMap& target
     )
 {
     QJsonObject command;
     command["handIndex"] = handIndex;
-    command["diceIndexes"] = variantListToJsonArray(diceIndexes);
+    command["elementPointCost"] = elementPointCost;
     command["target"] = variantMapToJsonObject(target);
 
     return makeGameCommand(

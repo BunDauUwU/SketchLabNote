@@ -5,7 +5,6 @@
 #include <QJsonObject>
 #include <QString>
 #include <QStringList>
-#include <QVariantList>
 #include <QVariantMap>
 
 #include "../Core/Enums.h"
@@ -41,14 +40,14 @@ QJsonObject makeEndRoundCommand(const QString& matchId);
 QJsonObject makeUseSkillCommand(
     const QString& matchId,
     int skillIndex,
-    const QVariantList& diceIndexes,
+    int elementPointCost,
     const QVariantMap& target
     );
 
 QJsonObject makePlayCardCommand(
     const QString& matchId,
     int handIndex,
-    const QVariantList& diceIndexes,
+    int elementPointCost,
     const QVariantMap& target
     );
 
