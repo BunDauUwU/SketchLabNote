@@ -2,11 +2,10 @@
 import QtQuick
 import QtQuick.Controls
 
-Item {
+Rectangle {
     id: root
 
-    width: 1280
-    height: 720
+    anchors.fill: parent
 
     Column {
         anchors.right: parent.right
