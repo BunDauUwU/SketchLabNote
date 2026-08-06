@@ -45,6 +45,35 @@ ElementType elementTypeFromString(const QString& value)
     return ElementType::None;
 }
 
+QString toString(WeatherType type)
+{
+    switch (type) {
+    case WeatherType::None: return QStringLiteral("None");
+    case WeatherType::Rain: return QStringLiteral("Rain");
+    case WeatherType::Snow: return QStringLiteral("Snow");
+    case WeatherType::Storm: return QStringLiteral("Storm");
+    case WeatherType::Sandstorm: return QStringLiteral("Sandstorm");
+    case WeatherType::Eclipse: return QStringLiteral("Eclipse");
+    case WeatherType::BurningField: return QStringLiteral("BurningField");
+    }
+
+    return QStringLiteral("None");
+}
+
+WeatherType weatherTypeFromString(const QString& value)
+{
+    const QString v = normalize(value);
+
+    if (v == "rain") return WeatherType::Rain;
+    if (v == "snow") return WeatherType::Snow;
+    if (v == "storm") return WeatherType::Storm;
+    if (v == "sandstorm") return WeatherType::Sandstorm;
+    if (v == "eclipse") return WeatherType::Eclipse;
+    if (v == "burningfield" || v == "burning_field" || v == "burning field") return WeatherType::BurningField;
+
+    return WeatherType::None;
+}
+
 QString toString(GameStage stage)
 {
     switch (stage) {
@@ -186,6 +215,8 @@ QString toString(GameEventType type)
     case GameEventType::StageChanged: return QStringLiteral("StageChanged");
     case GameEventType::CardsDrawn: return QStringLiteral("CardsDrawn");
     case GameEventType::DiceRolled: return QStringLiteral("DiceRolled");
+    case GameEventType::ElementPointsChanged: return QStringLiteral("ElementPointsChanged");
+    case GameEventType::WeatherChanged: return QStringLiteral("WeatherChanged");
     case GameEventType::CharacterDamaged: return QStringLiteral("CharacterDamaged");
     case GameEventType::CharacterHealed: return QStringLiteral("CharacterHealed");
     case GameEventType::EnergyChanged: return QStringLiteral("EnergyChanged");
@@ -211,6 +242,8 @@ GameEventType gameEventTypeFromString(const QString& value)
     if (v == "stagechanged") return GameEventType::StageChanged;
     if (v == "cardsdrawn") return GameEventType::CardsDrawn;
     if (v == "dicerolled") return GameEventType::DiceRolled;
+    if (v == "elementpointschanged") return GameEventType::ElementPointsChanged;
+    if (v == "weatherchanged") return GameEventType::WeatherChanged;
     if (v == "characterdamaged") return GameEventType::CharacterDamaged;
     if (v == "characterhealed") return GameEventType::CharacterHealed;
     if (v == "energychanged") return GameEventType::EnergyChanged;

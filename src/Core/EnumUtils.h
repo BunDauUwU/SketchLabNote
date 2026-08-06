@@ -10,6 +10,9 @@ namespace EnumUtils {
 QString toString(ElementType type);
 ElementType elementTypeFromString(const QString& value);
 
+QString toString(WeatherType type);
+WeatherType weatherTypeFromString(const QString& value);
+
 QString toString(GameStage stage);
 GameStage gameStageFromString(const QString& value);
 

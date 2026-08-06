@@ -15,6 +15,16 @@ enum class ElementType {
     Anemo
 };
 
+enum class WeatherType {
+    None,
+    Rain,
+    Snow,
+    Storm,
+    Sandstorm,
+    Eclipse,
+    BurningField
+};
+
 enum class GameStage {
     None,
     GameStart,
@@ -70,6 +80,8 @@ enum class GameEventType {
     StageChanged,
     CardsDrawn,
     DiceRolled,
+    ElementPointsChanged,
+    WeatherChanged,
     CharacterDamaged,
     CharacterHealed,
     EnergyChanged,
