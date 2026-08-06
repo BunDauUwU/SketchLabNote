@@ -58,7 +58,6 @@ struct PlayerPublicState {
 
 struct PlayerPrivateState {
     QVector<QString> handCardIds;
-    QVector<ElementType> dice;
 };
 
 struct GameSnapshot {

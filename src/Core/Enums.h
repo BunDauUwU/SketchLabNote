@@ -65,7 +65,6 @@ enum class GameCommandType {
     Unknown,
     ChooseActiveCharacter,
     RedrawCards,
-    RerollDice,
     UseSkill,
     PlayCard,
     SwitchCharacter,
@@ -79,7 +78,6 @@ enum class GameEventType {
     RoundStarted,
     StageChanged,
     CardsDrawn,
-    DiceRolled,
     ElementPointsChanged,
     WeatherChanged,
     CharacterDamaged,
@@ -102,6 +100,5 @@ enum class ZoneType {
     Character,
     Support,
     Summon,
-    Dice,
     Discard
 };

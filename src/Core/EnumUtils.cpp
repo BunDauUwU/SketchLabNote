@@ -179,7 +179,6 @@ QString toString(GameCommandType type)
     case GameCommandType::Unknown: return QStringLiteral("Unknown");
     case GameCommandType::ChooseActiveCharacter: return QStringLiteral("ChooseActiveCharacter");
     case GameCommandType::RedrawCards: return QStringLiteral("RedrawCards");
-    case GameCommandType::RerollDice: return QStringLiteral("RerollDice");
     case GameCommandType::UseSkill: return QStringLiteral("UseSkill");
     case GameCommandType::PlayCard: return QStringLiteral("PlayCard");
     case GameCommandType::SwitchCharacter: return QStringLiteral("SwitchCharacter");
@@ -196,7 +195,6 @@ GameCommandType gameCommandTypeFromString(const QString& value)
 
     if (v == "chooseactivecharacter") return GameCommandType::ChooseActiveCharacter;
     if (v == "redrawcards") return GameCommandType::RedrawCards;
-    if (v == "rerolldice") return GameCommandType::RerollDice;
     if (v == "useskill") return GameCommandType::UseSkill;
     if (v == "playcard") return GameCommandType::PlayCard;
     if (v == "switchcharacter") return GameCommandType::SwitchCharacter;
@@ -214,7 +212,6 @@ QString toString(GameEventType type)
     case GameEventType::RoundStarted: return QStringLiteral("RoundStarted");
     case GameEventType::StageChanged: return QStringLiteral("StageChanged");
     case GameEventType::CardsDrawn: return QStringLiteral("CardsDrawn");
-    case GameEventType::DiceRolled: return QStringLiteral("DiceRolled");
     case GameEventType::ElementPointsChanged: return QStringLiteral("ElementPointsChanged");
     case GameEventType::WeatherChanged: return QStringLiteral("WeatherChanged");
     case GameEventType::CharacterDamaged: return QStringLiteral("CharacterDamaged");
@@ -241,7 +238,6 @@ GameEventType gameEventTypeFromString(const QString& value)
     if (v == "roundstarted") return GameEventType::RoundStarted;
     if (v == "stagechanged") return GameEventType::StageChanged;
     if (v == "cardsdrawn") return GameEventType::CardsDrawn;
-    if (v == "dicerolled") return GameEventType::DiceRolled;
     if (v == "elementpointschanged") return GameEventType::ElementPointsChanged;
     if (v == "weatherchanged") return GameEventType::WeatherChanged;
     if (v == "characterdamaged") return GameEventType::CharacterDamaged;
@@ -268,7 +264,6 @@ QString toString(ZoneType type)
     case ZoneType::Character: return QStringLiteral("Character");
     case ZoneType::Support: return QStringLiteral("Support");
     case ZoneType::Summon: return QStringLiteral("Summon");
-    case ZoneType::Dice: return QStringLiteral("Dice");
     case ZoneType::Discard: return QStringLiteral("Discard");
     }
 
@@ -284,7 +279,6 @@ ZoneType zoneTypeFromString(const QString& value)
     if (v == "character") return ZoneType::Character;
     if (v == "support") return ZoneType::Support;
     if (v == "summon") return ZoneType::Summon;
-    if (v == "dice") return ZoneType::Dice;
     if (v == "discard") return ZoneType::Discard;
 
     return ZoneType::None;

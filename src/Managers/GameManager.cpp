@@ -84,7 +84,7 @@ void GameManager::endRound()
 
 void GameManager::useSkill(
     int skillIndex,
-    const QVariantList& diceIndexes,
+    int elementPointCost,
     const QVariantMap& target
     )
 {
@@ -97,7 +97,7 @@ void GameManager::useSkill(
         Protocol::makeUseSkillCommand(
             m_matchId,
             skillIndex,
-            diceIndexes,
+            elementPointCost,
             target
             )
         );
@@ -105,7 +105,7 @@ void GameManager::useSkill(
 
 void GameManager::playCard(
     int handIndex,
-    const QVariantList& diceIndexes,
+    int elementPointCost,
     const QVariantMap& target
     )
 {
@@ -118,7 +118,7 @@ void GameManager::playCard(
         Protocol::makePlayCardCommand(
             m_matchId,
             handIndex,
-            diceIndexes,
+            elementPointCost,
             target
             )
         );

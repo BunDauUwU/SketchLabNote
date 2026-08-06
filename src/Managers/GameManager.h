@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QString>
 #include <QJsonObject>
-#include <QVariantList>
 #include <QVariantMap>
 
 #include "../Core/Enums.h"
@@ -39,13 +38,13 @@ public:
 
     Q_INVOKABLE void useSkill(
         int skillIndex,
-        const QVariantList& diceIndexes,
+        int elementPointCost,
         const QVariantMap& target
         );
 
     Q_INVOKABLE void playCard(
         int handIndex,
-        const QVariantList& diceIndexes,
+        int elementPointCost,
         const QVariantMap& target
         );
 
