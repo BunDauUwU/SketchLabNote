@@ -5,11 +5,10 @@ import QtQuick.Layouts
 import "../Components/battle"
 import "../Components/controls"
 
-Item {
+Rectangle {
     id: root
 
-    width: 1280
-    height: 720
+    anchors.fill: parent
 
     property int ownElementPoints: 10
     property int ownMaxElementPoints: 10
