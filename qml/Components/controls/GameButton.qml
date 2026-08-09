@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import "../../Core"
 
 Rectangle {
     id : root
@@ -9,7 +10,7 @@ Rectangle {
 
     property color accentColor: Theme.primary
 
-    property bool enabled: true
+    // property bool enabled: true
 
     signal clicked()
 

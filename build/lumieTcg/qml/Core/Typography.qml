@@ -1,0 +1,19 @@
+pragma Singleton
+
+import QtQuick
+
+Item {
+    FontLoader {
+        id: genshin
+        source: "qrc:/assets/fonts/genshin.ttf"
+    }
+
+    readonly property string family: genshin.name
+
+    readonly property int display: 64
+    readonly property int title: 42
+    readonly property int heading: 30
+    readonly property int body: 22
+    readonly property int caption: 18
+
+}

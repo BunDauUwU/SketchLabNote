@@ -1,0 +1,63 @@
+{
+    "formatRevision": 1,
+    "modules": [
+        {
+            "moduleFiles": [
+                {
+                    "entries": [
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 0,
+                            "functionName": "type",
+                            "line": 15,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 12,
+                            "durationMicroseconds": 1000,
+                            "functionName": "color",
+                            "line": 18,
+                            "message": "Cannot load property text from const QMetaObject."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 17,
+                            "durationMicroseconds": 0,
+                            "functionName": "renderType",
+                            "line": 19,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 18,
+                            "durationMicroseconds": 1000,
+                            "functionName": "family",
+                            "line": 17,
+                            "message": "Cannot load property family from const QMetaObject."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 29,
+                            "durationMicroseconds": 0,
+                            "functionName": "hintingPreference",
+                            "line": 20,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 0,
+                            "functionName": "pixelSize",
+                            "line": 23,
+                            "message": "Cannot load property display from const QMetaObject."
+                        }
+                    ],
+                    "filePath": "/home/lumie/Projects/lumieTcg/qml/Components/controls/GameText.qml"
+                }
+            ],
+            "moduleId": "lumieTcg(applumieTcg)"
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/lumieTcg">
+    <file alias="qmldir">/home/lumie/Projects/lumieTcg/build/lumieTcg/qmldir</file>
+  </qresource>
+</RCC>
+

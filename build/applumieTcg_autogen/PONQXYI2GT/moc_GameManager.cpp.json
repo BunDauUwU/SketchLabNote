@@ -1,0 +1,286 @@
+{
+    "classes": [
+        {
+            "className": "GameManager",
+            "lineNumber": 13,
+            "methods": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "matchId",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "playerIndex",
+                            "type": "int"
+                        },
+                        {
+                            "name": "opponentName",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 9,
+                    "lineNumber": 33,
+                    "name": "setMatchInfo",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "characterIndex",
+                            "type": "int"
+                        }
+                    ],
+                    "index": 10,
+                    "lineNumber": 39,
+                    "name": "chooseActiveCharacter",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 11,
+                    "lineNumber": 40,
+                    "name": "endRound",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "skillIndex",
+                            "type": "int"
+                        },
+                        {
+                            "name": "elementPointCost",
+                            "type": "int"
+                        },
+                        {
+                            "name": "target",
+                            "type": "QVariantMap"
+                        }
+                    ],
+                    "index": 12,
+                    "lineNumber": 42,
+                    "name": "useSkill",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "handIndex",
+                            "type": "int"
+                        },
+                        {
+                            "name": "elementPointCost",
+                            "type": "int"
+                        },
+                        {
+                            "name": "target",
+                            "type": "QVariantMap"
+                        }
+                    ],
+                    "index": 13,
+                    "lineNumber": 48,
+                    "name": "playCard",
+                    "returnType": "void"
+                }
+            ],
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "lineNumber": 16,
+                    "name": "matchId",
+                    "notify": "matchIdChanged",
+                    "override": false,
+                    "read": "matchId",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false,
+                    "virtual": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 1,
+                    "lineNumber": 17,
+                    "name": "playerIndex",
+                    "notify": "playerIndexChanged",
+                    "override": false,
+                    "read": "playerIndex",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "int",
+                    "user": false,
+                    "virtual": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 2,
+                    "lineNumber": 18,
+                    "name": "opponentName",
+                    "notify": "opponentNameChanged",
+                    "override": false,
+                    "read": "opponentName",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false,
+                    "virtual": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 3,
+                    "lineNumber": 19,
+                    "name": "stage",
+                    "notify": "stageChanged",
+                    "override": false,
+                    "read": "stageText",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false,
+                    "virtual": false
+                },
+                {
+                    "constant": true,
+                    "designable": true,
+                    "final": false,
+                    "index": 4,
+                    "lineNumber": 20,
+                    "name": "board",
+                    "override": false,
+                    "read": "board",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "BoardModel*",
+                    "user": false,
+                    "virtual": false
+                }
+            ],
+            "qualifiedClassName": "GameManager",
+            "signals": [
+                {
+                    "access": "public",
+                    "index": 0,
+                    "lineNumber": 55,
+                    "name": "matchIdChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 1,
+                    "lineNumber": 56,
+                    "name": "playerIndexChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 2,
+                    "lineNumber": 57,
+                    "name": "opponentNameChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 3,
+                    "lineNumber": 58,
+                    "name": "stageChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "message",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 4,
+                    "lineNumber": 60,
+                    "name": "gameError",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "snapshot",
+                            "type": "QJsonObject"
+                        }
+                    ],
+                    "index": 5,
+                    "lineNumber": 61,
+                    "name": "gameSnapshotReceived",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "events",
+                            "type": "QJsonArray"
+                        }
+                    ],
+                    "index": 6,
+                    "lineNumber": 62,
+                    "name": "gameEventsReceived",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "reason",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 7,
+                    "lineNumber": 63,
+                    "name": "gameEnded",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "message",
+                            "type": "QJsonObject"
+                        }
+                    ],
+                    "index": 8,
+                    "lineNumber": 66,
+                    "name": "handleServerMessage",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "GameManager.h",
+    "outputRevision": 69
+}

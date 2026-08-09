@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/lumieTcg/">
+    <file alias="assets.qrc">/home/lumie/Projects/lumieTcg/assets.qrc</file>
+  </qresource>
+</RCC>
+

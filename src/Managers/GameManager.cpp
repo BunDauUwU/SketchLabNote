@@ -8,6 +8,7 @@
 
 GameManager::GameManager(QObject* parent)
     : QObject(parent)
+    , m_board(new BoardModel(this))
 {
 }
 

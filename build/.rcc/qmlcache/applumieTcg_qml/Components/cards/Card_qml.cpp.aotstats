@@ -1,0 +1,15 @@
+{
+    "formatRevision": 1,
+    "modules": [
+        {
+            "moduleFiles": [
+                {
+                    "entries": [
+                    ],
+                    "filePath": "/home/lumie/Projects/lumieTcg/qml/Components/cards/Card.qml"
+                }
+            ],
+            "moduleId": "lumieTcg(applumieTcg)"
+        }
+    ]
+}

@@ -8,6 +8,7 @@
 
 #include "../Core/Enums.h"
 #include "../Network/NetworkClient.h"
+#include "../Models/BoardModel.h"
 
 class GameManager : public QObject {
     Q_OBJECT
@@ -16,6 +17,7 @@ class GameManager : public QObject {
     Q_PROPERTY(int playerIndex READ playerIndex NOTIFY playerIndexChanged)
     Q_PROPERTY(QString opponentName READ opponentName NOTIFY opponentNameChanged)
     Q_PROPERTY(QString stage READ stageText NOTIFY stageChanged)
+    Q_PROPERTY(BoardModel* board READ board CONSTANT)
 
 public:
     explicit GameManager(QObject* parent = nullptr);
@@ -26,6 +28,7 @@ public:
     int playerIndex() const;
     QString opponentName() const;
     QString stageText() const;
+    BoardModel* board() const { return m_board; }
 
     Q_INVOKABLE void setMatchInfo(
         const QString& matchId,
@@ -73,4 +76,5 @@ private:
     int m_playerIndex = -1;
     QString m_opponentName;
     GameStage m_stage = GameStage::None;
+    BoardModel* m_board = nullptr;
 };

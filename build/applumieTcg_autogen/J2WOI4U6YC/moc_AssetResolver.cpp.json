@@ -1,0 +1,98 @@
+{
+    "classes": [
+        {
+            "className": "AssetResolver",
+            "lineNumber": 8,
+            "methods": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "cardId",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 0,
+                    "lineNumber": 14,
+                    "name": "resolveCardImage",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "charId",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 1,
+                    "lineNumber": 15,
+                    "name": "resolveCharacterImage",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "element",
+                            "type": "ElementType"
+                        }
+                    ],
+                    "index": 2,
+                    "lineNumber": 16,
+                    "name": "resolveElementIcon",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "weather",
+                            "type": "WeatherType"
+                        }
+                    ],
+                    "index": 3,
+                    "lineNumber": 17,
+                    "name": "resolveWeatherIcon",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "weather",
+                            "type": "WeatherType"
+                        }
+                    ],
+                    "index": 4,
+                    "lineNumber": 18,
+                    "name": "resolveWeatherName",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "weather",
+                            "type": "WeatherType"
+                        }
+                    ],
+                    "index": 5,
+                    "lineNumber": 19,
+                    "name": "resolveWeatherDescription",
+                    "returnType": "QString"
+                }
+            ],
+            "object": true,
+            "qualifiedClassName": "AssetResolver",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "AssetResolver.h",
+    "outputRevision": 69
+}

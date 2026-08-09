@@ -1,0 +1,37 @@
+module lumieTcg
+typeinfo applumieTcg.qmltypes
+prefer :/lumieTcg/
+App 1.0 qml/App.qml
+SceneManager 1.0 qml/Core/SceneManager.qml
+DiceBar 1.0 qml/Components/battle/DiceBar.qml
+ElementPointBar 1.0 qml/Components/battle/ElementPointBar.qml
+EnergyBar 1.0 qml/Components/battle/EnergyBar.qml
+HpBar 1.0 qml/Components/battle/HpBar.qml
+WeatherBanner 1.0 qml/Components/battle/WeatherBanner.qml
+Card 1.0 qml/Components/cards/Card.qml
+CharacterCard 1.0 qml/Components/cards/CharacterCard.qml
+SupportCard 1.0 qml/Components/cards/SupportCard.qml
+Loading 1.0 qml/Components/common/Loading.qml
+Logo 1.0 qml/Components/common/Logo.qml
+Popup 1.0 qml/Components/common/Popup.qml
+GameButton 1.0 qml/Components/controls/GameButton.qml
+GameIcon 1.0 qml/Components/controls/GameIcon.qml
+GameImage 1.0 qml/Components/controls/GameImage.qml
+GamePanel 1.0 qml/Components/controls/GamePanel.qml
+GameText 1.0 qml/Components/controls/GameText.qml
+GameBackground 1.0 qml/Components/layout/GameBackground.qml
+BattleScreen 1.0 qml/Screens/BattleScreen.qml
+CollectionScreen 1.0 qml/Screens/CollectionScreen.qml
+DeckScreen 1.0 qml/Screens/DeckScreen.qml
+MainMenu 1.0 qml/Screens/MainMenu.qml
+SettingsScreen 1.0 qml/Screens/SettingsScreen.qml
+SplashScreen 1.0 qml/Screens/SplashScreen.qml
+Constants 1.0 qml/Core/Constants.qml
+Motion 1.0 qml/Core/Motion.qml
+Radius 1.0 qml/Core/Radius.qml
+Resources 1.0 qml/Core/Resources.qml
+Spacing 1.0 qml/Core/Spacing.qml
+Theme 1.0 qml/Core/Theme.qml
+Typography 1.0 qml/Core/Typography.qml
+depends QtQuick
+

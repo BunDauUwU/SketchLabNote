@@ -22,6 +22,13 @@ QtObject {
 
     readonly property color secondary: "#8B6B3F"
 
+    readonly property real primaryR: primary.r
+    readonly property real primaryG: primary.g
+    readonly property real primaryB: primary.b
+
+    readonly property real secondaryR: secondary.r
+    readonly property real secondaryG: secondary.g
+    readonly property real secondaryB: secondary.b
     // Text
 
     readonly property color text: "#FFFFFF"

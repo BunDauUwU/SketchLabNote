@@ -1,0 +1,12 @@
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../3WFUWCBZX3/moc_BoardModel.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../3WFUWCBZX3/moc_CardModel.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../3WFUWCBZX3/moc_CharacterModel.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../3WFUWCBZX3/moc_PlayerModel.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../J2WOI4U6YC/moc_AssetResolver.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../J2WOI4U6YC/moc_CardDatabase.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../J2WOI4U6YC/moc_CharacterDatabase.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../PONQXYI2GT/moc_AuthManager.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../PONQXYI2GT/moc_DeckManager.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../PONQXYI2GT/moc_GameManager.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../PONQXYI2GT/moc_MatchmakingManager.cpp.json
+/home/lumie/Projects/lumieTcg/build/applumieTcg_autogen/include/../UOK3RNX7R6/moc_NetworkClient.cpp.json

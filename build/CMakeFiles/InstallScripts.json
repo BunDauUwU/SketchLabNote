@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/lumie/Projects/lumieTcg/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

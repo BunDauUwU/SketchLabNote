@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_applumieTcg_FILE /home/lumie/Projects/lumieTcg/build/applumieTcg)
+set(__QT_DEPLOY_TARGET_applumieTcg_TYPE EXECUTABLE)
