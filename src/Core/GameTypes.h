@@ -1,5 +1,7 @@
 // src/Core/GameTypes.h
 #pragma once
+#include <QString>
+#include <QStringList>
 
 namespace GameRules {
 
@@ -21,5 +23,13 @@ constexpr int clampElementPoints(int value, int maximum = defaultMaximumElementP
 
     return value;
 }
-
 } // namespace GameRules
+
+struct Deck
+{
+    QString id;
+    QString name;
+
+    QStringList characters;
+    QStringList cards;
+};

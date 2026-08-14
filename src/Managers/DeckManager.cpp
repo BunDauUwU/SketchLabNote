@@ -8,9 +8,42 @@
 #include <QStandardPaths>
 #include <QDebug>
 
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QCryptographicHash>
+#include <QStandardPaths>
+#include <QDateTime>
+
 DeckManager::DeckManager(QObject *parent) : QObject(parent)
 {
-    loadDeck();
+
+}
+
+void DeckManager::initDatabase()
+{
+    const QString appDataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir dir(appDataDir);
+    if (!dir.exists()) {
+        dir.mkpath(appDataDir);
+    }
+
+    const QString dbPath = dir.filePath(QStringLiteral("users.sqlite"));
+    QSqlDatabase db;
+
+    if (QSqlDatabase::contains(QStringLiteral("AuthConnection"))) {
+        db = QSqlDatabase::database(QStringLiteral("AuthConnection"));
+    } else {
+        db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("AuthConnection"));
+        db.setDatabaseName(dbPath);
+    }
+
+    if (!db.open()) {
+        qWarning() << "Failed to open Auth SQLite database:" << db.lastError().text();
+        return;
+    }
+
+    QSqlQuery query(db);
 }
 
 QStringList DeckManager::cards() const
@@ -23,24 +56,29 @@ QStringList DeckManager::characters() const
     return m_characters;
 }
 
-bool DeckManager::addCharacter(const QString &cardId)
+bool DeckManager::addCharacter(const QString &cardId, const QString& username, int &deckIndex)
 {
     if (cardId.isEmpty())
         return false;
 
     if (m_characters.size() >= 3) {
-        emit errorOccurred(QStringLiteral("Maximum 3 characters allowed in a deck"));
+        emit errorOccurred(QStringLiteral("Maximum 3 characters allowed"));
+        return false;
+    }
+
+    if (m_characters.count(cardId)){
+        emit errorOccurred(QStringLiteral("These characters have no twwin"));
         return false;
     }
 
     m_characters.append(cardId);
     emit charactersChanged();
     emit deckChanged();
-    saveDeck();
+    saveDeck(username, deckIndex);
     return true;
 }
 
-bool DeckManager::removeCharacter(const QString &cardId)
+bool DeckManager::removeCharacter(const QString &cardId, const QString& username, int &deckIndex)
 {
     if (!m_characters.contains(cardId))
         return false;
@@ -48,17 +86,22 @@ bool DeckManager::removeCharacter(const QString &cardId)
     m_characters.removeOne(cardId);
     emit charactersChanged();
     emit deckChanged();
-    saveDeck();
+    saveDeck(username, deckIndex);
     return true;
 }
 
-bool DeckManager::addCard(const QString &cardId)
+bool DeckManager::addCard(const QString &cardId, const QString& username, int &deckIndex)
 {
     if (cardId.isEmpty())
         return false;
 
     if (m_cards.size() >= 30) {
-        emit errorOccurred(QStringLiteral("Maximum 30 cards allowed in a deck"));
+        emit errorOccurred(QStringLiteral("Maximum 30 cards allowed"));
+        return false;
+    }
+
+    if(m_cards.count(cardId) > 3) {
+        emit errorOccurred(QStringLiteral("Maximum 3 copies of a card allowed"));
         return false;
     }
 
@@ -67,12 +110,12 @@ bool DeckManager::addCard(const QString &cardId)
     emit cardsChanged();
     emit deckChanged();
 
-    saveDeck();
+    saveDeck(username, deckIndex);
 
     return true;
 }
 
-bool DeckManager::removeCard(const QString &cardId)
+bool DeckManager::removeCard(const QString &cardId, const QString& username, int &deckIndex)
 {
     if (!m_cards.contains(cardId))
         return false;
@@ -80,7 +123,7 @@ bool DeckManager::removeCard(const QString &cardId)
     m_cards.removeOne(cardId);
     emit cardsChanged();
     emit deckChanged();
-    saveDeck();
+    saveDeck(username, deckIndex);
     return true;
 }
 
@@ -94,7 +137,7 @@ QString DeckManager::deckFilePath() const
     return dir.filePath(QStringLiteral("deck.json"));
 }
 
-void DeckManager::saveDeck()
+void DeckManager::saveDeck(const QString& username, int &deckIndex)
 {
     QJsonObject root;
     QJsonArray charsArray;
@@ -108,15 +151,34 @@ void DeckManager::saveDeck()
     root["characters"] = charsArray;
     root["cards"] = cardsArray;
 
-    QFile file(deckFilePath());
-    if (file.open(QIODevice::WriteOnly)) {
-        file.write(QJsonDocument(root).toJson());
-    } else {
-        emit errorOccurred(QStringLiteral("Failed to open deck file for writing"));
+    QSqlDatabase db = QSqlDatabase::database(QStringLiteral("SaveDeck"));
+
+    if (!db.isOpen() && !db.open()) {
+        qDebug() << "Database connection failed"  << '\n';
+        return ;
     }
+
+    const QString cleanUser = username.trimmed();
+    QSqlQuery query(db);
+    query.prepare(QStringLiteral("SELECT decks FROM users WHERE username = :user"));
+    query.bindValue(QStringLiteral(":user"), cleanUser);
+    if(!query.exec() || !query.next()) {
+        qDebug() << "Failed to write deck"  << '\n';
+        emit errorOccurred(QStringLiteral("Failed to open deck file for writing"));
+        return ;
+    }
+
+
+    // QFile file(deckFilePath());
+    // if (file.open(QIODevice::WriteOnly)) {
+
+    //     file.write(QJsonDocument(root).toJson());
+    // } else {
+    //     emit errorOccurred(QStringLiteral("Failed to open deck file for writing"));
+    // }
 }
 
-void DeckManager::loadDeck()
+void DeckManager::loadDeck(const QString& username, int &deckIndex)
 {
     QFile file(deckFilePath());
     if (!file.exists() || !file.open(QIODevice::ReadOnly)) {

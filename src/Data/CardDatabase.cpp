@@ -11,6 +11,7 @@ CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
         QString resourcePath = it.next();
         QFileInfo fileInfo(resourcePath);
 
+
         if (resourcePath.contains("/assets/cards") && fileInfo.isFile())
         {
             QString ext = fileInfo.suffix().toLower();

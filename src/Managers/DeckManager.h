@@ -16,14 +16,14 @@ public:
     QStringList cards() const;
     QStringList characters() const;
 
-    Q_INVOKABLE bool addCharacter(const QString &cardId);
-    Q_INVOKABLE bool removeCharacter(const QString &cardId);
+    Q_INVOKABLE bool addCharacter(const QString &cardId, const QString& username, int &deckIndex);
+    Q_INVOKABLE bool removeCharacter(const QString &cardId, const QString& username, int &deckIndex);
 
-    Q_INVOKABLE bool addCard(const QString &cardId);
-    Q_INVOKABLE bool removeCard(const QString &cardId);
+    Q_INVOKABLE bool addCard(const QString &cardId, const QString& username, int &deckIndex);
+    Q_INVOKABLE bool removeCard(const QString &cardId, const QString& username, int &deckIndex);
 
-    Q_INVOKABLE void saveDeck();
-    Q_INVOKABLE void loadDeck();
+    Q_INVOKABLE void saveDeck(const QString& username, int &deckIndex);
+    Q_INVOKABLE void loadDeck(const QString& username, int &deckIndex);
 
 signals:
     void cardsChanged();
@@ -32,6 +32,8 @@ signals:
     void errorOccurred(const QString &message);
 
 private:
+    void initDatabase();
+
     QStringList m_cards;
     QStringList m_characters;
 

@@ -3,9 +3,9 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    FontLoader {
+    readonly property FontLoader genshinFont: FontLoader {
         id: genshin
-        source: "qrc:/lumieTcg/assets/fonts/genshin.ttf"
+        source: "/lumieTcg/assets/fonts/genshin.ttf"
     }
 
     readonly property string family: genshin.name

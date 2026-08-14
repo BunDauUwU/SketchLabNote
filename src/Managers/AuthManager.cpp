@@ -52,7 +52,8 @@ void AuthManager::initDatabase()
         "CREATE TABLE IF NOT EXISTS users ("
         "  username TEXT PRIMARY KEY,"
         "  password_hash TEXT NOT NULL,"
-        "  created_at TEXT NOT NULL"
+        "  created_at TEXT NOT NULL,"
+        "  decks BLOB NOT NULL"
         ")"
     );
 

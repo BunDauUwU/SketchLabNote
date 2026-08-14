@@ -160,11 +160,19 @@ Rectangle {
 
 
 
-        GameButton {
-            id : saveDeck
-            GameText {
-                text : "Save"
-            }
-        }
+    Rectangle {
+        id : utilityButtons
+        height: 70
+        width: 600
+        color : "black"
 
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.bottomMargin: 20
+        anchors.rightMargin: 20
+    }
+
+    ListView {
+
+    }
 }

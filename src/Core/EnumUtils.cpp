@@ -283,5 +283,6 @@ ZoneType zoneTypeFromString(const QString& value)
 
     return ZoneType::None;
 }
-
 }
+
+

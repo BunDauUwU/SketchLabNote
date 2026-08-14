@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import "../../Core"
+import lumieTcg
 
 Rectangle {
     id : root
@@ -13,6 +13,10 @@ Rectangle {
     // property bool enabled: true
 
     signal clicked()
+
+    MouseArea {
+        id: mouse
+    }
 
     scale: mouse.pressed ? 0.97 : mouse.containsMouse ? 1.03 : 1.0
 
