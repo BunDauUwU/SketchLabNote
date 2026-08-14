@@ -159,36 +159,58 @@ void DeckManager::saveDeck(const QString& username, int &deckIndex)
     }
 
     const QString cleanUser = username.trimmed();
+    QJsonDocument doc(root);
+    QString newDeckJsonString = doc.toJson(QJsonDocument::Compact);
+
     QSqlQuery query(db);
-    query.prepare(QStringLiteral("SELECT decks FROM users WHERE username = :user"));
+    query.prepare(
+        "UPDATE users "
+        "SET decks = json_set(decks, :deckId, json(:deck)) "
+        "WHERE username = :user"
+        );
     query.bindValue(QStringLiteral(":user"), cleanUser);
-    if(!query.exec() || !query.next()) {
-        qDebug() << "Failed to write deck"  << '\n';
-        emit errorOccurred(QStringLiteral("Failed to open deck file for writing"));
-        return ;
+
+    if (deckIndex == 1) {
+        query.bindValue(QStringLiteral(":deckId"), "$.deck1");
+        query.bindValue(QStringLiteral(":decks"), newDeckJsonString);
+    } else if (deckIndex == 2) {
+        query.bindValue(QStringLiteral(":deckId"), "$.deck2");
+        query.bindValue(QStringLiteral(":decks"), newDeckJsonString);
+    } else {
+        query.bindValue(QStringLiteral(":deckId"), "$.deck3");
+        query.bindValue(QStringLiteral(":decks"), newDeckJsonString);
     }
-
-
-    // QFile file(deckFilePath());
-    // if (file.open(QIODevice::WriteOnly)) {
-
-    //     file.write(QJsonDocument(root).toJson());
-    // } else {
-    //     emit errorOccurred(QStringLiteral("Failed to open deck file for writing"));
-    // }
 }
 
 void DeckManager::loadDeck(const QString& username, int &deckIndex)
 {
-    QFile file(deckFilePath());
-    if (!file.exists() || !file.open(QIODevice::ReadOnly)) {
-        return;
+    QSqlDatabase db = QSqlDatabase::database(QStringLiteral("LoadDeck"));
+
+    if (!db.isOpen() && !db.open()) {
+        qDebug() << "Database connection failed"  << '\n';
+        return ;
     }
 
-    QByteArray data = file.readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(data);
-    if (!doc.isObject())
-        return;
+    const QString cleanUser = username.trimmed();
+    QSqlQuery query(db);
+    query.prepare(
+        "SELECT decks -> :deckId FROM users WHERE username = :user"
+    );
+    query.bindValue(QStringLiteral(":user"), cleanUser);
+    if (deckIndex == 1) {
+        query.bindValue(QStringLiteral(":deckId"), "$.deck1");
+    } else if (deckIndex == 2) {
+        query.bindValue(QStringLiteral(":deckId"), "$.deck2");
+    } else {
+        query.bindValue(QStringLiteral(":deckId"), "$.deck3");
+    }
+    if (!query.exec() || !query.next()) {
+        qDebug() << "Deck fetch failled"  << '\n';
+        return ;
+    }
+
+    QString jsonString = query.value(0).toString();
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
 
     QJsonObject root = doc.object();
     m_characters.clear();

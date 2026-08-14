@@ -175,12 +175,23 @@ bool AuthManager::registerUser(const QString& username, const QString& password)
 
     QSqlQuery insertQuery(db);
     insertQuery.prepare(QStringLiteral(
-        "INSERT INTO users (username, password_hash, created_at) "
-        "VALUES (:user, :hash, :time)"
+        "INSERT INTO users (username, password_hash, created_at, decks) "
+        "VALUES (:user, :hash, :time, :decks)"
     ));
     insertQuery.bindValue(QStringLiteral(":user"), cleanUser);
     insertQuery.bindValue(QStringLiteral(":hash"), hashPassword(password));
     insertQuery.bindValue(QStringLiteral(":time"), QDateTime::currentDateTime().toString(Qt::ISODate));
+
+    QJsonObject blankDeckProfile;
+    QJsonObject deckObj;
+    deckObj["char"] = QJsonArray();
+    deckObj["card"] = QJsonArray();
+    blankDeckProfile["deck1"] = deckObj;
+    blankDeckProfile["deck2"] = deckObj;
+    blankDeckProfile["deck3"] = deckObj;
+    QJsonDocument doc(blankDeckProfile);
+    QString jsonString = doc.toJson(QJsonDocument::Compact);
+    insertQuery.bindValue(QStringLiteral(":decks"), jsonString);
 
     if (!insertQuery.exec()) {
         const QString err = QStringLiteral("Failed to create account: ") + insertQuery.lastError().text();
