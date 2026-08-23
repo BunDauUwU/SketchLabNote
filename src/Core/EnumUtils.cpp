@@ -51,10 +51,11 @@ QString toString(WeatherType type)
     case WeatherType::None: return QStringLiteral("None");
     case WeatherType::Rain: return QStringLiteral("Rain");
     case WeatherType::Snow: return QStringLiteral("Snow");
-    case WeatherType::Storm: return QStringLiteral("Storm");
+    case WeatherType::Thunderstorm: return QStringLiteral("Thunderstorm");
     case WeatherType::Sandstorm: return QStringLiteral("Sandstorm");
-    case WeatherType::Eclipse: return QStringLiteral("Eclipse");
+    case WeatherType::Cataclysm: return QStringLiteral("Cataclysm");
     case WeatherType::BurningField: return QStringLiteral("BurningField");
+    case WeatherType::Tornado: return QStringLiteral("Tornado");
     }
 
     return QStringLiteral("None");
@@ -66,10 +67,11 @@ WeatherType weatherTypeFromString(const QString& value)
 
     if (v == "rain") return WeatherType::Rain;
     if (v == "snow") return WeatherType::Snow;
-    if (v == "storm") return WeatherType::Storm;
+    if (v == "thunderstorm" || v == "storm") return WeatherType::Thunderstorm;
     if (v == "sandstorm") return WeatherType::Sandstorm;
-    if (v == "eclipse") return WeatherType::Eclipse;
+    if (v == "cataclysm" || v == "eclipse") return WeatherType::Cataclysm;
     if (v == "burningfield" || v == "burning_field" || v == "burning field") return WeatherType::BurningField;
+    if (v == "tornado") return WeatherType::Tornado;
 
     return WeatherType::None;
 }
@@ -284,5 +286,4 @@ ZoneType zoneTypeFromString(const QString& value)
     return ZoneType::None;
 }
 }
-
 

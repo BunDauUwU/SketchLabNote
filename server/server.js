@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { WebSocket, WebSocketServer } from "ws";
+import { validateDeck } from "./deckValidator.js";
+import { applyWeather, createWeatherPlan, draw, shuffle } from "./weather.js";
 
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_PORT = 14095;
@@ -16,6 +18,8 @@ export class LumieServer {
     this.clients = new Map();
     this.queues = new Map();
     this.matches = new Map();
+    this.selectionTimeoutMs = 10_000;
+    this.actionTimeoutMs = 30_000;
     this.webSocketServer = null;
   }
 
@@ -111,19 +115,23 @@ export class LumieServer {
   }
 
   submitDeck(socket, payload) {
-    const characters = payload.characters;
-    const cards = payload.cards;
-    if (!Array.isArray(characters) || !Array.isArray(cards) ||
-        !characters.every((id) => typeof id === "string") ||
-        !cards.every((id) => typeof id === "string")) {
+    const result = validateDeck(payload);
+    if (!result.valid) {
       this.send(socket, "DeckValidationResult", {
         valid: false,
-        message: "characters and cards must be arrays of IDs",
+        message: result.errors.join(". "), errors: result.errors,
       });
       return;
     }
+    const characters = [...payload.characters];
+    const cards = [...payload.cards];
     this.clients.get(socket).deck = { deckId: String(payload.deckId ?? ""), characters, cards };
     this.send(socket, "DeckValidationResult", { valid: true, deckId: String(payload.deckId ?? "") });
+    const match = this.matches.get(this.clients.get(socket).matchId);
+    if (match && !match.started) {
+      this.sendSelectionStatus(match);
+      if (match.sockets.every((peer) => this.clients.get(peer).deck)) this.beginMatch(match);
+    }
   }
 
   startMatchmaking(socket, payload) {
@@ -157,16 +165,23 @@ export class LumieServer {
       const sockets = [queue.shift(), queue.shift()];
       if (sockets.some((socket) => socket.readyState !== WebSocket.OPEN)) continue;
       const matchId = randomUUID();
-      const match = { id: matchId, mode, sockets, round: 1, currentPlayerIndex: 0, ended: new Set() };
+      sockets.forEach((socket) => { this.clients.get(socket).deck = null; });
+      const match = {
+        id: matchId, mode, sockets, players: [], round: 1, currentPlayerIndex: 0,
+        ended: new Set(), weather: createWeatherPlan(), started: false, timer: null,
+      };
       this.matches.set(matchId, match);
 
       sockets.forEach((socket, playerIndex) => {
         const client = this.clients.get(socket);
         const opponent = this.clients.get(sockets[1 - playerIndex]);
         client.matchId = matchId;
-        this.send(socket, "MatchFound", { matchId, playerIndex, opponentName: opponent.nickname });
+        this.send(socket, "MatchFound", {
+          matchId, playerIndex, opponentName: opponent.nickname,
+          weatherSequence: match.weather.sequence, selectionSeconds: this.selectionTimeoutMs / 1000,
+        });
       });
-      sockets.forEach((socket) => this.sendSnapshot(socket, match));
+      match.timer = setTimeout(() => this.selectionExpired(match), this.selectionTimeoutMs);
     }
     if (queue.length === 0) this.queues.delete(mode);
   }
@@ -174,7 +189,7 @@ export class LumieServer {
   gameCommand(socket, payload) {
     const client = this.clients.get(socket);
     const match = this.matches.get(payload.matchId);
-    if (!match || client.matchId !== payload.matchId || !match.sockets.includes(socket)) {
+    if (!match || !match.started || client.matchId !== payload.matchId || !match.sockets.includes(socket)) {
       this.sendError(socket, "MatchNotFound", "The requested match is not active");
       return;
     }
@@ -185,6 +200,15 @@ export class LumieServer {
     }
 
     const playerIndex = match.sockets.indexOf(socket);
+    if (playerIndex !== match.currentPlayerIndex && commandType !== "Concede") {
+      this.sendError(socket, "NotYourTurn", "Wait for the other player to finish their action");
+      return;
+    }
+    if (match.attackDisabled && commandType === "UseSkill") {
+      this.sendError(socket, "WeatherRestriction", "Sandstorm prevents attacks this round");
+      return;
+    }
+    this.consumeClock(match, playerIndex);
     if (commandType === "Concede") {
       this.broadcast(match, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", reason: `${client.nickname} conceded` }] });
       this.finishMatch(match);
@@ -195,14 +219,20 @@ export class LumieServer {
       if (match.ended.size === 2) {
         match.round += 1;
         match.ended.clear();
-        match.currentPlayerIndex = 1 - match.currentPlayerIndex;
+        match.players.forEach((player) => { player.remainingMs += 60_000; });
+        const weatherEvents = applyWeather(match);
+        this.broadcast(match, "GameEvent", { matchId: match.id, events: weatherEvents });
+        const winner = this.findWinner(match);
+        if (winner >= 0) { this.endWithWinner(match, winner, "All opposing characters were defeated"); return; }
       }
     }
+    match.currentPlayerIndex = 1 - match.currentPlayerIndex;
     this.broadcast(match, "GameEvent", {
       matchId: match.id,
       events: [{ eventType: this.eventType(commandType), playerIndex, ...(payload.command ?? {}) }],
     });
     match.sockets.forEach((peer) => this.sendSnapshot(peer, match));
+    this.armActionTimer(match);
   }
 
   eventType(commandType) {
@@ -216,20 +246,21 @@ export class LumieServer {
       stage: "Action",
       round: match.round,
       currentPlayerIndex: match.currentPlayerIndex,
-      weather: { sequence: [], activeWeather: { type: "None", startedRound: 0, remainingRounds: 0 }, roundsPerWeather: 2 },
-      players: match.sockets.map((peer) => {
-        const player = this.clients.get(peer);
+      weather: { sequence: match.weather.sequence, activeWeather: { type: match.weather.rounds[match.round - 1] ?? "None", startedRound: match.round, remainingRounds: 1 }, roundsPerWeather: 1 },
+      players: match.players.map((state, index) => {
+        const player = this.clients.get(match.sockets[index]);
         return {
           playerId: player.id,
           nickname: player.nickname,
-          characters: (player.deck?.characters ?? []).map((characterId, index) => ({ characterId, hp: 10, maxHp: 10, energy: 0, maxEnergy: 2, element: "None", active: index === 0, defeated: false })),
+          characters: state.characters.map((character, characterIndex) => ({ ...character, element: character.applications[0] ?? "None", active: characterIndex === state.activeCharacterIndex, defeated: character.hp <= 0 })),
           elementPoints: { current: 10, maximum: 10, permanentBonus: 0 },
-          handCardCount: 0,
-          deckCardCount: player.deck?.cards.length ?? 0,
-          activeCharacterIndex: 0,
+          handCardCount: state.hand.length,
+          deckCardCount: state.deck.length,
+          activeCharacterIndex: state.activeCharacterIndex,
+          remainingTimeMs: state.remainingMs,
         };
       }),
-      self: { handCardIds: localIndex >= 0 ? [] : [] },
+      self: { handCardIds: localIndex >= 0 ? match.players[localIndex].hand : [] },
     });
   }
 
@@ -239,13 +270,15 @@ export class LumieServer {
     const match = client?.matchId ? this.matches.get(client.matchId) : null;
     if (match) {
       const opponent = match.sockets.find((peer) => peer !== socket);
-      this.send(opponent, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", reason: "Opponent disconnected" }] });
+      const winnerIndex = match.sockets.indexOf(opponent);
+      this.send(opponent, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", winnerIndex, reason: "Opponent disconnected" }] });
       this.finishMatch(match);
     }
     this.clients.delete(socket);
   }
 
   finishMatch(match) {
+    clearTimeout(match.timer);
     this.matches.delete(match.id);
     for (const socket of match.sockets) {
       const client = this.clients.get(socket);
@@ -271,6 +304,62 @@ export class LumieServer {
 
   send(socket, type, payload) {
     if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(envelope(type, payload)));
+  }
+
+  sendSelectionStatus(match) {
+    this.broadcast(match, "MatchmakingStatus", {
+      status: "Waiting for deck selection...",
+      selectedPlayers: match.sockets.map((peer, index) => this.clients.get(peer).deck ? index : -1).filter((index) => index >= 0),
+    });
+  }
+
+  selectionExpired(match) {
+    if (!this.matches.has(match.id) || match.started) return;
+    const selected = match.sockets.map((socket, index) => this.clients.get(socket).deck ? index : -1).filter((index) => index >= 0);
+    if (selected.length === 1) this.endWithWinner(match, selected[0], "Opponent did not select a deck in 10 seconds");
+    else { this.broadcast(match, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", reason: "Deck selection timed out" }] }); this.finishMatch(match); }
+  }
+
+  beginMatch(match) {
+    clearTimeout(match.timer);
+    match.started = true;
+    match.players = match.sockets.map((socket) => {
+      const deck = this.clients.get(socket).deck;
+      const player = {
+        characters: deck.characters.map((characterId) => ({ characterId, hp: 10, maxHp: 10, energy: 0, maxEnergy: 2, applications: [] })),
+        deck: [...deck.cards], hand: [], summons: [], activeCharacterIndex: 0,
+        remainingMs: 180_000, turnStartedAt: Date.now(),
+      };
+      shuffle(player.deck); draw(player, 5); return player;
+    });
+    const events = [{ eventType: "GameStarted" }, { eventType: "CardsDrawn", count: 5 }, ...applyWeather(match)];
+    this.broadcast(match, "GameEvent", { matchId: match.id, events });
+    match.sockets.forEach((socket) => this.sendSnapshot(socket, match));
+    this.armActionTimer(match);
+  }
+
+  consumeClock(match, playerIndex) {
+    const player = match.players[playerIndex];
+    player.remainingMs -= Date.now() - player.turnStartedAt;
+    if (player.remainingMs <= 0) this.endWithWinner(match, 1 - playerIndex, "Game clock expired");
+  }
+
+  armActionTimer(match) {
+    clearTimeout(match.timer);
+    if (!this.matches.has(match.id)) return;
+    match.players[match.currentPlayerIndex].turnStartedAt = Date.now();
+    const limit = Math.min(this.actionTimeoutMs, match.players[match.currentPlayerIndex].remainingMs);
+    match.timer = setTimeout(() => this.endWithWinner(match, 1 - match.currentPlayerIndex, "Opponent took no action for 30 seconds"), limit);
+  }
+
+  endWithWinner(match, winnerIndex, reason) {
+    this.broadcast(match, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", winnerIndex, reason }] });
+    this.finishMatch(match);
+  }
+
+  findWinner(match) {
+    const defeatedIndex = match.players.findIndex((player) => player.characters.every((character) => character.hp <= 0));
+    return defeatedIndex < 0 ? -1 : 1 - defeatedIndex;
   }
 }
 

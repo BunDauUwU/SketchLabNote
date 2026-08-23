@@ -53,6 +53,15 @@ test("Qt client protocol can authenticate and create a match", async (t) => {
   assert.equal(aliceMatch.payload.matchId, bobMatch.payload.matchId);
   assert.equal(aliceMatch.payload.opponentName, "Bob");
   assert.equal(bobMatch.payload.playerIndex, 1);
+  assert.equal(aliceMatch.payload.weatherSequence.length, 3);
+
+  const cards = Array.from({ length: 30 }, (_, index) => `card-${index}`);
+  const aliceSnapshot = receive(alice, "GameSnapshot");
+  const bobSnapshot = receive(bob, "GameSnapshot");
+  send(alice, "SubmitDeck", { deckId: "deck1", characters: ["A", "B", "C"], cards });
+  send(bob, "SubmitDeck", { deckId: "deck1", characters: ["D", "E", "F"], cards });
+  assert.equal((await aliceSnapshot).payload.self.handCardIds.length, 5);
+  assert.equal((await bobSnapshot).payload.stage, "Action");
 });
 
 test("server returns protocol errors instead of terminating", async (t) => {

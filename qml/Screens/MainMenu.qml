@@ -10,6 +10,7 @@ Rectangle {
     id: mainMenuRoot
     implicitWidth: 1280
     implicitHeight: 720
+    property string deckError: ""
 
     // ==========================================
     // LOGIC & CONNECTIONS (Đặt ngoài hệ thống bố cục)
@@ -19,7 +20,8 @@ Rectangle {
 
         function onMatchFound(matchId, playerIndex, opponentName) {
             console.log("Match found:", matchId, playerIndex, opponentName)
-            stack.push("./BattleScreen.qml")
+            deckManager.refreshValidDecks(authManager.username)
+            stack.push("./DeckSelectScreen.qml")
         }
 
         function onMatchmakingError(message) {
@@ -140,6 +142,15 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
+        Text {
+            text: mainMenuRoot.deckError
+            color: "#F87171"
+            font.pixelSize: 14
+            wrapMode: Text.WordWrap
+            width: 240
+            visible: text.length > 0
+        }
+
         GameButton {
             height: 60
             width: 200
@@ -149,7 +160,13 @@ Rectangle {
                 if (matchmakingManager.searching) {
                     matchmakingManager.cancelMatchmaking()
                 } else {
-                    matchmakingManager.startMatchmaking("Game1", "default_deck")
+                    deckManager.refreshValidDecks(authManager.username)
+                    if (deckManager.validDecks.length === 0) {
+                        mainMenuRoot.deckError = "Create a deck with exactly 3 unique characters and 30 valid cards first."
+                        return
+                    }
+                    mainMenuRoot.deckError = ""
+                    matchmakingManager.startMatchmaking("Game1", "")
                 }
             }
         }

@@ -94,6 +94,7 @@ qt_add_qml_module(applumieTcg
         qml/Screens/BattleScreen.qml
         qml/Screens/CollectionScreen.qml
         qml/Screens/DeckScreen.qml
+        qml/Screens/DeckSelectScreen.qml
         qml/Screens/MainMenu.qml
         qml/Screens/SettingsScreen.qml
         qml/Screens/SplashScreen.qml
