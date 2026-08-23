@@ -13,6 +13,8 @@
 #include <QSqlError>
 #include <QCryptographicHash>
 #include <QDateTime>
+#include <QHash>
+#include <QSet>
 
 const QString DB_CONN_NAME = QStringLiteral("AuthConnection");
 
@@ -45,7 +47,53 @@ void DeckManager::initDatabase()
     }
     qDebug() << "Database initialized and opened successfully.";
 
-    deckIdx = 1;
+}
+
+void DeckManager::refreshValidDecks(const QString& username)
+{
+    m_validDecks.clear();
+    QSqlDatabase db = QSqlDatabase::database(DB_CONN_NAME);
+    if (!db.isOpen() && !db.open()) {
+        emit errorOccurred(QStringLiteral("Unable to load battle decks"));
+        emit validDecksChanged();
+        return;
+    }
+
+    QSqlQuery query(db);
+    query.prepare(QStringLiteral("SELECT decks FROM users WHERE username = :user"));
+    query.bindValue(QStringLiteral(":user"), username.trimmed());
+    if (!query.exec() || !query.next()) {
+        emit validDecksChanged();
+        return;
+    }
+
+    const QJsonObject root = QJsonDocument::fromJson(query.value(0).toString().toUtf8()).object();
+    for (int index = 1; index <= 3; ++index) {
+        const QJsonObject deck = root.value(QStringLiteral("deck%1").arg(index)).toObject();
+        const QJsonArray characters = deck.value("characters").toArray();
+        const QJsonArray cards = deck.value("cards").toArray();
+        if (characters.size() != 3 || cards.size() != 30) continue;
+        QSet<QString> uniqueCharacters;
+        QHash<QString, int> cardCopies;
+        bool valid = true;
+        for (const QJsonValue& character : characters) {
+            const QString id = character.toString().trimmed();
+            if (id.isEmpty() || uniqueCharacters.contains(id)) valid = false;
+            uniqueCharacters.insert(id);
+        }
+        for (const QJsonValue& card : cards) {
+            const QString id = card.toString().trimmed();
+            if (id.isEmpty() || ++cardCopies[id] > 3) valid = false;
+        }
+        if (!valid) continue;
+        QVariantMap item;
+        item.insert("deckId", QStringLiteral("deck%1").arg(index));
+        item.insert("name", QStringLiteral("Deck %1").arg(index));
+        item.insert("characters", characters.toVariantList());
+        item.insert("cards", cards.toVariantList());
+        m_validDecks.append(item);
+    }
+    emit validDecksChanged();
 }
 
 QStringList DeckManager::cards() const
