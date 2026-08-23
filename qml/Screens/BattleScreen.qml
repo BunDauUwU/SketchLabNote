@@ -4,11 +4,13 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "../Components/battle"
 import "../Components/controls"
+import lumieTcg
 
 Rectangle {
     id: root
 
-    anchors.fill: parent
+    width: parent ? parent.width : 1280
+    height: parent ? parent.height : 720
 
     property int ownElementPoints: (gameManager && gameManager.board && gameManager.board.selfPlayer) ? gameManager.board.selfPlayer.elementPoints : 10
     property int ownMaxElementPoints: (gameManager && gameManager.board && gameManager.board.selfPlayer) ? gameManager.board.selfPlayer.maxElementPoints : 10
@@ -42,7 +44,7 @@ Rectangle {
         anchors.topMargin: Spacing.lg
         weatherName: root.activeWeather
         description: root.weatherDescription
-        remainingRounds: 2
+        remainingRounds: 1
     }
 
     GamePanel {

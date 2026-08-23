@@ -106,7 +106,8 @@ QStringList DeckManager::characters() const
     return m_characters;
 }
 
-void DeckManager::changeDeckIndex(int val) {
+void DeckManager::changeDeckIndex(int val)
+{
     deckIdx += val;
     if (3 < deckIdx || deckIdx < 1) {
         deckIdx -= val;
