@@ -184,8 +184,8 @@ bool AuthManager::registerUser(const QString& username, const QString& password)
 
     QJsonObject blankDeckProfile;
     QJsonObject deckObj;
-    deckObj["char"] = QJsonArray();
-    deckObj["card"] = QJsonArray();
+    deckObj["chars"] = QJsonArray();
+    deckObj["cards"] = QJsonArray();
     blankDeckProfile["deck1"] = deckObj;
     blankDeckProfile["deck2"] = deckObj;
     blankDeckProfile["deck3"] = deckObj;
@@ -209,6 +209,7 @@ bool AuthManager::registerUser(const QString& username, const QString& password)
 
 void AuthManager::logout()
 {
+    qDebug() << "Logged out" << '\n';
     m_username.clear();
     m_isAuthenticated = false;
     setStatusMessage(QStringLiteral("Logged out"));

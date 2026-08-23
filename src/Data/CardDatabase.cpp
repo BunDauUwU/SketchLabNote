@@ -1,7 +1,13 @@
 #include "CardDatabase.h"
 #include <QDirIterator>
+#include <QUrl>
 #include <QFileInfo>
 #include <QDebug>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
 
 CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
 {
@@ -30,15 +36,51 @@ CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
     qDebug() << "========================================";
     qDebug() << "QUÉT RESOURCE THÀNH CÔNG! ĐÃ TÌM THẤY:" << m_cardList.size() << "cardS.";
 
-    // for (int i = 0; i < m_cardList.size(); ++i) {
-    //     qDebug() << QString("[%1] -> %2").arg(i).arg(m_cardList.at(i));
-    // }
-    // qDebug() << "========================================";
+    std::sort(m_cardList.begin(), m_cardList.end());
+
+    for (auto source : m_cardList) {
+        QFileInfo fileInfo(source);
+        QString cardId = fileInfo.completeBaseName();
+        m_cardName.append(cardId);
+    }
+
+    QString filePath = ":/lumieTcg/json/card.json";
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Cant read card.json" << filePath;
+        return ;
+    }
+
+    QByteArray rawData = file.readAll();
+    file.close();
+
+    QJsonParseError error;
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(rawData, &error);
+    if (error.error != QJsonParseError::NoError) {
+        qWarning() << "Lỗi cấu trúc JSON:" << error.errorString();
+        return ;
+    }
+
+    QJsonObject rootObj = jsonDoc.object();
+
+    m_cardInfo = rootObj["standard"].toObject();
 }
 
 QStringList CardDatabase::cardList() const
 {
     return m_cardList;
+}
+
+QString CardDatabase::name (const int index) {
+    QString name = m_cardName.at(index);
+    return name;
+}
+
+QString CardDatabase::skills(const int index) {
+    QString name = m_cardName.at(index);
+    QJsonDocument doc(m_cardInfo);
+    QString indentedString = doc.toJson();
+    return indentedString;
 }
 
 void CardDatabase::handlecardClick(int index)
@@ -47,10 +89,7 @@ void CardDatabase::handlecardClick(int index)
         return;
 
     const QString source = m_cardList.at(index);
-
-    QFileInfo fileInfo(source);
-
-    QString cardId = fileInfo.completeBaseName();
+    const QString cardId = m_cardName.at(index);
 
     qDebug() << "Card selected:"
              << cardId

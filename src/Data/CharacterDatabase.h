@@ -15,6 +15,8 @@ public:
     explicit CharacterDataBase(QObject *parent = nullptr);
     QStringList characterList() const;
 
+    Q_INVOKABLE QString name(const int index);
+    Q_INVOKABLE QString skills(const int index);
     Q_INVOKABLE void handlecharacterClick(int index);
 
 signals:
@@ -23,4 +25,6 @@ signals:
 
 private:
     QStringList m_characterList;
+    QStringList m_characterName;
+    QJsonObject m_characterInfo;
 };

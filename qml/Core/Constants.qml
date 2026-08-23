@@ -15,4 +15,8 @@ QtObject {
     readonly property int cardHeight : 310
 
     readonly property int animationSpeed : 200
+
+
+    readonly property string serverUrl:
+        "ws://127.0.0.1:8080"
 }

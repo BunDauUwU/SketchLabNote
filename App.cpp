@@ -10,6 +10,7 @@
 #include "src/Data/CharacterDatabase.h"
 #include "src/Data/CardDatabase.h"
 #include "src/Data/AssetResolver.h"
+#include "src/Managers/DeckManager.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,8 +26,6 @@ int main(int argc, char *argv[])
 
     AuthManager authManager;
     authManager.setNetworkClient(&networkClient);
-
-    DeckManager deckManager;
 
     AssetResolver assetResolver;
 
@@ -64,22 +63,22 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("matchmakingManager", &matchmakingManager);
     engine.rootContext()->setContextProperty("gameManager", &gameManager);
     engine.rootContext()->setContextProperty("authManager", &authManager);
-    engine.rootContext()->setContextProperty("deckManager", &deckManager);
     engine.rootContext()->setContextProperty("assetResolver", &assetResolver);
 
     // Network
-    networkClient.connectToServer("ws://127.0.0.1:8080");
+    networkClient.connectToServer("ws://127.0.0.1:14095");
 
-    // Deck
+    // Deck data
     CharacterDataBase characterDataBase;
     engine.rootContext()->setContextProperty("charDataBase", &characterDataBase);
     CardDatabase cardDataBase;
     engine.rootContext()->setContextProperty("cardDataBase", &cardDataBase);
 
+    // Deck event handle
+    DeckManager deckManager;
+    engine.rootContext()->setContextProperty("deckManager", &deckManager);
 
-
-
-    // U know what is this
+    // DO NOT MOVE/REMOVE
     engine.loadFromModule("lumieTcg", "App");
 
     if (engine.rootObjects().isEmpty()) {

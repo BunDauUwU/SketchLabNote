@@ -15,19 +15,23 @@ public:
 
     QStringList cards() const;
     QStringList characters() const;
+    int deckIndex() const {return deckIdx;};
 
-    Q_INVOKABLE bool addCharacter(const QString &cardId, const QString& username, int &deckIndex);
-    Q_INVOKABLE bool removeCharacter(const QString &cardId, const QString& username, int &deckIndex);
 
-    Q_INVOKABLE bool addCard(const QString &cardId, const QString& username, int &deckIndex);
-    Q_INVOKABLE bool removeCard(const QString &cardId, const QString& username, int &deckIndex);
+    Q_INVOKABLE void changeDeckIndex(int val);
+    Q_INVOKABLE bool addCharacter(const QString &cardId, const QString& username);
+    Q_INVOKABLE bool removeCharacter(const QString &cardId, const QString& username);
 
-    Q_INVOKABLE void saveDeck(const QString& username, int &deckIndex);
-    Q_INVOKABLE void loadDeck(const QString& username, int &deckIndex);
+    Q_INVOKABLE bool addCard(const QString &cardId, const QString& username);
+    Q_INVOKABLE bool removeCard(const QString &cardId, const QString& username);
+
+    Q_INVOKABLE void saveDeck(const QString& username);
+    Q_INVOKABLE void loadDeck(const QString& username);
 
 signals:
     void cardsChanged();
     void charactersChanged();
+    void deckIndexChanged();
     void deckChanged();
     void errorOccurred(const QString &message);
 
@@ -36,6 +40,7 @@ private:
 
     QStringList m_cards;
     QStringList m_characters;
+    int deckIdx;
 
     QString deckFilePath() const;
 };

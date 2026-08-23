@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QJsonObject>
 
 class CardDatabase : public QObject
 {
@@ -13,6 +14,8 @@ public:
 
     QStringList cardList() const;
 
+    Q_INVOKABLE QString name(const int index);
+    Q_INVOKABLE QString skills(const int index);
     Q_INVOKABLE void handlecardClick(int index);
 
 signals:
@@ -21,4 +24,6 @@ signals:
 
 private:
     QStringList m_cardList;
+    QStringList m_cardName;
+    QJsonObject m_cardInfo;
 };

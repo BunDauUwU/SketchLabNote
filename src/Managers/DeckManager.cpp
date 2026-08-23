@@ -12,12 +12,13 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QCryptographicHash>
-#include <QStandardPaths>
 #include <QDateTime>
+
+const QString DB_CONN_NAME = QStringLiteral("AuthConnection");
 
 DeckManager::DeckManager(QObject *parent) : QObject(parent)
 {
-
+    initDatabase();
 }
 
 void DeckManager::initDatabase()
@@ -31,10 +32,10 @@ void DeckManager::initDatabase()
     const QString dbPath = dir.filePath(QStringLiteral("users.sqlite"));
     QSqlDatabase db;
 
-    if (QSqlDatabase::contains(QStringLiteral("AuthConnection"))) {
-        db = QSqlDatabase::database(QStringLiteral("AuthConnection"));
+    if (QSqlDatabase::contains(DB_CONN_NAME)) {
+        db = QSqlDatabase::database(DB_CONN_NAME);
     } else {
-        db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("AuthConnection"));
+        db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), DB_CONN_NAME);
         db.setDatabaseName(dbPath);
     }
 
@@ -42,8 +43,9 @@ void DeckManager::initDatabase()
         qWarning() << "Failed to open Auth SQLite database:" << db.lastError().text();
         return;
     }
+    qDebug() << "Database initialized and opened successfully.";
 
-    QSqlQuery query(db);
+    deckIdx = 1;
 }
 
 QStringList DeckManager::cards() const
@@ -56,29 +58,42 @@ QStringList DeckManager::characters() const
     return m_characters;
 }
 
-bool DeckManager::addCharacter(const QString &cardId, const QString& username, int &deckIndex)
+void DeckManager::changeDeckIndex(int val) {
+    deckIdx += val;
+    if (3 < deckIdx || deckIdx < 1) {
+        deckIdx -= val;
+    }
+
+    emit deckIndexChanged();
+}
+
+bool DeckManager::addCharacter(const QString &cardId, const QString& username)
 {
+    qDebug() << ' ' << cardId << '\n';
     if (cardId.isEmpty())
         return false;
 
     if (m_characters.size() >= 3) {
+        qDebug() << "limit reached";
         emit errorOccurred(QStringLiteral("Maximum 3 characters allowed"));
         return false;
     }
 
     if (m_characters.count(cardId)){
-        emit errorOccurred(QStringLiteral("These characters have no twwin"));
+        qDebug() << "Duplicate characters";
+        emit errorOccurred(QStringLiteral("These characters have no twin"));
         return false;
     }
 
     m_characters.append(cardId);
+    std::sort(m_characters.begin(), m_characters.end());
     emit charactersChanged();
     emit deckChanged();
-    saveDeck(username, deckIndex);
+    saveDeck(username);
     return true;
 }
 
-bool DeckManager::removeCharacter(const QString &cardId, const QString& username, int &deckIndex)
+bool DeckManager::removeCharacter(const QString &cardId, const QString& username)
 {
     if (!m_characters.contains(cardId))
         return false;
@@ -86,11 +101,11 @@ bool DeckManager::removeCharacter(const QString &cardId, const QString& username
     m_characters.removeOne(cardId);
     emit charactersChanged();
     emit deckChanged();
-    saveDeck(username, deckIndex);
+    saveDeck(username);
     return true;
 }
 
-bool DeckManager::addCard(const QString &cardId, const QString& username, int &deckIndex)
+bool DeckManager::addCard(const QString &cardId, const QString& username)
 {
     if (cardId.isEmpty())
         return false;
@@ -100,22 +115,24 @@ bool DeckManager::addCard(const QString &cardId, const QString& username, int &d
         return false;
     }
 
-    if(m_cards.count(cardId) > 3) {
+    if(m_cards.count(cardId) >= 3) {
         emit errorOccurred(QStringLiteral("Maximum 3 copies of a card allowed"));
         return false;
     }
 
     m_cards.append(cardId);
 
+    std::sort(m_cards.begin(), m_cards.end());
+
     emit cardsChanged();
     emit deckChanged();
 
-    saveDeck(username, deckIndex);
+    saveDeck(username);
 
     return true;
 }
 
-bool DeckManager::removeCard(const QString &cardId, const QString& username, int &deckIndex)
+bool DeckManager::removeCard(const QString &cardId, const QString& username)
 {
     if (!m_cards.contains(cardId))
         return false;
@@ -123,7 +140,7 @@ bool DeckManager::removeCard(const QString &cardId, const QString& username, int
     m_cards.removeOne(cardId);
     emit cardsChanged();
     emit deckChanged();
-    saveDeck(username, deckIndex);
+    saveDeck(username);
     return true;
 }
 
@@ -137,7 +154,7 @@ QString DeckManager::deckFilePath() const
     return dir.filePath(QStringLiteral("deck.json"));
 }
 
-void DeckManager::saveDeck(const QString& username, int &deckIndex)
+void DeckManager::saveDeck(const QString& username)
 {
     QJsonObject root;
     QJsonArray charsArray;
@@ -151,68 +168,82 @@ void DeckManager::saveDeck(const QString& username, int &deckIndex)
     root["characters"] = charsArray;
     root["cards"] = cardsArray;
 
-    QSqlDatabase db = QSqlDatabase::database(QStringLiteral("SaveDeck"));
+    QSqlDatabase db = QSqlDatabase::database(DB_CONN_NAME);
 
     if (!db.isOpen() && !db.open()) {
-        qDebug() << "Database connection failed"  << '\n';
-        return ;
+        qDebug() << "Database connection failed in saveDeck:" << db.lastError().text();
+        return;
     }
 
-    const QString cleanUser = username.trimmed();
+    const QString cleanUser = username;
+    qDebug() << username;
     QJsonDocument doc(root);
     QString newDeckJsonString = doc.toJson(QJsonDocument::Compact);
 
     QSqlQuery query(db);
     query.prepare(
         "UPDATE users "
-        "SET decks = json_set(decks, :deckId, json(:deck)) "
+        "SET decks = json_set(decks, :deckPath, json(:deckJson)) "
         "WHERE username = :user"
-        );
-    query.bindValue(QStringLiteral(":user"), cleanUser);
-
-    if (deckIndex == 1) {
-        query.bindValue(QStringLiteral(":deckId"), "$.deck1");
-        query.bindValue(QStringLiteral(":decks"), newDeckJsonString);
-    } else if (deckIndex == 2) {
-        query.bindValue(QStringLiteral(":deckId"), "$.deck2");
-        query.bindValue(QStringLiteral(":decks"), newDeckJsonString);
-    } else {
-        query.bindValue(QStringLiteral(":deckId"), "$.deck3");
-        query.bindValue(QStringLiteral(":decks"), newDeckJsonString);
-    }
-}
-
-void DeckManager::loadDeck(const QString& username, int &deckIndex)
-{
-    QSqlDatabase db = QSqlDatabase::database(QStringLiteral("LoadDeck"));
-
-    if (!db.isOpen() && !db.open()) {
-        qDebug() << "Database connection failed"  << '\n';
-        return ;
-    }
-
-    const QString cleanUser = username.trimmed();
-    QSqlQuery query(db);
-    query.prepare(
-        "SELECT decks -> :deckId FROM users WHERE username = :user"
     );
     query.bindValue(QStringLiteral(":user"), cleanUser);
-    if (deckIndex == 1) {
-        query.bindValue(QStringLiteral(":deckId"), "$.deck1");
-    } else if (deckIndex == 2) {
-        query.bindValue(QStringLiteral(":deckId"), "$.deck2");
+    query.bindValue(QStringLiteral(":deckJson"), newDeckJsonString);
+
+    if (deckIdx == 1) {
+        query.bindValue(QStringLiteral(":deckPath"), "$.deck1");
+    } else if (deckIdx == 2) {
+        query.bindValue(QStringLiteral(":deckPath"), "$.deck2");
     } else {
-        query.bindValue(QStringLiteral(":deckId"), "$.deck3");
+        query.bindValue(QStringLiteral(":deckPath"), "$.deck3");
     }
+
+    if (!query.exec()) {
+        qDebug() << "SQL Save Deck Error:" << query.lastError().text();
+    } else {
+        qDebug() << "Successfully saved deck" << deckIdx << "for user:" << cleanUser;
+    }
+
+}
+
+void DeckManager::loadDeck(const QString& username)
+{
+    QSqlDatabase db = QSqlDatabase::database(DB_CONN_NAME);
+
+    if (!db.isOpen() && !db.open()) {
+        qDebug() << "Database connection failed in loadDeck:" << db.lastError().text();
+        return;
+    }
+
+    const QString cleanUser = username;
+    QSqlQuery query(db);
+
+    query.prepare(
+        "SELECT json_extract(decks, :deckPath) FROM users WHERE username = :user"
+    );
+    query.bindValue(QStringLiteral(":user"), cleanUser);
+
+    if (deckIdx == 1) {
+        query.bindValue(QStringLiteral(":deckPath"), "$.deck1");
+    } else if (deckIdx == 2) {
+        query.bindValue(QStringLiteral(":deckPath"), "$.deck2");
+    } else {
+        query.bindValue(QStringLiteral(":deckPath"), "$.deck3");
+    }
+
     if (!query.exec() || !query.next()) {
-        qDebug() << "Deck fetch failled"  << '\n';
-        return ;
+        qDebug() << "Deck fetch failed or no user found:" << query.lastError().text();
+        return;
     }
 
     QString jsonString = query.value(0).toString();
-    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
 
+    if (jsonString.isEmpty() || jsonString == "null") {
+        jsonString = "{\"characters\":[],\"cards\":[]}";
+    }
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject root = doc.object();
+
     m_characters.clear();
     const QJsonArray charsArray = root.value("characters").toArray();
     for (const QJsonValue &v : charsArray) {
@@ -229,5 +260,3 @@ void DeckManager::loadDeck(const QString& username, int &deckIndex)
     emit cardsChanged();
     emit deckChanged();
 }
-
-
