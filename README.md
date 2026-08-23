@@ -109,6 +109,22 @@ Linux / Desktop
 
 The project should remain cross-platform where reasonably possible.
 
+## Running the multiplayer server
+
+The client connects to `ws://127.0.0.1:14095`. Start the compatible JavaScript
+WebSocket server in a separate terminal before launching the client:
+
+```bash
+cd server
+npm install
+npm start
+```
+
+Set `HOST` or `PORT` to override the listening address. The server uses the same
+JSON `{ "type", "payload" }` envelopes as the C++ `Protocol` implementation and
+supports guest authentication, deck submission, matchmaking, game snapshots,
+game commands, cancellation, and disconnect cleanup.
+
 ---
 
 # 5. UI Architecture
