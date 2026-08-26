@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("gameManager", &gameManager);
     engine.rootContext()->setContextProperty("authManager", &authManager);
     engine.rootContext()->setContextProperty("assetResolver", &assetResolver);
+    engine.rootContext()->setContextProperty("assetsManager", &assetResolver);
 
     // Network
     networkClient.connectToServer("ws://127.0.0.1:14095");

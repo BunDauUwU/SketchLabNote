@@ -38,10 +38,11 @@ QString AssetResolver::resolveWeatherIcon(WeatherType weather)
     switch (weather) {
     case WeatherType::Rain:         return QStringLiteral("☔");
     case WeatherType::Snow:         return QStringLiteral("❄");
-    case WeatherType::Storm:        return QStringLiteral("⚡");
+    case WeatherType::Thunderstorm: return QStringLiteral("⚡");
     case WeatherType::Sandstorm:    return QStringLiteral("🌪");
-    case WeatherType::Eclipse:      return QStringLiteral("🌒");
+    case WeatherType::Cataclysm:    return QStringLiteral("☄");
     case WeatherType::BurningField: return QStringLiteral("🔥");
+    case WeatherType::Tornado:      return QStringLiteral("🌪");
     default:                        return QStringLiteral("☀️");
     }
 }
@@ -51,10 +52,11 @@ QString AssetResolver::resolveWeatherName(WeatherType weather)
     switch (weather) {
     case WeatherType::Rain:         return QStringLiteral("Rainstorm");
     case WeatherType::Snow:         return QStringLiteral("Blizzard");
-    case WeatherType::Storm:        return QStringLiteral("Thunderstorm");
+    case WeatherType::Thunderstorm: return QStringLiteral("Thunderstorm");
     case WeatherType::Sandstorm:    return QStringLiteral("Sandstorm");
-    case WeatherType::Eclipse:      return QStringLiteral("Solar Eclipse");
+    case WeatherType::Cataclysm:    return QStringLiteral("Cataclysm");
     case WeatherType::BurningField: return QStringLiteral("Burning Field");
+    case WeatherType::Tornado:      return QStringLiteral("Tornado");
     default:                        return QStringLiteral("Clear Sky");
     }
 }
@@ -63,17 +65,19 @@ QString AssetResolver::resolveWeatherDescription(WeatherType weather)
 {
     switch (weather) {
     case WeatherType::Rain:
-        return QStringLiteral("Hydro reactions are amplified. Water costs are reduced by 1 EP.");
+        return QStringLiteral("All characters gain a Hydro application at round start.");
     case WeatherType::Snow:
-        return QStringLiteral("Cryo damage freezes enemies for 1 turn. Physical damage is reduced.");
-    case WeatherType::Storm:
-        return QStringLiteral("Electro charges quickly. Gain +1 Energy at round start.");
+        return QStringLiteral("All characters gain a Cryo application at round start.");
+    case WeatherType::Thunderstorm:
+        return QStringLiteral("One random character on each team gains Electro and loses 1 HP.");
     case WeatherType::Sandstorm:
-        return QStringLiteral("Geo shields gain +2 absorption. Non-Geo skills cost +1 EP.");
-    case WeatherType::Eclipse:
-        return QStringLiteral("Darkness engulfs the field. Ultimate skill damage increased by +3.");
+        return QStringLiteral("Characters cannot attack during this round.");
+    case WeatherType::Cataclysm:
+        return QStringLiteral("Elemental reactions are disabled and all applications are removed.");
     case WeatherType::BurningField:
-        return QStringLiteral("Pyro damage inflicts Burning status. End-of-turn damage to all active characters.");
+        return QStringLiteral("Summons disappear and a random character on each team gains Pyro.");
+    case WeatherType::Tornado:
+        return QStringLiteral("Hands return to their decks, then each player draws three cards.");
     default:
         return QStringLiteral("Standard battlefield conditions.");
     }
