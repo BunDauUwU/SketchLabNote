@@ -60,7 +60,6 @@ export class LumieServer {
       deck: null,
       matchId: "",
     });
-    this.logServer("client connected", { playerId: this.clients.get(socket).id });
 
     socket.on("message", (raw, isBinary) => {
       if (isBinary) {
@@ -97,7 +96,6 @@ export class LumieServer {
       GameCommand: () => this.gameCommand(socket, message.payload),
     };
     const handler = handlers[message.type];
-    this.logClient(socket, message.type, message.payload);
     if (!handler) {
       this.sendError(socket, "UnknownMessageType", `Unsupported message type: ${message.type}`);
       return;
@@ -113,7 +111,6 @@ export class LumieServer {
     }
     const client = this.clients.get(socket);
     client.nickname = nickname;
-    this.logServer("client authenticated", { playerId: client.id, nickname });
     this.send(socket, "AuthResult", { success: true, playerId: client.id, nickname });
   }
 
@@ -129,7 +126,6 @@ export class LumieServer {
     const characters = [...payload.characters];
     const cards = [...payload.cards];
     this.clients.get(socket).deck = { deckId: String(payload.deckId ?? ""), characters, cards };
-    this.logServer("deck accepted", { nickname: this.clients.get(socket).nickname, deckId: String(payload.deckId ?? "") });
     this.send(socket, "DeckValidationResult", { valid: true, deckId: String(payload.deckId ?? "") });
     const match = this.matches.get(this.clients.get(socket).matchId);
     if (match && !match.started) {
@@ -175,7 +171,6 @@ export class LumieServer {
         ended: new Set(), weather: createWeatherPlan(), started: false, timer: null,
       };
       this.matches.set(matchId, match);
-      this.logServer("match created", { matchId, mode, weather: match.weather.sequence });
 
       sockets.forEach((socket, playerIndex) => {
         const client = this.clients.get(socket);
@@ -214,7 +209,6 @@ export class LumieServer {
       return;
     }
     this.consumeClock(match, playerIndex);
-    this.logServer("processing command", { matchId: match.id, playerIndex, commandType, command: payload.command ?? {} });
     if (commandType === "Concede") {
       this.broadcast(match, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", reason: `${client.nickname} conceded` }] });
       this.finishMatch(match);
@@ -225,38 +219,12 @@ export class LumieServer {
       if (match.ended.size === 2) {
         match.round += 1;
         match.ended.clear();
-        match.players.forEach((player) => { player.remainingMs += 60_000; player.elementPoints = 10; });
+        match.players.forEach((player) => { player.remainingMs += 60_000; });
         const weatherEvents = applyWeather(match);
         this.broadcast(match, "GameEvent", { matchId: match.id, events: weatherEvents });
         const winner = this.findWinner(match);
         if (winner >= 0) { this.endWithWinner(match, winner, "All opposing characters were defeated"); return; }
       }
-    }
-    const command = payload.command ?? {};
-    const player = match.players[playerIndex];
-    if (commandType === "PlayCard") {
-      const handIndex = Number(command.handIndex);
-      const cost = Math.max(0, Number(command.elementPointCost) || 0);
-      if (!Number.isInteger(handIndex) || handIndex < 0 || handIndex >= player.hand.length || cost > player.elementPoints) {
-        this.sendError(socket, "InvalidAction", "Card index or element point cost is invalid");
-        this.armActionTimer(match); return;
-      }
-      player.elementPoints -= cost;
-      player.hand.splice(handIndex, 1);
-    } else if (commandType === "UseSkill") {
-      const cost = Math.max(0, Number(command.elementPointCost) || 0);
-      if (cost > player.elementPoints) {
-        this.sendError(socket, "InsufficientElementPoints", "Not enough element points");
-        this.armActionTimer(match); return;
-      }
-      player.elementPoints -= cost;
-    } else if (commandType === "SwitchCharacter" || commandType === "ChooseActiveCharacter") {
-      const index = Number(command.characterIndex);
-      if (!Number.isInteger(index) || !player.characters[index] || player.characters[index].hp <= 0) {
-        this.sendError(socket, "InvalidCharacter", "That character cannot become active");
-        this.armActionTimer(match); return;
-      }
-      player.activeCharacterIndex = index;
     }
     match.currentPlayerIndex = 1 - match.currentPlayerIndex;
     this.broadcast(match, "GameEvent", {
@@ -285,7 +253,7 @@ export class LumieServer {
           playerId: player.id,
           nickname: player.nickname,
           characters: state.characters.map((character, characterIndex) => ({ ...character, element: character.applications[0] ?? "None", active: characterIndex === state.activeCharacterIndex, defeated: character.hp <= 0 })),
-          elementPoints: { current: state.elementPoints, maximum: 10, permanentBonus: 0 },
+          elementPoints: { current: 10, maximum: 10, permanentBonus: 0 },
           handCardCount: state.hand.length,
           deckCardCount: state.deck.length,
           activeCharacterIndex: state.activeCharacterIndex,
@@ -307,7 +275,6 @@ export class LumieServer {
       this.finishMatch(match);
     }
     this.clients.delete(socket);
-    this.logServer("client disconnected", { playerId: client?.id ?? "unknown" });
   }
 
   finishMatch(match) {
@@ -336,14 +303,7 @@ export class LumieServer {
   }
 
   send(socket, type, payload) {
-    if (socket?.readyState === WebSocket.OPEN) {
-      this.logServer("message sent", {
-        to: this.clients.get(socket)?.nickname || this.clients.get(socket)?.id || "unknown",
-        type,
-        matchId: payload?.matchId ?? "",
-      });
-      socket.send(JSON.stringify(envelope(type, payload)));
-    }
+    if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(envelope(type, payload)));
   }
 
   sendSelectionStatus(match) {
@@ -369,7 +329,6 @@ export class LumieServer {
         characters: deck.characters.map((characterId) => ({ characterId, hp: 10, maxHp: 10, energy: 0, maxEnergy: 2, applications: [] })),
         deck: [...deck.cards], hand: [], summons: [], activeCharacterIndex: 0,
         remainingMs: 180_000, turnStartedAt: Date.now(),
-        elementPoints: 10,
       };
       shuffle(player.deck); draw(player, 5); return player;
     });
@@ -394,7 +353,6 @@ export class LumieServer {
   }
 
   endWithWinner(match, winnerIndex, reason) {
-    this.logServer("match ended", { matchId: match.id, winnerIndex, reason });
     this.broadcast(match, "GameEvent", { matchId: match.id, events: [{ eventType: "GameEnded", winnerIndex, reason }] });
     this.finishMatch(match);
   }
@@ -402,15 +360,6 @@ export class LumieServer {
   findWinner(match) {
     const defeatedIndex = match.players.findIndex((player) => player.characters.every((character) => character.hp <= 0));
     return defeatedIndex < 0 ? -1 : 1 - defeatedIndex;
-  }
-
-  logClient(socket, action, payload = {}) {
-    const client = this.clients.get(socket);
-    console.log(`[client:${client?.nickname || client?.id || "unknown"}] ${action}`, payload);
-  }
-
-  logServer(action, details = {}) {
-    console.log(`[server] ${action}`, details);
   }
 }
 
