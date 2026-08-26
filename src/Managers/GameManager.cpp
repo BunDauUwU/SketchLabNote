@@ -67,15 +67,6 @@ void GameManager::chooseActiveCharacter(int characterIndex)
         );
 }
 
-void GameManager::switchCharacter(int characterIndex)
-{
-    if (m_matchId.isEmpty()) {
-        emit gameError(QStringLiteral("No active match"));
-        return;
-    }
-    sendCommand(Protocol::makeSwitchCharacterCommand(m_matchId, characterIndex));
-}
-
 void GameManager::endRound()
 {
     if (m_matchId.isEmpty()) {
@@ -146,6 +137,8 @@ void GameManager::handleServerMessage(const QJsonObject& message)
             m_weatherSequence.append(weather.toString());
         }
         m_selectionSeconds = payload.value("selectionSeconds").toInt(10);
+
+        emit gamePrepared();
         return;
     }
 
@@ -158,8 +151,6 @@ void GameManager::handleServerMessage(const QJsonObject& message)
 
         const QString stage = payload.value("stage").toString();
         setStage(EnumUtils::gameStageFromString(stage));
-        m_snapshot = payload.toVariantMap();
-        emit snapshotChanged();
 
         emit gameSnapshotReceived(payload);
         return;
