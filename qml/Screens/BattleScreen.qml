@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "../Components/battle"
 import "../Components/controls"
+import lumieTcg
 
 Rectangle {
     id: root
