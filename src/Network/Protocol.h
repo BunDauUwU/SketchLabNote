@@ -36,6 +36,7 @@ QJsonObject makeChooseActiveCharacterCommand(
     );
 
 QJsonObject makeEndRoundCommand(const QString& matchId);
+QJsonObject makeSwitchCharacterCommand(const QString& matchId, int characterIndex);
 
 QJsonObject makeUseSkillCommand(
     const QString& matchId,

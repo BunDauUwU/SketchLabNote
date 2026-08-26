@@ -1,14 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import lumieTcg
 import "../Components/controls"
 import "../Components/layout"
 
 Rectangle {
     id: root
-    width: parent ? parent.width : 1280
-    height: parent ? parent.height : 720
+    anchors.fill: parent
     color: "#101827"
     property int secondsLeft: gameManager.selectionSeconds
     property bool selected: false
@@ -36,27 +34,13 @@ Rectangle {
         GamePanel {
             Layout.fillWidth: true
             Layout.preferredHeight: 90
-
-            ColumnLayout {
-                anchors.fill: parent
-
-                RowLayout {
-                    Layout.alignment: Qt.AlignCenter
-                    spacing: 30
-
-                    GameText {
-                        text: "Weather shuffle"
-                        type: GameText.Heading
-                    }
-
-                    Repeater {
-                        model: gameManager.weatherSequence
-                        GameText {
-                            required property string modelData
-                            text: "✦ " + modelData
-                            type: GameText.Body
-                        }
-                    }
+            RowLayout {
+                anchors.centerIn: parent
+                spacing: 30
+                GameText { text: "Weather shuffle"; type: GameText.Heading }
+                Repeater {
+                    model: gameManager.weatherSequence
+                    GameText { required property string modelData; text: "✦ " + modelData; type: GameText.Body }
                 }
             }
         }
@@ -73,52 +57,22 @@ Rectangle {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     enabled: !root.selected && root.secondsLeft > 0
-
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.margins: 22
-                        spacing: 12
-
-                        GameText {
-                            text: modelData.name;
-                            type: GameText.Heading;
-                            Layout.alignment: Qt.AlignHCenter
-                        }
-
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 140
-                            spacing: 8
-
-                            Repeater {
-                                model: modelData.characters
-
-                                Item {
-                                    required property string modelData
-                                    Layout.fillWidth: true
-                                    Layout.fillHeight: true
-                                    clip: true
-
-                                    Image {
-                                        width: parent.width
-                                        height: parent.height
-
-                                        source: modelData
-                                        verticalAlignment: Image.AlignTop
-                                        horizontalAlignment: Image.AlignHCenter
-                                        fillMode: Image.PreserveAspectCrop
-                                    }
-                                }
+                        GameText { text: modelData.name; type: GameText.Heading; Layout.alignment: Qt.AlignHCenter }
+                        Repeater {
+                            model: modelData.characters
+                            GamePanel {
+                                required property string modelData
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: 64
+                                GameText { anchors.centerIn: parent; text: modelData; type: GameText.Body }
                             }
                         }
-
-
                         Item { Layout.fillHeight: true }
-
+                        GameText { text: "30 cards"; type: GameText.Caption; Layout.alignment: Qt.AlignHCenter }
                         GameButton {
-                            z: 1001
-                            height: 64
                             text: "Play this deck"
                             Layout.fillWidth: true
                             onClicked: {
@@ -136,11 +90,6 @@ Rectangle {
 
     Connections {
         target: gameManager
-
-        function onGamePrepared() {
-            console.log("Weather data loaded:", gameManager.weatherSequence)
-        }
-
         function onGameSnapshotReceived(snapshot) {
             stack.replace("./BattleScreen.qml")
         }
