@@ -78,8 +78,8 @@ QString CharacterDataBase::skills(const int index) {
 QVariantList CharacterDataBase::skillList(const QString& characterId) const
 {
     QVariantList result;
-    QString dataId = characterId;
-    QString normalizedId = characterId;
+    QString dataId = QFileInfo(characterId).baseName();
+    QString normalizedId = QFileInfo(characterId).baseName();
     normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
     for (auto it = m_characterInfo.constBegin(); it != m_characterInfo.constEnd(); ++it) {
         QString candidate = it.key();
@@ -94,6 +94,7 @@ QVariantList CharacterDataBase::skillList(const QString& characterId) const
         for (auto cost = costs.constBegin(); cost != costs.constEnd(); ++cost) {
             if (cost.key() != "ENERGY") elementPointCost += cost.value().toInt();
         }
+        // qDebug() << it.key() << ' ' << elementPointCost;
         QVariantMap skill;
         skill.insert("name", it.key());
         skill.insert("cost", elementPointCost);

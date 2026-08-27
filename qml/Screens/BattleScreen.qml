@@ -235,9 +235,18 @@ Rectangle {
     // Our hand supports
     Rectangle {
         id: handPanel
-        z: 2; anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom
-        anchors.leftMargin: 105; anchors.rightMargin: 285; anchors.bottomMargin: 12
-        height: 174; radius: 14; color: "#b3151c28"; border.color: "#59677a"
+        z: 2;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 105;
+        anchors.rightMargin: 285;
+        anchors.bottomMargin: 12
+        height: 174;
+        radius: 14;
+        color: "#b3151c28";
+        border.color: "#59677a"
+
         Flickable {
             anchors.fill: parent; anchors.margins: 8
             contentWidth: Math.max(width, handRow.width); contentHeight: height
@@ -273,7 +282,8 @@ Rectangle {
                                     }
                                     root.cancelPreview()
                                 } else {
-                                    root.pendingSkill = -1; root.pendingCard = index
+                                    root.pendingSkill = -1;
+                                    root.pendingCard = index
                                     root.previewText = modelData + " will cost " + cost + " EP. Click again to confirm."
                                 }
                             }

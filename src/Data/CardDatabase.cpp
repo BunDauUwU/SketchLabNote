@@ -95,11 +95,11 @@ QString CardDatabase::skills(const int index) {
 int CardDatabase::cost(const QString& cardId) const
 {
     QString cardName = QFileInfo(cardId).baseName();
-    qDebug() << cardName;
     const QJsonObject thisCardInfo = m_cardInfo[cardName].toObject();
     const QJsonObject costObj = thisCardInfo["cost"].toObject();
     for (auto it = costObj.begin(); it != costObj.end(); ++it) {
         if (it.value().isDouble()) {
+            // qDebug() << it.value().toInt();
             return it.value().toInt();
         }
     }
