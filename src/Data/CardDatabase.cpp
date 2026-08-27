@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QRegularExpression>
 
 CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
 {
@@ -63,7 +64,15 @@ CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
 
     QJsonObject rootObj = jsonDoc.object();
 
-    m_cardInfo = rootObj["standard"].toObject();
+    QJsonObject originalObj = rootObj["standard"].toObject();
+
+    for (auto it = originalObj.begin(); it != originalObj.end(); ++it) {
+        QString originalKey = it.key();
+
+        QString condensedKey = originalKey.remove(' ');
+
+        m_cardInfo.insert(condensedKey, it.value());
+    }
 }
 
 QStringList CardDatabase::cardList() const
@@ -81,6 +90,20 @@ QString CardDatabase::skills(const int index) {
     QJsonDocument doc(m_cardInfo);
     QString indentedString = doc.toJson();
     return indentedString;
+}
+
+int CardDatabase::cost(const QString& cardId) const
+{
+    QString cardName = QFileInfo(cardId).baseName();
+    qDebug() << cardName;
+    const QJsonObject thisCardInfo = m_cardInfo[cardName].toObject();
+    const QJsonObject costObj = thisCardInfo["cost"].toObject();
+    for (auto it = costObj.begin(); it != costObj.end(); ++it) {
+        if (it.value().isDouble()) {
+            return it.value().toInt();
+        }
+    }
+    return 0;
 }
 
 void CardDatabase::handlecardClick(int index)

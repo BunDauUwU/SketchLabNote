@@ -126,6 +126,13 @@ QJsonObject makeEndRoundCommand(const QString& matchId)
         );
 }
 
+QJsonObject makeSwitchCharacterCommand(const QString& matchId, int characterIndex)
+{
+    QJsonObject command;
+    command["characterIndex"] = characterIndex;
+    return makeGameCommand(matchId, GameCommandType::SwitchCharacter, command);
+}
+
 QJsonObject makeUseSkillCommand(
     const QString& matchId,
     int skillIndex,

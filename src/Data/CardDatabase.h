@@ -16,6 +16,7 @@ public:
 
     Q_INVOKABLE QString name(const int index);
     Q_INVOKABLE QString skills(const int index);
+    Q_INVOKABLE int cost(const QString& cardId) const;
     Q_INVOKABLE void handlecardClick(int index);
 
 signals:

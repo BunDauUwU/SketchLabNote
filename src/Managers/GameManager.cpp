@@ -67,6 +67,16 @@ void GameManager::chooseActiveCharacter(int characterIndex)
         );
 }
 
+void GameManager::switchCharacter(int characterIndex)
+{
+    if (m_matchId.isEmpty()) {
+        emit gameError(QStringLiteral("No active match"));
+        return;
+    }
+    sendCommand(Protocol::makeSwitchCharacterCommand(m_matchId, characterIndex));
+}
+
+
 void GameManager::endRound()
 {
     if (m_matchId.isEmpty()) {
@@ -92,8 +102,8 @@ void GameManager::useSkill( int skillIndex, int elementPointCost, const QVariant
             skillIndex,
             elementPointCost,
             target
-            )
-        );
+        )
+    );
 }
 
 void GameManager::playCard( int handIndex, int elementPointCost, const QVariantMap& target)
@@ -109,8 +119,8 @@ void GameManager::playCard( int handIndex, int elementPointCost, const QVariantM
             handIndex,
             elementPointCost,
             target
-            )
-        );
+        )
+    );
 }
 
 void GameManager::selectDeck(const QString& deckId, const QVariantList& characters, const QVariantList& cards)
@@ -151,6 +161,8 @@ void GameManager::handleServerMessage(const QJsonObject& message)
 
         const QString stage = payload.value("stage").toString();
         setStage(EnumUtils::gameStageFromString(stage));
+        m_snapshot = payload.toVariantMap();
+        emit snapshotChanged();
 
         emit gameSnapshotReceived(payload);
         return;
