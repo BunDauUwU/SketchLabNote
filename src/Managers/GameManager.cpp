@@ -76,7 +76,6 @@ void GameManager::switchCharacter(int characterIndex)
     sendCommand(Protocol::makeSwitchCharacterCommand(m_matchId, characterIndex));
 }
 
-
 void GameManager::endRound()
 {
     if (m_matchId.isEmpty()) {
@@ -136,6 +135,19 @@ void GameManager::selectDeck(const QString& deckId, const QVariantList& characte
     m_networkClient->sendMessage(Protocol::makeSubmitDeck(deckId, characterIds, cardIds));
 }
 
+void GameManager::selectDeck(const QString& deckId, const QVariantList& characters, const QVariantList& cards)
+{
+    if (!m_networkClient || !m_networkClient->isConnected()) {
+        emit gameError(QStringLiteral("Not connected to server"));
+        return;
+    }
+    QStringList characterIds;
+    QStringList cardIds;
+    for (const QVariant& value : characters) characterIds.append(value.toString());
+    for (const QVariant& value : cards) cardIds.append(value.toString());
+    m_networkClient->sendMessage(Protocol::makeSubmitDeck(deckId, characterIds, cardIds));
+}
+
 void GameManager::handleServerMessage(const QJsonObject& message)
 {
     const QString type = Protocol::readMessageType(message);
@@ -147,8 +159,6 @@ void GameManager::handleServerMessage(const QJsonObject& message)
             m_weatherSequence.append(weather.toString());
         }
         m_selectionSeconds = payload.value("selectionSeconds").toInt(10);
-
-        emit gamePrepared();
         return;
     }
 

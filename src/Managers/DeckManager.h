@@ -11,6 +11,7 @@ class DeckManager : public QObject
     Q_PROPERTY(QStringList cards READ cards NOTIFY cardsChanged)
     Q_PROPERTY(QStringList characters READ characters NOTIFY charactersChanged)
     Q_PROPERTY(QVariantList validDecks READ validDecks NOTIFY validDecksChanged)
+    Q_PROPERTY(int deckIndex READ deckIndex NOTIFY deckIndexChanged)
 
 public:
     explicit DeckManager(QObject *parent = nullptr);

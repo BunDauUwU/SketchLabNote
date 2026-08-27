@@ -19,7 +19,7 @@ class GameManager : public QObject {
     Q_PROPERTY(QString opponentName READ opponentName NOTIFY opponentNameChanged)
     Q_PROPERTY(QString stage READ stageText NOTIFY stageChanged)
     Q_PROPERTY(BoardModel* board READ board CONSTANT)
-    Q_PROPERTY(QStringList weatherSequence READ weatherSequence NOTIFY gamePrepared)
+    Q_PROPERTY(QStringList weatherSequence READ weatherSequence NOTIFY matchIdChanged)
     Q_PROPERTY(int selectionSeconds READ selectionSeconds NOTIFY matchIdChanged)
     Q_PROPERTY(QVariantMap snapshot READ snapshot NOTIFY snapshotChanged)
 

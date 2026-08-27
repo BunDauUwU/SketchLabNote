@@ -79,6 +79,10 @@ qt_add_qml_module(applumieTcg
         qml/Components/battle/EnergyBar.qml
         qml/Components/battle/HpBar.qml
         qml/Components/battle/WeatherBanner.qml
+        qml/Components/battle/BattleCharacter.qml
+        qml/Components/battle/ElementBurst.qml
+        qml/Components/battle/CountdownClock.qml
+        qml/Components/battle/ActionPreviewPanel.qml
         qml/Components/cards/Card.qml
         qml/Components/cards/CharacterCard.qml
         qml/Components/cards/SupportCard.qml

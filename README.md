@@ -131,6 +131,13 @@ to select one of their three valid decks. The server then performs the initial
 five-card draw, publishes the shuffled three-weather plan, applies round weather,
 and enforces both the 30-second action timer and each player's game clock.
 
+During battle, the server keeps players who have ended their round inactive
+while the opponent finishes, then resets Elemental Points and alternates the
+round starter. The battle UI shows the action and game clocks, previews card
+and skill resource changes before confirmation, and plays weapon- and
+element-aware skill feedback. The deck builder also provides a visual summary
+of character stats, skills, card costs, and the currently selected deck.
+
 ---
 
 # 5. UI Architecture

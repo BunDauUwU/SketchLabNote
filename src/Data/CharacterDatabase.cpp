@@ -94,14 +94,39 @@ QVariantList CharacterDataBase::skillList(const QString& characterId) const
         for (auto cost = costs.constBegin(); cost != costs.constEnd(); ++cost) {
             if (cost.key() != "ENERGY") elementPointCost += cost.value().toInt();
         }
-        // qDebug() << it.key() << ' ' << elementPointCost;
         QVariantMap skill;
+        const QJsonObject damage = data.value("damage").toObject();
+        int damageValue = 0;
+        QString element = QStringLiteral("Physical");
+        for (auto hit = damage.constBegin(); hit != damage.constEnd(); ++hit) {
+            damageValue += hit.value().toInt();
+            if (hit.key() != "PHYSICAL" && hit.key() != "PIERCE") element = hit.key();
+        }
         skill.insert("name", it.key());
         skill.insert("cost", elementPointCost);
+        skill.insert("hpDelta", -damageValue);
+        skill.insert("energyDelta", data.value("type").toArray().contains(QJsonValue(QStringLiteral("Elemental Burst"))) ? 0 : 1);
+        skill.insert("element", element);
         skill.insert("description", QString::fromUtf8(QJsonDocument(data).toJson(QJsonDocument::Compact)));
         result.append(skill);
     }
     return result;
+}
+
+QVariantMap CharacterDataBase::details(const QString& characterId) const
+{
+    QString normalizedId = characterId;
+    normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+    for (auto it = m_characterInfo.constBegin(); it != m_characterInfo.constEnd(); ++it) {
+        QString candidate = it.key();
+        candidate.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+        if (candidate.compare(normalizedId, Qt::CaseInsensitive) != 0) continue;
+        QVariantMap result = it.value().toObject().toVariantMap();
+        result.insert("name", it.key());
+        result.insert("skillList", skillList(characterId));
+        return result;
+    }
+    return {{"name", characterId}};
 }
 
 void CharacterDataBase::handlecharacterClick(int index)
@@ -121,4 +146,3 @@ void CharacterDataBase::handlecharacterClick(int index)
 
     emit charSelected(charId);
 }
-

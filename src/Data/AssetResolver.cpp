@@ -8,12 +8,14 @@ AssetResolver::AssetResolver(QObject* parent) : QObject(parent)
 
 QString AssetResolver::resolveCardImage(const QString& cardId)
 {
+    if (cardId.startsWith("qrc:/")) return cardId;
     if (cardId.isEmpty()) return QStringLiteral("qrc:/assets/cards/Paimon.png");
     return QStringLiteral("qrc:/assets/cards/%1.png").arg(cardId);
 }
 
 QString AssetResolver::resolveCharacterImage(const QString& charId)
 {
+    if (charId.startsWith("qrc:/")) return charId;
     if (charId.isEmpty()) return QStringLiteral("qrc:/assets/characters/Diluc.png");
     return QStringLiteral("qrc:/assets/characters/%1.png").arg(charId);
 }
