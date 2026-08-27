@@ -1,12 +1,14 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import lumieTcg
 import "../Components/controls"
 import "../Components/layout"
 
 Rectangle {
     id: root
-    anchors.fill: parent
+    width: parent ? parent.width : 1280
+    height: parent ? parent.height : 720
     color: "#101827"
     property int secondsLeft: gameManager.selectionSeconds
     property bool selected: false

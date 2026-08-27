@@ -67,6 +67,7 @@ signals:
     void stageChanged();
     void snapshotChanged();
 
+    void gamePrepared();
     void gameError(const QString& message);
     void gameSnapshotReceived(const QJsonObject& snapshot);
     void gameEventsReceived(const QJsonArray& events);

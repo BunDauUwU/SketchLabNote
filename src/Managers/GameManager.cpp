@@ -37,11 +37,7 @@ QString GameManager::stageText() const
     return EnumUtils::toString(m_stage);
 }
 
-void GameManager::setMatchInfo(
-    const QString& matchId,
-    int playerIndex,
-    const QString& opponentName
-    )
+void GameManager::setMatchInfo( const QString& matchId, int playerIndex, const QString& opponentName)
 {
     if (m_matchId != matchId) {
         m_matchId = matchId;
@@ -92,11 +88,7 @@ void GameManager::endRound()
         );
 }
 
-void GameManager::useSkill(
-    int skillIndex,
-    int elementPointCost,
-    const QVariantMap& target
-    )
+void GameManager::useSkill( int skillIndex, int elementPointCost, const QVariantMap& target)
 {
     if (m_matchId.isEmpty()) {
         emit gameError(QStringLiteral("No active match"));
@@ -109,15 +101,11 @@ void GameManager::useSkill(
             skillIndex,
             elementPointCost,
             target
-            )
-        );
+        )
+    );
 }
 
-void GameManager::playCard(
-    int handIndex,
-    int elementPointCost,
-    const QVariantMap& target
-    )
+void GameManager::playCard( int handIndex, int elementPointCost, const QVariantMap& target)
 {
     if (m_matchId.isEmpty()) {
         emit gameError(QStringLiteral("No active match"));
@@ -130,8 +118,21 @@ void GameManager::playCard(
             handIndex,
             elementPointCost,
             target
-            )
-        );
+        )
+    );
+}
+
+void GameManager::selectDeck(const QString& deckId, const QVariantList& characters, const QVariantList& cards)
+{
+    if (!m_networkClient || !m_networkClient->isConnected()) {
+        emit gameError(QStringLiteral("Not connected to server"));
+        return;
+    }
+    QStringList characterIds;
+    QStringList cardIds;
+    for (const QVariant& value : characters) characterIds.append(value.toString());
+    for (const QVariant& value : cards) cardIds.append(value.toString());
+    m_networkClient->sendMessage(Protocol::makeSubmitDeck(deckId, characterIds, cardIds));
 }
 
 void GameManager::selectDeck(const QString& deckId, const QVariantList& characters, const QVariantList& cards)

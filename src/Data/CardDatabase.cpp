@@ -64,7 +64,15 @@ CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
 
     QJsonObject rootObj = jsonDoc.object();
 
-    m_cardInfo = rootObj["standard"].toObject();
+    QJsonObject originalObj = rootObj["standard"].toObject();
+
+    for (auto it = originalObj.begin(); it != originalObj.end(); ++it) {
+        QString originalKey = it.key();
+
+        QString condensedKey = originalKey.remove(' ');
+
+        m_cardInfo.insert(condensedKey, it.value());
+    }
 }
 
 QStringList CardDatabase::cardList() const

@@ -3,10 +3,14 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "../Components/battle"
 import "../Components/controls"
+import lumieTcg
 
 Rectangle {
     id: root
-    anchors.fill: parent
+
+    width: parent ? parent.width : 1280
+    height: parent ? parent.height : 720
+
     color: "#10151f"
 
     property var state: gameManager.snapshot || ({})
@@ -57,7 +61,6 @@ Rectangle {
         GradientStop { position: 1; color: "#111016" }
     }
 
-    // Opponent hand: identities are private, so every card stays face-down.
     Row {
         id: enemyHand
         z: 2
@@ -188,6 +191,7 @@ Rectangle {
                 border.color: modelData.cost <= (selfPlayer.elementPoints ? selfPlayer.elementPoints.current : 0) ? "#78d9b0" : "#d76b6b"
                 Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; width: 170; text: modelData.name; color: "white"; elide: Text.ElideRight }
                 Text { anchors.right: parent.right; anchors.rightMargin: 10; anchors.verticalCenter: parent.verticalCenter; text: modelData.cost + " EP"; color: "#c8e7ff" }
+
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
@@ -253,6 +257,7 @@ Rectangle {
                     model: root.hand
                     Rectangle {
                         required property string modelData
+
                         required property int index
                         width: 102; height: 150; radius: 8
                         color: root.pendingCard === index ? "#737983" : "#263247"
