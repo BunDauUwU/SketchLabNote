@@ -79,6 +79,10 @@ qt_add_qml_module(applumieTcg
         qml/Components/battle/EnergyBar.qml
         qml/Components/battle/HpBar.qml
         qml/Components/battle/WeatherBanner.qml
+        qml/Components/battle/BattleCharacter.qml
+        qml/Components/battle/ElementBurst.qml
+        qml/Components/battle/CountdownClock.qml
+        qml/Components/battle/ActionPreviewPanel.qml
         qml/Components/cards/Card.qml
         qml/Components/cards/CharacterCard.qml
         qml/Components/cards/SupportCard.qml
@@ -94,6 +98,7 @@ qt_add_qml_module(applumieTcg
         qml/Screens/BattleScreen.qml
         qml/Screens/CollectionScreen.qml
         qml/Screens/DeckScreen.qml
+        qml/Screens/DeckSelectScreen.qml
         qml/Screens/MainMenu.qml
         qml/Screens/SettingsScreen.qml
         qml/Screens/SplashScreen.qml

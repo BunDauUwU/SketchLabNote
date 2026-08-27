@@ -2,6 +2,7 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QDebug>
+#include <QRegularExpression>
 
 CharacterDataBase::CharacterDataBase(QObject *parent) : QObject(parent)
 {
@@ -74,6 +75,60 @@ QString CharacterDataBase::skills(const int index) {
     return indentedString;
 }
 
+QVariantList CharacterDataBase::skillList(const QString& characterId) const
+{
+    QVariantList result;
+    QString dataId = characterId;
+    QString normalizedId = characterId;
+    normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+    for (auto it = m_characterInfo.constBegin(); it != m_characterInfo.constEnd(); ++it) {
+        QString candidate = it.key();
+        candidate.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+        if (candidate.compare(normalizedId, Qt::CaseInsensitive) == 0) { dataId = it.key(); break; }
+    }
+    const QJsonObject skills = m_characterInfo.value(dataId).toObject().value("skills").toObject();
+    for (auto it = skills.constBegin(); it != skills.constEnd(); ++it) {
+        const QJsonObject data = it.value().toObject();
+        const QJsonObject costs = data.value("cost").toObject();
+        int elementPointCost = 0;
+        for (auto cost = costs.constBegin(); cost != costs.constEnd(); ++cost) {
+            if (cost.key() != "ENERGY") elementPointCost += cost.value().toInt();
+        }
+        QVariantMap skill;
+        const QJsonObject damage = data.value("damage").toObject();
+        int damageValue = 0;
+        QString element = QStringLiteral("Physical");
+        for (auto hit = damage.constBegin(); hit != damage.constEnd(); ++hit) {
+            damageValue += hit.value().toInt();
+            if (hit.key() != "PHYSICAL" && hit.key() != "PIERCE") element = hit.key();
+        }
+        skill.insert("name", it.key());
+        skill.insert("cost", elementPointCost);
+        skill.insert("hpDelta", -damageValue);
+        skill.insert("energyDelta", data.value("type").toArray().contains(QJsonValue(QStringLiteral("Elemental Burst"))) ? 0 : 1);
+        skill.insert("element", element);
+        skill.insert("description", QString::fromUtf8(QJsonDocument(data).toJson(QJsonDocument::Compact)));
+        result.append(skill);
+    }
+    return result;
+}
+
+QVariantMap CharacterDataBase::details(const QString& characterId) const
+{
+    QString normalizedId = characterId;
+    normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+    for (auto it = m_characterInfo.constBegin(); it != m_characterInfo.constEnd(); ++it) {
+        QString candidate = it.key();
+        candidate.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+        if (candidate.compare(normalizedId, Qt::CaseInsensitive) != 0) continue;
+        QVariantMap result = it.value().toObject().toVariantMap();
+        result.insert("name", it.key());
+        result.insert("skillList", skillList(characterId));
+        return result;
+    }
+    return {{"name", characterId}};
+}
+
 void CharacterDataBase::handlecharacterClick(int index)
 {
     if (index < 0 || index >= m_characterList.size())
@@ -91,4 +146,3 @@ void CharacterDataBase::handlecharacterClick(int index)
 
     emit charSelected(charId);
 }
-

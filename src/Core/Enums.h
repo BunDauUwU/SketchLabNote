@@ -19,10 +19,11 @@ enum class WeatherType {
     None,
     Rain,
     Snow,
-    Storm,
+    Thunderstorm,
     Sandstorm,
-    Eclipse,
-    BurningField
+    Cataclysm,
+    BurningField,
+    Tornado
 };
 
 enum class GameStage {

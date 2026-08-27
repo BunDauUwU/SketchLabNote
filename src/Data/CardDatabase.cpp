@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QRegularExpression>
 
 CardDatabase::CardDatabase(QObject *parent) : QObject(parent)
 {
@@ -83,6 +84,40 @@ QString CardDatabase::skills(const int index) {
     return indentedString;
 }
 
+int CardDatabase::cost(const QString& cardId) const
+{
+    QString normalizedId = cardId;
+    normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+    for (auto it = m_cardInfo.constBegin(); it != m_cardInfo.constEnd(); ++it) {
+        QString candidate = it.key();
+        candidate.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+        if (candidate.compare(normalizedId, Qt::CaseInsensitive) != 0) continue;
+        int total = 0;
+        const QJsonObject costs = it.value().toObject().value("cost").toObject();
+        for (auto cost = costs.constBegin(); cost != costs.constEnd(); ++cost) {
+            if (cost.key() != "ENERGY") total += cost.value().toInt();
+        }
+        return total;
+    }
+    return 0;
+}
+
+QVariantMap CardDatabase::details(const QString& cardId) const
+{
+    QString normalizedId = cardId;
+    normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+    for (auto it = m_cardInfo.constBegin(); it != m_cardInfo.constEnd(); ++it) {
+        QString candidate = it.key();
+        candidate.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
+        if (candidate.compare(normalizedId, Qt::CaseInsensitive) != 0) continue;
+        QVariantMap result = it.value().toObject().toVariantMap();
+        result.insert("name", it.key());
+        result.insert("costValue", cost(cardId));
+        return result;
+    }
+    return {{"name", cardId}, {"costValue", 0}};
+}
+
 void CardDatabase::handlecardClick(int index)
 {
     if (index < 0 || index >= m_cardList.size())
@@ -97,4 +132,3 @@ void CardDatabase::handlecardClick(int index)
 
     emit cardSelected(cardId);
 }
-

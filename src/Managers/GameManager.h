@@ -5,6 +5,7 @@
 #include <QString>
 #include <QJsonObject>
 #include <QVariantMap>
+#include <QStringList>
 
 #include "../Core/Enums.h"
 #include "../Network/NetworkClient.h"
@@ -18,6 +19,9 @@ class GameManager : public QObject {
     Q_PROPERTY(QString opponentName READ opponentName NOTIFY opponentNameChanged)
     Q_PROPERTY(QString stage READ stageText NOTIFY stageChanged)
     Q_PROPERTY(BoardModel* board READ board CONSTANT)
+    Q_PROPERTY(QStringList weatherSequence READ weatherSequence NOTIFY matchIdChanged)
+    Q_PROPERTY(int selectionSeconds READ selectionSeconds NOTIFY matchIdChanged)
+    Q_PROPERTY(QVariantMap snapshot READ snapshot NOTIFY snapshotChanged)
 
 public:
     explicit GameManager(QObject* parent = nullptr);
@@ -29,6 +33,9 @@ public:
     QString opponentName() const;
     QString stageText() const;
     BoardModel* board() const { return m_board; }
+    QStringList weatherSequence() const { return m_weatherSequence; }
+    int selectionSeconds() const { return m_selectionSeconds; }
+    QVariantMap snapshot() const { return m_snapshot; }
 
     Q_INVOKABLE void setMatchInfo(
         const QString& matchId,
@@ -37,6 +44,7 @@ public:
         );
 
     Q_INVOKABLE void chooseActiveCharacter(int characterIndex);
+    Q_INVOKABLE void switchCharacter(int characterIndex);
     Q_INVOKABLE void endRound();
 
     Q_INVOKABLE void useSkill(
@@ -50,12 +58,14 @@ public:
         int elementPointCost,
         const QVariantMap& target
         );
+    Q_INVOKABLE void selectDeck(const QString& deckId, const QVariantList& characters, const QVariantList& cards);
 
 signals:
     void matchIdChanged();
     void playerIndexChanged();
     void opponentNameChanged();
     void stageChanged();
+    void snapshotChanged();
 
     void gameError(const QString& message);
     void gameSnapshotReceived(const QJsonObject& snapshot);
@@ -77,4 +87,7 @@ private:
     QString m_opponentName;
     GameStage m_stage = GameStage::None;
     BoardModel* m_board = nullptr;
+    QStringList m_weatherSequence;
+    int m_selectionSeconds = 10;
+    QVariantMap m_snapshot;
 };
