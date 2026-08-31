@@ -120,7 +120,7 @@ Rectangle {
         z: 2; anchors.left: parent.left; anchors.top: parent.top; anchors.margins: 20
         width: 250
         weatherName: state.weather && state.weather.activeWeather ? state.weather.activeWeather.type : "None"
-        description: "Round " + (state.round || 1)
+        description: state.round
         remainingRounds: 1
     }
 
@@ -143,7 +143,7 @@ Rectangle {
         Text { text: "EP"; color: "white"; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
         Repeater {
             model: selfPlayer.elementPoints ? selfPlayer.elementPoints.current : 0
-            Image { width: 29; height: 29; source: "qrc:/assets/elements/omni.png"; fillMode: Image.PreserveAspectFit }
+            Image { width: 29; height: 29; source: "qrc:/lumieTcg/assets/elements/omni.png"; fillMode: Image.PreserveAspectFit }
         }
         Text {
             visible: root.previewEp !== 0
@@ -214,7 +214,7 @@ Rectangle {
         }
         GameButton {
             width: 235; height: 48
-            text: selfPlayer.endedRound ? "Waiting for opponent" : "End Round"
+            text: !root.canAct ? "Waiting for opponent" : "End Round"
             enabled: root.canAct
             onClicked: { root.cancelPreview(); gameManager.endRound() }
         }

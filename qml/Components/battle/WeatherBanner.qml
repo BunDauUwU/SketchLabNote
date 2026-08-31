@@ -56,7 +56,7 @@ GamePanel {
         }
 
         GameText {
-            text: root.remainingRounds + "R"
+            text: root.remainingRounds + " rounds left"
             type: GameText.Body
             color: Theme.text
         }

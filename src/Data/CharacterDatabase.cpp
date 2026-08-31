@@ -3,6 +3,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QRegularExpression>
+#include <QJsonArray>
 
 CharacterDataBase::CharacterDataBase(QObject *parent) : QObject(parent)
 {
@@ -102,6 +103,7 @@ QVariantList CharacterDataBase::skillList(const QString& characterId) const
             damageValue += hit.value().toInt();
             if (hit.key() != "PHYSICAL" && hit.key() != "PIERCE") element = hit.key();
         }
+
         skill.insert("name", it.key());
         skill.insert("cost", elementPointCost);
         skill.insert("hpDelta", -damageValue);
@@ -115,7 +117,7 @@ QVariantList CharacterDataBase::skillList(const QString& characterId) const
 
 QVariantMap CharacterDataBase::details(const QString& characterId) const
 {
-    QString normalizedId = characterId;
+    QString normalizedId = QFileInfo(characterId).baseName();
     normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
     for (auto it = m_characterInfo.constBegin(); it != m_characterInfo.constEnd(); ++it) {
         QString candidate = it.key();

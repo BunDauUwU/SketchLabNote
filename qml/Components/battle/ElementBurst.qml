@@ -25,9 +25,28 @@ Item {
     ParallelAnimation {
         id: burst
         NumberAnimation { target: ring; property: "scale"; from: 0.25; to: 2.3; duration: 560; easing.type: Easing.OutCubic }
-        SequentialAnimation { PropertyAction { target: ring; property: "opacity"; value: 0.9 }; NumberAnimation { target: ring; property: "opacity"; to: 0; duration: 560 } }
+        SequentialAnimation { PropertyAction { target: ring; property: "opacity"; value: 0.9 } NumberAnimation { target: ring; property: "opacity"; to: 0; duration: 560 } }
         NumberAnimation { target: core; property: "scale"; from: 0.2; to: 1.8; duration: 400; easing.type: Easing.OutQuad }
-        SequentialAnimation { PropertyAction { target: core; property: "opacity"; value: 0.65 }; NumberAnimation { target: core; property: "opacity"; to: 0; duration: 420 } }
-        SequentialAnimation { PropertyAction { target: glyph; property: "opacity"; value: 1 }; NumberAnimation { target: glyph; property: "opacity"; to: 0; duration: 500 } }
+        SequentialAnimation {
+            PropertyAction {
+                target: core
+                property: "opacity"
+                value: 0.65
+            }
+            NumberAnimation {
+                target: core;
+                property: "opacity"
+                to: 0;
+                duration: 420
+            }
+        }
+        SequentialAnimation {
+            PropertyAction {
+                target: glyph; property: "opacity"; value: 1
+            }
+            NumberAnimation {
+                target: glyph; property: "opacity"; to: 0; duration: 500
+            }
+        }
     }
 }

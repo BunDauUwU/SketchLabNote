@@ -157,7 +157,21 @@ Rectangle {
                         required property var modelData
                         Layout.fillWidth: true; Layout.preferredHeight: 52
                         backgroundColor: "#b52a3749"
-                        RowLayout { anchors.fill: parent; anchors.margins: 9; GameText { text: modelData.name; type: GameText.Caption; Layout.fillWidth: true; elide: Text.ElideRight }; GameText { text: modelData.cost + " EP"; type: GameText.Caption; color: Theme.primary } }
+                        RowLayout {
+                            anchors.fill: parent;
+                            anchors.margins: 9;
+                            GameText {
+                                text: modelData.name;
+                                type: GameText.Caption;
+                                Layout.fillWidth: true;
+                                elide: Text.ElideRight
+                            }
+                            GameText {
+                                text: modelData.cost + " EP";
+                                type: GameText.Caption;
+                                color: Theme.primary
+                            }
+                        }
                     }
                 }
                 Item { Layout.fillHeight: true }

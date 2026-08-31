@@ -94,25 +94,21 @@ QString CardDatabase::skills(const int index) {
 
 int CardDatabase::cost(const QString& cardId) const
 {
-    QString normalizedId = cardId;
-    normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
-    for (auto it = m_cardInfo.constBegin(); it != m_cardInfo.constEnd(); ++it) {
-        QString candidate = it.key();
-        candidate.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
-        if (candidate.compare(normalizedId, Qt::CaseInsensitive) != 0) continue;
-        int total = 0;
-        const QJsonObject costs = it.value().toObject().value("cost").toObject();
-        for (auto cost = costs.constBegin(); cost != costs.constEnd(); ++cost) {
-            if (cost.key() != "ENERGY") total += cost.value().toInt();
+    QString cardName = QFileInfo(cardId).baseName();
+    const QJsonObject thisCardInfo = m_cardInfo[cardName].toObject();
+    const QJsonObject costObj = thisCardInfo["cost"].toObject();
+    for (auto it = costObj.begin(); it != costObj.end(); ++it) {
+        if (it.value().isDouble()) {
+            // qDebug() << it.value().toInt();
+            return it.value().toInt();
         }
-        return total;
     }
     return 0;
 }
 
 QVariantMap CardDatabase::details(const QString& cardId) const
 {
-    QString normalizedId = cardId;
+    QString normalizedId =  QFileInfo(cardId).baseName();
     normalizedId.remove(QRegularExpression(QStringLiteral("[^A-Za-z0-9]")));
     for (auto it = m_cardInfo.constBegin(); it != m_cardInfo.constEnd(); ++it) {
         QString candidate = it.key();
