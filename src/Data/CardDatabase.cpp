@@ -122,6 +122,12 @@ QVariantMap CardDatabase::details(const QString& cardId) const
     return {{"name", cardId}, {"costValue", 0}};
 }
 
+QString CardDatabase::requiredCharacter(const QString& cardId) const
+{
+    const QVariantMap detail = details(cardId);
+    return detail.value(QStringLiteral("deck_limit")).toMap().value(QStringLiteral("character")).toString();
+}
+
 void CardDatabase::handlecardClick(int index)
 {
     if (index < 0 || index >= m_cardList.size())

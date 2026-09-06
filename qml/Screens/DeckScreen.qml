@@ -87,7 +87,16 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent; hoverEnabled: true
                             onEntered: root.inspectCard(cardDataBase.name(index))
-                            onClicked: deckManager.addCard(cardDataBase.name(index), authManager.username)
+                            onClicked: {
+                                const cardName = cardDataBase.name(index)
+                                const required = cardDataBase.requiredCharacter(cardName)
+                                if (required.length > 0 && deckManager.characters.indexOf(required.replace(/[^A-Za-z0-9]/g, "")) < 0
+                                        && deckManager.characters.indexOf(required) < 0) {
+                                    root.inspected = cardDataBase.details(cardName)
+                                    return
+                                }
+                                deckManager.addCard(cardName, authManager.username)
+                            }
                         }
                     }
                 }
@@ -148,6 +157,8 @@ Rectangle {
                 GameText {
                     visible: root.inspectedType === "card" && root.inspectedId.length > 0
                     text: "Cost " + (root.inspected.costValue || 0) + " EP\n" + (root.inspected.tag || "Action card")
+                          + (root.inspected.deck_limit && root.inspected.deck_limit.character ? "\nRequires character: " + root.inspected.deck_limit.character : "")
+                          + "\n" + (root.inspected.description || "")
                     type: GameText.Body; color: "#d7e3f3"; Layout.fillWidth: true; wrapMode: Text.WordWrap
                 }
                 GameText { text: root.inspectedType === "character" ? "Skills" : "Effect summary"; type: GameText.Heading; visible: root.inspectedId.length > 0 }

@@ -735,3 +735,57 @@ The project should eventually become:
 The most important principle is:
 
 > Build a solid local game first, while keeping the architecture clean enough to become an online game later.
+
+## Server gameplay guide
+
+### Authoritative state
+
+The Node.js WebSocket server is authoritative: clients only send an index and target. Never trust a cost, damage value, card name, or skill name supplied by a client. `LumieServer.matches` is a `Map<matchId, match>`; obtain a match with `this.matches.get(payload.matchId)`. A match owns `sockets`, `players`, turn/round timers and weather. The player for a socket is found with `const playerIndex = match.sockets.indexOf(socket)` and `const player = match.players[playerIndex]`; the opponent is `match.players[1 - playerIndex]`.
+
+Each player contains `characters`, `deck`, `hand`, `states`, `summons`, `elementPoints`, and `activeCharacterIndex`. Each character contains HP, Energy, elemental `applications`, and `ultimateUsed`. `sendSnapshot()` is the single projection sent to both clients and deliberately hides the opponent's hand IDs.
+
+### Elements, aura, and reactions
+
+Data uses uppercase element names: `PYRO`, `HYDRO`, `CRYO`, `ELECTRO`, `DENDRO`, `ANEMO`, `GEO`, `PHYSICAL`, and `PIERCE`. The five aura elements can be attached to a target. A different compatible aura resolves a reaction, clears the old aura, applies reaction bonus damage, and emits an `ElementalReaction` event. Physical, Geo, Anemo, and piercing damage do not leave an aura. Piercing damage targets standby characters.
+
+Costs in JSON may combine a specific element, `ANY`/`SAME`, and `ENERGY`. `pointCost()` totals non-Energy dice/element points. Energy is checked separately. Normal attacks and elemental skills restore one Energy; bursts consume their Energy requirement and set `ultimateUsed`, so that character cannot burst again in the match.
+
+### JSON-driven actions
+
+* `resolveSkill(match, playerIndex, command)` reads the active character, converts `skillIndex` to the canonical skill name from `character.json`, validates server-side costs and the one-burst limit, resolves damage/aura/reactions, then creates states and summons.
+* `resolveCard(match, playerIndex, command)` converts `handIndex` to a card ID from the server-owned hand, looks it up in `card.json`, validates cost, removes exactly that hand entry, and resolves damage, healing, application, Energy, state, summon, or an attached `use_skill`. There is no per-match card-use limit.
+* `availability(player)` creates the per-skill `available` flags in snapshots. The QML client uses these flags to darken actions blocked by element points, Energy, turn ownership, or the burst limit.
+* `deckValidator.js` enforces each card's `deck_limit.character` before a deck enters a match. The deck-builder also displays this requirement for immediate feedback.
+
+### Client/server interaction map
+
+```mermaid
+sequenceDiagram
+    participant QML as QML screens
+    participant GM as GameManager / MatchmakingManager
+    participant NC as NetworkClient
+    participant S as LumieServer
+    participant E as gameLogic.js
+    participant J as JSON databases
+
+    QML->>GM: useSkill(index) / playCard(handIndex)
+    GM->>NC: Protocol::makeGameCommand(...)
+    NC->>S: WebSocket GameCommand envelope
+    S->>S: authenticate match, turn, timer
+    S->>E: resolveSkill / resolveCard
+    E->>J: lookup canonical character/card/effect
+    E->>E: validate + damage + aura/reaction + state/summon
+    E-->>S: completed event list
+    S-->>NC: GameEvent
+    S->>S: sendSnapshot for both players
+    S-->>NC: GameSnapshot
+    NC-->>GM: messageReceived
+    GM-->>QML: gameEventsReceived / snapshotChanged
+    QML->>QML: animate event and redraw board/effects
+```
+
+Connection flow is `AuthRequest` → `SubmitDeck`/`DeckValidationResult` → `MatchmakingStart` → `MatchFound` → deck selection → `GameStarted`. During debug, **Connect to server again** closes the existing socket and opens `ws://127.0.0.1:14095` after a short delay.
+
+### Debugging
+
+Run the server with `cd server && npm start`. Incoming envelopes are logged with `[client:<name>]`; lifecycle, validation, resolved actions, generated events, snapshots, and outbound messages use `[server]`. A useful breakpoint/logging path for an action is `onMessage()` → `gameCommand()` → `resolveSkill()`/`resolveCard()` → `broadcast()` → `sendSnapshot()`.

@@ -176,7 +176,8 @@ Rectangle {
             width: 200
             text: qsTr("Connect to server again")
             onClicked: {
-                stack.push("./DeckScreen.qml")
+                networkClient.disconnectFromServer()
+                reconnectTimer.restart()
             }
         }
 
@@ -207,5 +208,12 @@ Rectangle {
                 stack.replace("./LoginScreen.qml")
             }
         }
+    }
+
+    Timer {
+        id: reconnectTimer
+        interval: 250
+        repeat: false
+        onTriggered: networkClient.connectToServer("ws://127.0.0.1:14095")
     }
 }
