@@ -174,6 +174,15 @@ Rectangle {
         GameButton {
             height: 60
             width: 200
+            text: qsTr("Connect to server again")
+            onClicked: {
+                stack.push("./DeckScreen.qml")
+            }
+        }
+
+        GameButton {
+            height: 60
+            width: 200
             text: qsTr("Deck Builder")
             onClicked: {
                 stack.push("./DeckScreen.qml")

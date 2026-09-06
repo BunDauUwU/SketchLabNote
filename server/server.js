@@ -249,10 +249,12 @@ export class LumieServer {
             this.sendError(socket, "NotYourTurn", "Wait for the other player to finish their action");
             return;
         }
+
         if (match.attackDisabled && commandType === "UseSkill") {
             this.sendError(socket, "WeatherRestriction", "Sandstorm prevents attacks this round");
             return;
         }
+
         if (!this.consumeClock(match, playerIndex)) return;
         this.logServer("processing command", {
             matchId: match.id,
@@ -330,6 +332,11 @@ export class LumieServer {
                 return;
             }
             player.elementPoints -= cost;
+            const skillIndex = command.skillIndex;
+            const target = command.target;
+            const index = Number(command.characterIndex);
+
+            console.log(player.characters);
         } else if (commandType === "SwitchCharacter" || commandType === "ChooseActiveCharacter") {
             const index = Number(command.characterIndex);
             if (!Number.isInteger(index) || !player.characters[index] || player.characters[index].hp <= 0) {
@@ -487,10 +494,10 @@ export class LumieServer {
             const player = {
                 characters: deck.characters.map(characterId => ({
                     characterId,
-                    hp: 10,
-                    maxHp: 10,
+                    hp: 20,
+                    maxHp: 20,
                     energy: 0,
-                    maxEnergy: 2,
+                    maxEnergy: 3,
                     applications: [],
                 })),
                 deck: [...deck.cards],

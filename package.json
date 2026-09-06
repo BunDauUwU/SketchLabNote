@@ -1,0 +1,26 @@
+{
+  "name": "lumietcg",
+  "version": "1.0.0",
+  "description": "A Genshin-inspired online-capable Trading Card Game built with **C++ / Qt 6 / QML**.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BunDauUwU/SketchLabNote.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BunDauUwU/SketchLabNote/issues"
+  },
+  "homepage": "https://github.com/BunDauUwU/SketchLabNote#readme",
+  "dependencies": {
+    "ws": "^8.21.3"
+  }
+}
