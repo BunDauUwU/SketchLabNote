@@ -21,6 +21,7 @@ Rectangle {
     property var hand: state.self && state.self.handCardIds ? state.self.handCardIds : []
     property var selfCharacters: selfPlayer.characters || []
     property var enemyCharacters: enemyPlayer.characters || []
+    property var skillAvailability: selfPlayer.skillAvailability || []
     property int activeIndex: selfPlayer.activeCharacterIndex === undefined ? 0 : selfPlayer.activeCharacterIndex
     property var activeCharacter: selfCharacters.length > activeIndex ? selfCharacters[activeIndex] : ({ characterId: "" })
     property var skills: activeCharacter.characterId ? charDataBase.skillList(activeCharacter.characterId) : []
@@ -74,6 +75,33 @@ Rectangle {
                 width: 66; height: 92; radius: 7
                 color: "#26364d"; border.color: "#c8a96a"; border.width: 2
                 Text { anchors.centerIn: parent; text: "✦"; color: "#c8a96a"; font.pixelSize: 24 }
+            }
+        }
+    }
+
+    // Persistent combat effects remain visible and update directly from snapshots.
+    Column {
+        z: 3; anchors.left: parent.left; anchors.leftMargin: 88; anchors.top: parent.top; anchors.topMargin: 118
+        width: 220; spacing: 5
+        Text { text: "Opponent effects"; color: "#e5cf9a"; font.bold: true }
+        Repeater { model: (enemyPlayer.states || []).concat(enemyPlayer.summons || [])
+            Rectangle { required property var modelData; width: 210; height: 34; radius: 6; color: "#b52a3548"
+                Text { anchors.fill: parent; anchors.margins: 7; text: modelData.name + "  ×" + modelData.usage; color: "white"; elide: Text.ElideRight }
+                ToolTip.visible: effectMouse.containsMouse; ToolTip.text: modelData.description || modelData.name
+                MouseArea { id: effectMouse; anchors.fill: parent; hoverEnabled: true }
+            }
+        }
+    }
+
+    Column {
+        z: 3; anchors.left: parent.left; anchors.leftMargin: 88; anchors.bottom: handPanel.top; anchors.bottomMargin: 20
+        width: 220; spacing: 5
+        Text { text: "Your states & summons"; color: "#e5cf9a"; font.bold: true }
+        Repeater { model: (selfPlayer.states || []).concat(selfPlayer.summons || [])
+            Rectangle { required property var modelData; width: 210; height: 34; radius: 6; color: "#b5364559"
+                Text { anchors.fill: parent; anchors.margins: 7; text: modelData.name + "  ×" + modelData.usage; color: "white"; elide: Text.ElideRight }
+                ToolTip.visible: ownEffectMouse.containsMouse; ToolTip.text: modelData.description || modelData.name
+                MouseArea { id: ownEffectMouse; anchors.fill: parent; hoverEnabled: true }
             }
         }
     }
@@ -187,8 +215,10 @@ Rectangle {
                 required property var modelData
                 required property int index
                 width: 235; height: 58; radius: 9
+                property bool usable: root.skillAvailability.length > index ? root.skillAvailability[index].available : modelData.cost <= (selfPlayer.elementPoints ? selfPlayer.elementPoints.current : 0)
+                opacity: usable && root.canAct ? 1.0 : 0.38
                 color: root.pendingSkill === index ? "#69717c" : "#273448"
-                border.color: modelData.cost <= (selfPlayer.elementPoints ? selfPlayer.elementPoints.current : 0) ? "#78d9b0" : "#d76b6b"
+                border.color: usable ? "#78d9b0" : "#666b73"
                 Text { anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; width: 170; text: modelData.name; color: "white"; elide: Text.ElideRight }
                 Text { anchors.right: parent.right; anchors.rightMargin: 10; anchors.verticalCenter: parent.verticalCenter; text: modelData.cost + " EP"; color: "#c8e7ff" }
 
@@ -196,7 +226,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         if (root.pendingSkill === index) {
-                            if (root.canAct && modelData.cost <= selfPlayer.elementPoints.current)
+                            if (root.canAct && parent.usable)
                                 gameManager.useSkill(index, modelData.cost, { playerIndex: 1 - root.me, zone: "Character", index: enemyPlayer.activeCharacterIndex })
                             root.cancelPreview()
                         } else {
@@ -245,8 +275,8 @@ Rectangle {
     Rectangle {
         id: handPanel
         z: 2; anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom
-        anchors.leftMargin: 105; anchors.rightMargin: 285; anchors.bottomMargin: 12
-        height: 174; radius: 14; color: "#b3151c28"; border.color: "#59677a"
+        anchors.leftMargin: 320; anchors.rightMargin: 285; anchors.bottomMargin: 12
+        height: 158; radius: 14; color: "#b3151c28"; border.color: "#59677a"
         Flickable {
             anchors.fill: parent; anchors.margins: 8
             contentWidth: Math.max(width, handRow.width); contentHeight: height
@@ -259,7 +289,10 @@ Rectangle {
                         required property string modelData
 
                         required property int index
-                        width: 102; height: 150; radius: 8
+                        property int cardCost: cardDataBase.cost(modelData)
+                        property bool cardUsable: root.canAct && cardCost <= (selfPlayer.elementPoints ? selfPlayer.elementPoints.current : 0)
+                        width: 92; height: 136; radius: 8
+                        opacity: cardUsable ? 1.0 : 0.4
                         color: root.pendingCard === index ? "#737983" : "#263247"
                         border.width: root.pendingCard === index ? 3 : 1; border.color: "#d7bd80"
                         Image { anchors.fill: parent; anchors.margins: 4; source: assetsManager.resolveCardImage(modelData); fillMode: Image.PreserveAspectCrop }
@@ -268,9 +301,9 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                const cost = cardDataBase.cost(modelData)
+                                const cost = parent.cardCost
                                 if (root.pendingCard === index) {
-                                    if (root.canAct && cost <= selfPlayer.elementPoints.current)
+                                    if (parent.cardUsable)
                                         gameManager.playCard(index, cost, {})
                                     root.cancelPreview()
                                 } else {

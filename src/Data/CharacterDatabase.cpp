@@ -109,7 +109,7 @@ QVariantList CharacterDataBase::skillList(const QString& characterId) const
         skill.insert("hpDelta", -damageValue);
         skill.insert("energyDelta", data.value("type").toArray().contains(QJsonValue(QStringLiteral("Elemental Burst"))) ? 0 : 1);
         skill.insert("element", element);
-        skill.insert("description", QString::fromUtf8(QJsonDocument(data).toJson(QJsonDocument::Compact)));
+        skill.insert("description", data.value("description").toString(QStringLiteral("Character skill")));
         result.append(skill);
     }
     return result;

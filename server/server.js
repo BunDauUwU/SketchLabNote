@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 import { WebSocket, WebSocketServer } from "ws";
 import { validateDeck } from "./deckValidator.js";
 import { applyWeather, createWeatherPlan, draw, shuffle } from "./weather.js";
+import { availability, resolveCard, resolveSkill } from "./gameLogic.js";
 
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_PORT = 14095;
@@ -310,33 +311,23 @@ export class LumieServer {
         const command = payload.command ?? {};
         const player = match.players[playerIndex];
         if (commandType === "PlayCard") {
-            const handIndex = Number(command.handIndex);
-            const cost = Math.max(0, Number(command.elementPointCost) || 0);
-            if (
-                !Number.isInteger(handIndex) ||
-                handIndex < 0 ||
-                handIndex >= player.hand.length ||
-                cost > player.elementPoints
-            ) {
-                this.sendError(socket, "InvalidAction", "Card index or element point cost is invalid");
-                this.armActionTimer(match);
-                return;
+            const result = resolveCard(match, playerIndex, command);
+            if (result.error) {
+                this.logServer("card rejected", { matchId: match.id, playerIndex, reason: result.error[0] });
+                this.sendError(socket, ...result.error); this.armActionTimer(match);
+                this.sendSnapshot(socket, match); return;
             }
-            player.elementPoints -= cost;
-            player.hand.splice(handIndex, 1);
+            this.logServer("card resolved", { matchId: match.id, playerIndex, events: result.events });
+            this.broadcast(match, "GameEvent", { matchId: match.id, events: result.events });
         } else if (commandType === "UseSkill") {
-            const cost = Math.max(0, Number(command.elementPointCost) || 0);
-            if (cost > player.elementPoints) {
-                this.sendError(socket, "InsufficientElementPoints", "Not enough element points");
-                this.armActionTimer(match);
-                return;
+            const result = resolveSkill(match, playerIndex, command);
+            if (result.error) {
+                this.logServer("skill rejected", { matchId: match.id, playerIndex, reason: result.error[0] });
+                this.sendError(socket, ...result.error); this.armActionTimer(match);
+                this.sendSnapshot(socket, match); return;
             }
-            player.elementPoints -= cost;
-            const skillIndex = command.skillIndex;
-            const target = command.target;
-            const index = Number(command.characterIndex);
-
-            console.log(player.characters);
+            this.logServer("skill resolved", { matchId: match.id, playerIndex, events: result.events });
+            this.broadcast(match, "GameEvent", { matchId: match.id, events: result.events });
         } else if (commandType === "SwitchCharacter" || commandType === "ChooseActiveCharacter") {
             const index = Number(command.characterIndex);
             if (!Number.isInteger(index) || !player.characters[index] || player.characters[index].hp <= 0) {
@@ -349,9 +340,8 @@ export class LumieServer {
             match.currentPlayerIndex = match.ended.has(opponentIndex) ? playerIndex : opponentIndex;
         }
 
-        this.broadcast(match, "GameEvent", {
-            matchId: match.id,
-            events: [{ eventType: this.eventType(commandType), playerIndex, ...(payload.command ?? {}) }],
+        if (commandType !== "UseSkill" && commandType !== "PlayCard") this.broadcast(match, "GameEvent", {
+            matchId: match.id, events: [{ eventType: this.eventType(commandType), playerIndex, ...(payload.command ?? {}) }],
         });
         this.armActionTimer(match);
         match.sockets.forEach(peer => this.sendSnapshot(peer, match));
@@ -399,6 +389,9 @@ export class LumieServer {
                     handCardCount: state.hand.length,
                     deckCardCount: state.deck.length,
                     activeCharacterIndex: state.activeCharacterIndex,
+                    summons: state.summons,
+                    states: state.states,
+                    skillAvailability: availability(state),
                     remainingTimeMs: state.remainingMs,
                     endedRound: match.ended.has(index),
                 };
@@ -499,10 +492,12 @@ export class LumieServer {
                     energy: 0,
                     maxEnergy: 3,
                     applications: [],
+                    ultimateUsed: false,
                 })),
                 deck: [...deck.cards],
                 hand: [],
                 summons: [],
+                states: [],
                 activeCharacterIndex: 0,
                 remainingMs: 180_000,
                 turnStartedAt: Date.now(),

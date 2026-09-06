@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE QString skills(const int index);
     Q_INVOKABLE int cost(const QString& cardId) const;
     Q_INVOKABLE QVariantMap details(const QString& cardId) const;
+    Q_INVOKABLE QString requiredCharacter(const QString& cardId) const;
     Q_INVOKABLE void handlecardClick(int index);
 
 signals:

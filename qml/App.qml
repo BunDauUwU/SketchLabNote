@@ -9,14 +9,14 @@ ApplicationWindow {
 
     visible: true
 
-    width: 1280
-    height: 720
+    width: 1440
+    height: 900
 
-    minimumWidth: 1280
-    minimumHeight: 720
+    minimumWidth: 1100
+    minimumHeight: 700
 
-    maximumWidth: 1280
-    maximumHeight: 720
+    maximumWidth: 1920
+    maximumHeight: 1200
 
     title: "Lumie TCG"
 
@@ -26,4 +26,3 @@ ApplicationWindow {
 
     }
 }
-
