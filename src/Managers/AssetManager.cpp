@@ -16,6 +16,23 @@
 #include <QHash>
 #include <QSet>
 
+//resolveCharacterImage
+//resolveCardImage
+
 AssetManager::AssetManager(QObject *parent) : QObject(parent) {
 
+}
+
+QString AssetManager::resolveCardImage(const QString &data)
+{
+    QString filePath = ":/lumieTcg/assets/cards/";
+    filePath += data;
+    return filePath;
+}
+
+QString AssetManager::resolveCharacterImage(const QString &data)
+{
+    QString filePath = ":/lumieTcg/assets/characters/";
+    filePath += data;
+    return filePath;
 }

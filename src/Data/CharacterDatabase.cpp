@@ -66,6 +66,7 @@ QStringList CharacterDataBase::characterList() const
 
 QString CharacterDataBase::name (const int index) {
     QString name = m_characterName.at(index);
+    // qDebug() << index << ' ' << name << '\n';
     return name;
 }
 

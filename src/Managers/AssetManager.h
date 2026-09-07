@@ -12,10 +12,10 @@ class AssetManager : public QObject
 
 public:
     explicit AssetManager(QObject *parent = nullptr);
+
+    Q_INVOKABLE QString resolveCardImage(const QString &data);
+    Q_INVOKABLE QString resolveCharacterImage(const QString &data);
 private:
-    QStringList m_cards;
-    QStringList m_characters;
-    int deckIdx = 1;
-    int selectedCharacter = 1;
+
 
 };

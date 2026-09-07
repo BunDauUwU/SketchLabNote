@@ -5,6 +5,8 @@ import "../Components/common"
 import "../Components/cards"
 import "../Components/battle"
 import "../Components/layout"
+import lumieTcg
+
 
 Rectangle {
     id: mainMenuRoot
