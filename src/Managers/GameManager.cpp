@@ -121,6 +121,7 @@ void GameManager::playCard( int handIndex, int elementPointCost, const QVariantM
         )
     );
 }
+#include <QFileInfo>
 
 void GameManager::selectDeck(const QString& deckId, const QVariantList& characters, const QVariantList& cards)
 {
@@ -130,8 +131,14 @@ void GameManager::selectDeck(const QString& deckId, const QVariantList& characte
     }
     QStringList characterIds;
     QStringList cardIds;
-    for (const QVariant& value : characters) characterIds.append(value.toString());
-    for (const QVariant& value : cards) cardIds.append(value.toString());
+    for (const QVariant& value : characters) {
+        QString normalizedId =  QFileInfo(value.toString()).baseName();
+        characterIds.append(normalizedId);
+    }
+    for (const QVariant& value : cards) {
+        QString normalizedId =  QFileInfo(value.toString()).baseName();
+        cardIds.append(normalizedId);
+    }
     m_networkClient->sendMessage(Protocol::makeSubmitDeck(deckId, characterIds, cardIds));
 }
 

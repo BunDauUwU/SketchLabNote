@@ -1,38 +1,24 @@
 #include "AssetManager.h"
+#include "../Data/AssetResolver.h"
 
-#include <QDir>
-#include <QFile>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QStandardPaths>
-#include <QDebug>
-
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
-#include <QCryptographicHash>
-#include <QDateTime>
-#include <QHash>
-#include <QSet>
-
-//resolveCharacterImage
-//resolveCardImage
-
-AssetManager::AssetManager(QObject *parent) : QObject(parent) {
-
-}
+AssetManager::AssetManager(QObject *parent) : QObject(parent) {}
 
 QString AssetManager::resolveCardImage(const QString &data)
 {
-    QString filePath = ":/lumieTcg/assets/cards/";
-    filePath += data;
-    return filePath;
+    return AssetResolver::resolveCardImage(data);
 }
 
 QString AssetManager::resolveCharacterImage(const QString &data)
 {
-    QString filePath = ":/lumieTcg/assets/characters/";
-    filePath += data;
-    return filePath;
+    return AssetResolver::resolveCharacterImage(data);
+}
+
+QString AssetManager::resolveEffectImage(const QString &name, const QString &kind, const QString &icon)
+{
+    return AssetResolver::resolveEffectImage(name, kind, icon);
+}
+
+QString AssetManager::resolveElementImage(const QString &element)
+{
+    return AssetResolver::resolveElementImage(element);
 }

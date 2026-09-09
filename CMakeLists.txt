@@ -17,7 +17,6 @@ set_source_files_properties(
     qml/Core/Motion.qml
     qml/Core/Radius.qml
     qml/Core/Resources.qml
-    qml/Core/SceneManager.qml
     qml/Core/Spacing.qml
     qml/Core/Theme.qml
     qml/Core/Typography.qml
@@ -104,6 +103,7 @@ qt_add_qml_module(applumieTcg
         qml/Screens/SplashScreen.qml
         qml/Core/SceneManager.qml
         qml/Core/Constants.qml
+        qml/Core/CardDescription.js
         qml/Core/Motion.qml
         qml/Core/Radius.qml
         qml/Core/Resources.qml

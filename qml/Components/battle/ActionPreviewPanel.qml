@@ -24,6 +24,6 @@ GamePanel {
             Text { visible: root.hpDelta !== 0; text: "HP " + root.hpDelta; color: root.hpDelta < 0 ? "#ff8585" : "#78e4a8"; font.bold: true }
             Text { visible: root.energyDelta !== 0; text: "Energy " + root.energyDelta; color: "#f2ce69"; font.bold: true }
         }
-        Text { text: root.affordable ? "Click again to confirm" : "Not enough Element Points"; color: root.affordable ? "#9ee5bd" : "#ff8585"; font.pixelSize: 11 }
+        Text { text: root.affordable ? "Click again to confirm" : "Action unavailable"; color: root.affordable ? "#9ee5bd" : "#ff8585"; font.pixelSize: 11 }
     }
 }

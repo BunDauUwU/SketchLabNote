@@ -13,6 +13,8 @@ public:
 
     Q_INVOKABLE static QString resolveCardImage(const QString& cardId);
     Q_INVOKABLE static QString resolveCharacterImage(const QString& charId);
+    Q_INVOKABLE static QString resolveEffectImage(const QString& name, const QString& kind, const QString& icon = QString());
+    Q_INVOKABLE static QString resolveElementImage(const QString& element);
     Q_INVOKABLE static QString resolveElementIcon(ElementType element);
     Q_INVOKABLE static QString resolveWeatherIcon(WeatherType weather);
     Q_INVOKABLE static QString resolveWeatherName(WeatherType weather);

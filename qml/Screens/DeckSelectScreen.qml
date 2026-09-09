@@ -80,11 +80,10 @@ Rectangle {
                         spacing: 12
 
                         GameText {
-                            text: modelData.name;
-                            type: GameText.Heading;
+                            text: modelData.name
+                            type: GameText.Heading
                             Layout.alignment: Qt.AlignHCenter
                         }
-
 
                         RowLayout {
                             Layout.fillWidth: true
@@ -104,7 +103,7 @@ Rectangle {
                                         width: parent.width
                                         height: parent.height
 
-                                        source: modelData
+                                        source: `qrc:/lumieTcg/assets/characters/${modelData}.png`
                                         verticalAlignment: Image.AlignTop
                                         horizontalAlignment: Image.AlignHCenter
                                         fillMode: Image.PreserveAspectCrop
@@ -113,8 +112,9 @@ Rectangle {
                             }
                         }
 
-
-                        Item { Layout.fillHeight: true }
+                        Item {
+                            Layout.fillHeight: true
+                        }
 
                         GameButton {
                             z: 1001
@@ -122,10 +122,8 @@ Rectangle {
                             text: "Play this deck"
                             Layout.fillWidth: true
                             onClicked: {
-                                gameManager.selectDeck(deckOption.modelData.deckId,
-                                                       deckOption.modelData.characters,
-                                                       deckOption.modelData.cards)
-                                root.selected = true
+                                gameManager.selectDeck(deckOption.modelData.deckId, deckOption.modelData.characters, deckOption.modelData.cards);
+                                root.selected = true;
                             }
                         }
                     }
@@ -138,11 +136,11 @@ Rectangle {
         target: gameManager
 
         function onGamePrepared() {
-            console.log("Weather data loaded:", gameManager.weatherSequence)
+            console.log("Weather data loaded:", gameManager.weatherSequence);
         }
 
         function onGameSnapshotReceived(snapshot) {
-            stack.replace("./BattleScreen.qml")
+            stack.replace("./BattleScreen.qml");
         }
     }
 }

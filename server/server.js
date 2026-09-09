@@ -2,8 +2,19 @@ import { randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { WebSocket, WebSocketServer } from "ws";
 import { validateDeck } from "./deckValidator.js";
+import { publicEffect } from "./effectEngine.js";
+import {
+    availability,
+    handAvailability,
+    initializeEffects,
+    resetRoundLimits,
+    resolveCard,
+    resolveRoundEnd,
+    resolveRoundStart,
+    resolveSkill,
+    resolveSwitch,
+} from "./gameLogic.js";
 import { applyWeather, createWeatherPlan, draw, shuffle } from "./weather.js";
-import { availability, resolveCard, resolveSkill } from "./gameLogic.js";
 
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_PORT = 14095;
@@ -242,7 +253,20 @@ export class LumieServer {
         }
 
         const playerIndex = match.sockets.indexOf(socket);
-        if (match.ended.has(playerIndex) && commandType !== "Concede") {
+        if (commandType === "Concede") {
+            this.endWithWinner(match, 1 - playerIndex, `${client.nickname} conceded`);
+            return;
+        }
+        const replacement = match.pendingReplacement;
+        if (
+            replacement &&
+            (playerIndex !== replacement.playerIndex ||
+                !["ChooseActiveCharacter", "SwitchCharacter"].includes(commandType))
+        ) {
+            this.sendError(socket, "ReplacementRequired", "Wait for the defeated character to be replaced");
+            return;
+        }
+        if (!replacement && match.ended.has(playerIndex)) {
             this.sendError(socket, "RoundAlreadyEnded", "You already ended this round");
             return;
         }
@@ -263,14 +287,6 @@ export class LumieServer {
             commandType,
             command: payload.command ?? {},
         });
-        if (commandType === "Concede") {
-            this.broadcast(match, "GameEvent", {
-                matchId: match.id,
-                events: [{ eventType: "GameEnded", reason: `${client.nickname} conceded` }],
-            });
-            this.finishMatch(match);
-            return;
-        }
         if (commandType === "EndRound") {
             match.ended.add(playerIndex);
             if (match.ended.size === 2) {
@@ -278,25 +294,27 @@ export class LumieServer {
                     matchId: match.id,
                     events: [{ eventType: "RoundEnded", round: match.round }],
                 });
+                const endEffects = resolveRoundEnd(match);
+                this.broadcast(match, "GameEvent", { matchId: match.id, events: endEffects });
+                const endWinner = this.findWinner(match);
+                if (endWinner >= 0) {
+                    this.endWithWinner(match, endWinner, "All opposing characters were defeated");
+                    return;
+                }
                 match.round += 1;
                 match.ended.clear();
                 match.players.forEach(player => {
                     player.remainingMs += 60_000;
                     player.elementPoints = 10;
                     draw(player, 1);
+                    resetRoundLimits(player);
                 });
-                match.roundStarterIndex = 1 - match.roundStarterIndex;
-                match.currentPlayerIndex = match.roundStarterIndex;
-                const weatherEvents = applyWeather(match);
+                const weatherEvents = [...applyWeather(match), ...resolveRoundStart(match)];
                 this.broadcast(match, "GameEvent", {
                     matchId: match.id,
                     events: [{ eventType: "RoundStarted", round: match.round }, ...weatherEvents],
                 });
-                const winner = this.findWinner(match);
-                if (winner >= 0) {
-                    this.endWithWinner(match, winner, "All opposing characters were defeated");
-                    return;
-                }
+                if (this.checkDefeatedCharacters(match, match.currentPlayerIndex)) return;
             } else {
                 match.currentPlayerIndex = 1 - playerIndex;
                 this.broadcast(match, "GameEvent", {
@@ -309,13 +327,16 @@ export class LumieServer {
             return;
         }
         const command = payload.command ?? {};
+
         const player = match.players[playerIndex];
         if (commandType === "PlayCard") {
             const result = resolveCard(match, playerIndex, command);
             if (result.error) {
                 this.logServer("card rejected", { matchId: match.id, playerIndex, reason: result.error[0] });
-                this.sendError(socket, ...result.error); this.armActionTimer(match);
-                this.sendSnapshot(socket, match); return;
+                this.sendError(socket, ...result.error);
+                this.armActionTimer(match);
+                this.sendSnapshot(socket, match);
+                return;
             }
             this.logServer("card resolved", { matchId: match.id, playerIndex, events: result.events });
             this.broadcast(match, "GameEvent", { matchId: match.id, events: result.events });
@@ -323,8 +344,10 @@ export class LumieServer {
             const result = resolveSkill(match, playerIndex, command);
             if (result.error) {
                 this.logServer("skill rejected", { matchId: match.id, playerIndex, reason: result.error[0] });
-                this.sendError(socket, ...result.error); this.armActionTimer(match);
-                this.sendSnapshot(socket, match); return;
+                this.sendError(socket, ...result.error);
+                this.armActionTimer(match);
+                this.sendSnapshot(socket, match);
+                return;
             }
             this.logServer("skill resolved", { matchId: match.id, playerIndex, events: result.events });
             this.broadcast(match, "GameEvent", { matchId: match.id, events: result.events });
@@ -335,22 +358,70 @@ export class LumieServer {
                 this.armActionTimer(match);
                 return;
             }
-            player.activeCharacterIndex = index;
-            const opponentIndex = 1 - playerIndex;
-            match.currentPlayerIndex = match.ended.has(opponentIndex) ? playerIndex : opponentIndex;
+            if (index === player.activeCharacterIndex) {
+                this.sendError(socket, "AlreadyActive", "That character is already active");
+                this.armActionTimer(match);
+                this.sendSnapshot(socket, match);
+                return;
+            }
+            if (!replacement && (player.switchesUsed || 0) >= 1) {
+                this.sendError(socket, "SwitchLimit", "You can only switch characters once per round");
+                this.armActionTimer(match);
+                this.sendSnapshot(socket, match);
+                return;
+            }
+            const switchResult = resolveSwitch(match, playerIndex, index);
+            if (switchResult.error) {
+                this.sendError(socket, ...switchResult.error);
+                this.armActionTimer(match);
+                this.sendSnapshot(socket, match);
+                return;
+            }
+            this.broadcast(match, "GameEvent", { matchId: match.id, events: switchResult.events });
+            if (replacement) {
+                match.currentPlayerIndex = replacement.resumePlayerIndex;
+                match.pendingReplacement = null;
+            } else {
+                player.switchesUsed = (player.switchesUsed || 0) + 1;
+                const opponentIndex = 1 - playerIndex;
+                match.currentPlayerIndex =
+                    switchResult.fastSwitch || match.ended.has(opponentIndex) ? playerIndex : opponentIndex;
+            }
         }
 
-        if (commandType !== "UseSkill" && commandType !== "PlayCard") this.broadcast(match, "GameEvent", {
-            matchId: match.id, events: [{ eventType: this.eventType(commandType), playerIndex, ...(payload.command ?? {}) }],
-        });
+        if (commandType !== "UseSkill" && commandType !== "PlayCard")
+            this.broadcast(match, "GameEvent", {
+                matchId: match.id,
+                events: [{ eventType: this.eventType(commandType), playerIndex, ...(payload.command ?? {}) }],
+            });
+        if (this.checkDefeatedCharacters(match, match.currentPlayerIndex)) return;
         this.armActionTimer(match);
         match.sockets.forEach(peer => this.sendSnapshot(peer, match));
+    }
+
+    checkDefeatedCharacters(match, resumePlayerIndex) {
+        const winner = this.findWinner(match);
+        if (winner >= 0) {
+            this.endWithWinner(match, winner, "All opposing characters were defeated");
+            return true;
+        }
+        const playerIndex = match.players.findIndex(player => player.characters[player.activeCharacterIndex].hp <= 0);
+        if (playerIndex >= 0) {
+            match.pendingReplacement = { playerIndex, resumePlayerIndex };
+            match.currentPlayerIndex = playerIndex;
+            this.broadcast(match, "GameEvent", {
+                matchId: match.id,
+                events: [{ eventType: "CharacterReplacementRequired", playerIndex, resumePlayerIndex }],
+            });
+        }
+        return false;
     }
 
     eventType(commandType) {
         return (
             {
                 ChooseActiveCharacter: "ActiveCharacterChanged",
+                SwitchCharacter: "ActiveCharacterChanged",
                 UseSkill: "SkillUsed",
                 PlayCard: "CardPlayed",
                 EndRound: "RoundEnded",
@@ -365,6 +436,7 @@ export class LumieServer {
             stage: "Action",
             round: match.round,
             currentPlayerIndex: match.currentPlayerIndex,
+            pendingReplacement: match.pendingReplacement || null,
             weather: {
                 sequence: match.weather.sequence,
                 activeWeather: {
@@ -389,14 +461,19 @@ export class LumieServer {
                     handCardCount: state.hand.length,
                     deckCardCount: state.deck.length,
                     activeCharacterIndex: state.activeCharacterIndex,
-                    summons: state.summons,
-                    states: state.states,
-                    skillAvailability: availability(state),
+                    summons: state.summons.map(publicEffect),
+                    states: state.states.filter(item => !item.passive).map(publicEffect),
+                    skillAvailability: availability(state, match),
+                    switchesUsed: state.switchesUsed || 0,
+                    switchesRemaining: Math.max(0, 1 - (state.switchesUsed || 0)),
                     remainingTimeMs: state.remainingMs,
                     endedRound: match.ended.has(index),
                 };
             }),
-            self: { handCardIds: localIndex >= 0 ? match.players[localIndex].hand : [] },
+            self: {
+                handCardIds: localIndex >= 0 ? match.players[localIndex].hand : [],
+                handAvailability: localIndex >= 0 ? handAvailability(match.players[localIndex], match) : [],
+            },
             actionDeadlineEpochMs: match.actionDeadlineEpochMs,
         });
     }
@@ -492,13 +569,16 @@ export class LumieServer {
                     energy: 0,
                     maxEnergy: 3,
                     applications: [],
+                    elementalSkillUsed: false,
                     ultimateUsed: false,
+                    skillUses: {},
                 })),
                 deck: [...deck.cards],
                 hand: [],
                 summons: [],
                 states: [],
                 activeCharacterIndex: 0,
+                switchesUsed: 0,
                 remainingMs: 180_000,
                 turnStartedAt: Date.now(),
                 elementPoints: 10,
@@ -507,7 +587,14 @@ export class LumieServer {
             draw(player, 5);
             return player;
         });
-        const events = [{ eventType: "GameStarted" }, { eventType: "CardsDrawn", count: 5 }, ...applyWeather(match)];
+        const events = [
+            { eventType: "GameStarted" },
+            { eventType: "CardsDrawn", count: 5 },
+            ...initializeEffects(match),
+            ...applyWeather(match),
+            ...resolveRoundStart(match),
+        ];
+        if (this.checkDefeatedCharacters(match, match.currentPlayerIndex)) return;
         this.armActionTimer(match);
         this.broadcast(match, "GameEvent", { matchId: match.id, events });
         match.sockets.forEach(socket => this.sendSnapshot(socket, match));

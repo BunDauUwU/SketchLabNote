@@ -14,7 +14,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Trail of the Qilin": {
           "type": [
@@ -29,7 +30,8 @@
           "create": {
             "Ice Lotus": 1
           },
-          "description": "Costs 3 cryo. Deals 1 cryo damage. Creates Ice Lotus."
+          "description": "Costs 3 cryo. Deals 1 cryo damage. Creates Ice Lotus.",
+          "maxUse": 1
         },
         "Frostflake Arrow": {
           "type": [
@@ -56,7 +58,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 5 cryo. Deals 2 cryo damage and 2 pierce damage. Applies frostflake arrow effects."
+          "description": "Costs 5 cryo. Deals 2 cryo damage and 2 pierce damage. Applies frostflake arrow effects.",
+          "maxUse": 1
         },
         "Celestial Shower": {
           "type": [
@@ -73,7 +76,8 @@
           "summon": {
             "Sacred Cryo Pearl": 1
           },
-          "description": "Costs 3 cryo, 3 energy. Deals 1 cryo damage and 1 pierce damage. Summons Sacred Cryo Pearl."
+          "description": "Costs 3 cryo, 3 energy. Deals 1 cryo damage and 1 pierce damage. Summons Sacred Cryo Pearl.",
+          "maxUse": 1
         }
       },
       "counter": [
@@ -100,7 +104,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Icy Paws": {
           "type": [
@@ -115,7 +120,8 @@
           "create": {
             "Cat-Claw Shield": 1
           },
-          "description": "Costs 3 cryo. Deals 2 cryo damage. Creates Cat-Claw Shield."
+          "description": "Costs 3 cryo. Deals 2 cryo damage. Creates Cat-Claw Shield.",
+          "maxUse": 1
         },
         "Signature Mix": {
           "type": [
@@ -145,7 +151,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 cryo, 3 energy. Deals 1 cryo damage. Summons Drunken Mist. Applies heal effects."
+          "description": "Costs 3 cryo, 3 energy. Deals 1 cryo damage. Summons Drunken Mist. Applies heal effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Bow",
@@ -169,7 +176,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Frostgnaw": {
           "type": [
@@ -181,7 +189,8 @@
           "damage": {
             "CRYO": 3
           },
-          "description": "Costs 3 cryo. Deals 3 cryo damage."
+          "description": "Costs 3 cryo. Deals 3 cryo damage.",
+          "maxUse": 1
         },
         "Glacial Waltz": {
           "type": [
@@ -197,7 +206,8 @@
           "create": {
             "Icicle": 1
           },
-          "description": "Costs 4 cryo, 2 energy. Deals 1 cryo damage. Creates Icicle."
+          "description": "Costs 4 cryo, 2 energy. Deals 1 cryo damage. Creates Icicle.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -221,7 +231,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Chonghua's Layered Frost": {
           "type": [
@@ -236,7 +247,8 @@
           "create": {
             "Chonghua Frost Field": 1
           },
-          "description": "Costs 3 cryo. Deals 3 cryo damage. Creates Chonghua Frost Field."
+          "description": "Costs 3 cryo. Deals 3 cryo damage. Creates Chonghua Frost Field.",
+          "maxUse": 1
         },
         "Cloud-Parting Star": {
           "type": [
@@ -249,7 +261,8 @@
           "damage": {
             "CRYO": 7
           },
-          "description": "Costs 3 cryo, 3 energy. Deals 7 cryo damage."
+          "description": "Costs 3 cryo, 3 energy. Deals 7 cryo damage.",
+          "maxUse": 1
         }
       },
       "weapon": "Claymore",
@@ -273,7 +286,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Kamisato Art: Hyouka": {
           "type": [
@@ -285,7 +299,8 @@
           "damage": {
             "CRYO": 3
           },
-          "description": "Costs 3 cryo. Deals 3 cryo damage."
+          "description": "Costs 3 cryo. Deals 3 cryo damage.",
+          "maxUse": 1
         },
         "Kamisato Art: Soumetsu": {
           "type": [
@@ -301,7 +316,8 @@
           "summon": {
             "Frostflake Seki no To": 1
           },
-          "description": "Costs 3 cryo, 3 energy. Deals 4 cryo damage. Summons Frostflake Seki no To."
+          "description": "Costs 3 cryo, 3 energy. Deals 4 cryo damage. Summons Frostflake Seki no To.",
+          "maxUse": 1
         },
         "Kamisato Art: Senho": {
           "type": [
@@ -327,7 +343,8 @@
               "store": "SELF"
             }
           ],
-          "description": "Applies infusion effects."
+          "description": "Applies infusion effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -351,7 +368,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 cryo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Icetide Vortex": {
           "type": [
@@ -384,7 +402,8 @@
             "store": "SELF",
             "effect_obj": "SELF"
           },
-          "description": "Costs 3 cryo. Deals 2 cryo damage. Applies add_state effects."
+          "description": "Costs 3 cryo. Deals 2 cryo damage. Applies add_state effects.",
+          "maxUse": 1
         },
         "Glacial Illumination": {
           "type": [
@@ -400,7 +419,8 @@
           "summon": {
             "Lightfall Sword": 1
           },
-          "description": "Costs 3 cryo, 2 energy. Deals 2 cryo damage. Summons Lightfall Sword."
+          "description": "Costs 3 cryo, 2 energy. Deals 2 cryo damage. Summons Lightfall Sword.",
+          "maxUse": 1
         }
       },
       "weapon": "Claymore",
@@ -424,7 +444,8 @@
           "damage": {
             "HYDRO": 1
           },
-          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage."
+          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage.",
+          "maxUse": 1
         },
         "Let the Show Begin♪": {
           "type": [
@@ -439,7 +460,8 @@
           "summon": {
             "Melody Loop": 1
           },
-          "description": "Costs 3 hydro. Deals 1 hydro damage. Summons Melody Loop."
+          "description": "Costs 3 hydro. Deals 1 hydro damage. Summons Melody Loop.",
+          "maxUse": 1
         },
         "Shining Miracle♪": {
           "type": [
@@ -463,7 +485,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 hydro, 3 energy. Applies heal effects."
+          "description": "Costs 3 hydro, 3 energy. Applies heal effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -487,7 +510,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 hydro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 hydro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Fatal Rainscreen": {
           "type": [
@@ -516,7 +540,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 hydro. Deals 2 hydro damage. Creates Rain Sword. Applies application effects."
+          "description": "Costs 3 hydro. Deals 2 hydro damage. Creates Rain Sword. Applies application effects.",
+          "maxUse": 1
         },
         "Raincutter": {
           "type": [
@@ -546,7 +571,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 hydro, 2 energy. Deals 1 hydro damage. Creates Rainbow Bladework. Applies application effects."
+          "description": "Costs 3 hydro, 2 energy. Deals 1 hydro damage. Creates Rainbow Bladework. Applies application effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -570,7 +596,8 @@
           "damage": {
             "HYDRO": 1
           },
-          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage."
+          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage.",
+          "maxUse": 1
         },
         "Mirror Reflection of Doom": {
           "type": [
@@ -585,7 +612,8 @@
           "summon": {
             "Reflection": 1
           },
-          "description": "Costs 3 hydro. Deals 1 hydro damage. Summons Reflection."
+          "description": "Costs 3 hydro. Deals 1 hydro damage. Summons Reflection.",
+          "maxUse": 1
         },
         "Stellaris Phantasm": {
           "type": [
@@ -601,7 +629,8 @@
           "create": {
             "Illusory Bubble": 1
           },
-          "description": "Costs 3 hydro, 3 energy. Deals 4 hydro damage. Creates Illusory Bubble."
+          "description": "Costs 3 hydro, 3 energy. Deals 4 hydro damage. Creates Illusory Bubble.",
+          "maxUse": 1
         },
         "Illusory Torrent": {
           "type": [
@@ -627,7 +656,8 @@
               }
             }
           ],
-          "description": "Applies change_action effects."
+          "description": "Applies change_action effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -637,7 +667,7 @@
       "energy": 3,
       "hp": 10
     },
-    "   ": {
+    "Sangonomiya Kokomi": {
       "element_type": "HYDRO",
       "skills": {
         "The Shape of Water": {
@@ -651,7 +681,8 @@
           "damage": {
             "HYDRO": 1
           },
-          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage."
+          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage.",
+          "maxUse": 1
         },
         "Kurage's Oath": {
           "type": [
@@ -677,7 +708,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 hydro. Summons Bake-Kurage. Applies application effects."
+          "description": "Costs 3 hydro. Summons Bake-Kurage. Applies application effects.",
+          "maxUse": 1
         },
         "Nereid's Ascension": {
           "type": [
@@ -693,7 +725,8 @@
           "create": {
             "Ceremonial Garment": 1
           },
-          "description": "Costs 3 hydro, 3 energy. Deals 3 hydro damage. Creates Ceremonial Garment."
+          "description": "Costs 3 hydro, 3 energy. Deals 3 hydro damage. Creates Ceremonial Garment.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -717,7 +750,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Searing Onslaught": {
           "type": [
@@ -777,7 +811,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 pyro. Deals 3 pyro damage. Applies dmg, searing onslaught effects."
+          "description": "Costs 3 pyro. Deals 3 pyro damage. Applies dmg, searing onslaught effects.",
+          "maxUse": 1
         },
         "Dawn": {
           "type": [
@@ -810,7 +845,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 4 pyro, 3 energy. Deals 8 pyro damage. Applies infusion effects."
+          "description": "Costs 4 pyro, 3 energy. Deals 8 pyro damage. Applies infusion effects.",
+          "maxUse": 1
         }
       },
       "counter": [
@@ -837,7 +873,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Guoba Attack": {
           "type": [
@@ -849,7 +886,8 @@
           "summon": {
             "Guoba": 1
           },
-          "description": "Costs 3 pyro. Summons Guoba."
+          "description": "Costs 3 pyro. Summons Guoba.",
+          "maxUse": 1
         },
         "Pyronado": {
           "type": [
@@ -865,7 +903,8 @@
           "create": {
             "Pyronado": 1
           },
-          "description": "Costs 4 pyro, 2 energy. Deals 2 pyro damage. Creates Pyronado."
+          "description": "Costs 4 pyro, 2 energy. Deals 2 pyro damage. Creates Pyronado.",
+          "maxUse": 1
         }
       },
       "weapon": "Polearm",
@@ -889,7 +928,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Passion Overload": {
           "type": [
@@ -901,7 +941,8 @@
           "damage": {
             "PYRO": 3
           },
-          "description": "Costs 3 pyro. Deals 3 pyro damage."
+          "description": "Costs 3 pyro. Deals 3 pyro damage.",
+          "maxUse": 1
         },
         "Fantastic Voyage": {
           "type": [
@@ -917,7 +958,8 @@
           "create": {
             "Inspiration Field": 1
           },
-          "description": "Costs 4 pyro, 2 energy. Deals 2 pyro damage. Creates Inspiration Field."
+          "description": "Costs 4 pyro, 2 energy. Deals 2 pyro damage. Creates Inspiration Field.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -941,7 +983,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Niwabi Fire-Dance": {
           "type": [
@@ -967,7 +1010,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 1 pyro. Creates Niwabi Enshou. Applies skill_add_energy effects."
+          "description": "Costs 1 pyro. Creates Niwabi Enshou. Applies skill_add_energy effects.",
+          "maxUse": 1
         },
         "Ryuukin Saxifrage": {
           "type": [
@@ -983,7 +1027,8 @@
           "create": {
             "Aurous Blaze": 1
           },
-          "description": "Costs 4 pyro, 3 energy. Deals 4 pyro damage. Creates Aurous Blaze."
+          "description": "Costs 4 pyro, 3 energy. Deals 4 pyro damage. Creates Aurous Blaze.",
+          "maxUse": 1
         }
       },
       "weapon": "Bow",
@@ -1007,7 +1052,8 @@
           "damage": {
             "PYRO": 1
           },
-          "description": "Costs 1 pyro, 2 any. Deals 1 pyro damage."
+          "description": "Costs 1 pyro, 2 any. Deals 1 pyro damage.",
+          "maxUse": 1
         },
         "Jumpy Dumpty": {
           "type": [
@@ -1022,7 +1068,8 @@
           "create": {
             "Explosive Spark": 1
           },
-          "description": "Costs 3 pyro. Deals 3 pyro damage. Creates Explosive Spark."
+          "description": "Costs 3 pyro. Deals 3 pyro damage. Creates Explosive Spark.",
+          "maxUse": 1
         },
         "Sparks 'n' Splash": {
           "type": [
@@ -1038,7 +1085,8 @@
           "create": {
             "Sparks 'n' Splash": 1
           },
-          "description": "Costs 3 pyro, 3 energy. Deals 3 pyro damage. Creates Sparks 'n' Splash."
+          "description": "Costs 3 pyro, 3 energy. Deals 3 pyro damage. Creates Sparks 'n' Splash.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -1062,7 +1110,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Nightrider": {
           "type": [
@@ -1077,7 +1126,8 @@
           "summon": {
             "Oz": 1
           },
-          "description": "Costs 3 electro. Deals 1 electro damage. Summons Oz."
+          "description": "Costs 3 electro. Deals 1 electro damage. Summons Oz.",
+          "maxUse": 1
         },
         "Midnight Phantasmagoria": {
           "type": [
@@ -1091,7 +1141,8 @@
             "ELECTRO": 4,
             "PIERCE": 2
           },
-          "description": "Costs 3 electro, 3 energy. Deals 4 electro damage and 2 pierce damage."
+          "description": "Costs 3 electro, 3 energy. Deals 4 electro damage and 2 pierce damage.",
+          "maxUse": 1
         }
       },
       "weapon": "Bow",
@@ -1115,7 +1166,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Claw and Thunder": {
           "type": [
@@ -1127,7 +1179,8 @@
           "damage": {
             "ELECTRO": 3
           },
-          "description": "Costs 3 electro. Deals 3 electro damage."
+          "description": "Costs 3 electro. Deals 3 electro damage.",
+          "maxUse": 1
         },
         "Lightning Fang": {
           "type": [
@@ -1143,7 +1196,8 @@
           "create": {
             "The Wolf Within": 1
           },
-          "description": "Costs 3 electro, 3 energy. Deals 5 electro damage. Creates The Wolf Within."
+          "description": "Costs 3 electro, 3 energy. Deals 5 electro damage. Creates The Wolf Within.",
+          "maxUse": 1
         }
       },
       "weapon": "Claymore",
@@ -1167,7 +1221,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Stellar Restoration": {
           "type": [
@@ -1223,7 +1278,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 electro. Deals 3 electro damage. Applies add_card, use_card effects."
+          "description": "Costs 3 electro. Deals 3 electro damage. Applies add_card, use_card effects.",
+          "maxUse": 1
         },
         "Starward Sword": {
           "type": [
@@ -1237,7 +1293,8 @@
             "ELECTRO": 4,
             "PIERCE": 3
           },
-          "description": "Costs 4 electro, 3 energy. Deals 4 electro damage and 3 pierce damage."
+          "description": "Costs 4 electro, 3 energy. Deals 4 electro damage and 3 pierce damage.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -1261,7 +1318,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Secret Rite: Chasmic Soulfarer": {
           "type": [
@@ -1273,7 +1331,8 @@
           "damage": {
             "ELECTRO": 3
           },
-          "description": "Costs 3 electro. Deals 3 electro damage."
+          "description": "Costs 3 electro. Deals 3 electro damage.",
+          "maxUse": 1
         },
         "Sacred Rite: Wolf's Swiftness": {
           "type": [
@@ -1300,7 +1359,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 4 electro, 2 energy. Deals 4 electro damage. Applies indwelling effects."
+          "description": "Costs 4 electro, 2 energy. Deals 4 electro damage. Applies indwelling effects.",
+          "maxUse": 1
         },
         "Lawful Enforcer": {
           "type": [
@@ -1310,7 +1370,8 @@
           "create": {
             "Pactsworn Pathclearer": 1
           },
-          "description": "Creates Pactsworn Pathclearer."
+          "description": "Creates Pactsworn Pathclearer.",
+          "maxUse": 1
         }
       },
       "counter": [
@@ -1337,7 +1398,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Tidecaller": {
           "type": [
@@ -1386,7 +1448,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 electro. Applies shield, prepare effects."
+          "description": "Costs 3 electro. Applies shield, prepare effects.",
+          "maxUse": 1
         },
         "Wavestrider": {
           "type": [
@@ -1410,7 +1473,8 @@
               "immediate": true
             }
           ],
-          "description": "Deals 2 electro damage. Applies skill_add_energy effects."
+          "description": "Deals 2 electro damage. Applies skill_add_energy effects.",
+          "maxUse": 1
         },
         "Stormbreaker": {
           "type": [
@@ -1426,7 +1490,8 @@
           "create": {
             "Thunderbeast's Targe": 1
           },
-          "description": "Costs 4 electro, 3 energy. Deals 3 electro damage. Creates Thunderbeast's Targe."
+          "description": "Costs 4 electro, 3 energy. Deals 3 electro damage. Creates Thunderbeast's Targe.",
+          "maxUse": 1
         }
       },
       "weapon": "Claymore",
@@ -1450,7 +1515,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Tengu Stormcall": {
           "type": [
@@ -1465,7 +1531,8 @@
           "summon": {
             "Tengu Juurai: Ambush": 1
           },
-          "description": "Costs 3 electro. Deals 1 electro damage. Summons Tengu Juurai: Ambush."
+          "description": "Costs 3 electro. Deals 1 electro damage. Summons Tengu Juurai: Ambush.",
+          "maxUse": 1
         },
         "Subjugation: Koukou Sendou": {
           "type": [
@@ -1481,7 +1548,8 @@
           "summon": {
             "Tengu Juurai: Stormcluster": 1
           },
-          "description": "Costs 4 electro, 2 energy. Deals 1 electro damage. Summons Tengu Juurai: Stormcluster."
+          "description": "Costs 4 electro, 2 energy. Deals 1 electro damage. Summons Tengu Juurai: Stormcluster.",
+          "maxUse": 1
         }
       },
       "weapon": "Bow",
@@ -1505,7 +1573,8 @@
           "damage": {
             "ANEMO": 1
           },
-          "description": "Costs 1 anemo, 2 any. Deals 1 anemo damage."
+          "description": "Costs 1 anemo, 2 any. Deals 1 anemo damage.",
+          "maxUse": 1
         },
         "Astable Anemohypostasis Creation - 6308": {
           "type": [
@@ -1532,7 +1601,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 anemo. Deals 3 anemo damage. Applies change_character effects."
+          "description": "Costs 3 anemo. Deals 3 anemo damage. Applies change_character effects.",
+          "maxUse": 1
         },
         "Forbidden Creation - Isomer 75 / Type II": {
           "type": [
@@ -1548,7 +1618,8 @@
           "summon": {
             "Large Wind Spirit": 1
           },
-          "description": "Costs 3 anemo, 2 energy. Deals 1 anemo damage. Summons Large Wind Spirit."
+          "description": "Costs 3 anemo, 2 energy. Deals 1 anemo damage. Summons Large Wind Spirit.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -1572,7 +1643,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 anemo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 anemo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Gale Blade": {
           "type": [
@@ -1599,7 +1671,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 anemo. Deals 3 anemo damage. Applies change_character effects."
+          "description": "Costs 3 anemo. Deals 3 anemo damage. Applies change_character effects.",
+          "maxUse": 1
         },
         "Dandelion Breeze": {
           "type": [
@@ -1626,7 +1699,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 4 anemo, 3 energy. Summons Dandelion Field. Applies heal effects."
+          "description": "Costs 4 anemo, 3 energy. Summons Dandelion Field. Applies heal effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -1650,7 +1724,8 @@
           "damage": {
             "GEO": 1
           },
-          "description": "Costs 1 geo, 2 any. Deals 1 geo damage."
+          "description": "Costs 1 geo, 2 any. Deals 1 geo damage.",
+          "maxUse": 1
         },
         "Jade Screen": {
           "type": [
@@ -1665,7 +1740,8 @@
           "create": {
             "Jade Screen": 1
           },
-          "description": "Costs 3 geo. Deals 2 geo damage. Creates Jade Screen."
+          "description": "Costs 3 geo. Deals 2 geo damage. Creates Jade Screen.",
+          "maxUse": 1
         },
         "Starshatter": {
           "type": [
@@ -1700,7 +1776,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 geo, 3 energy. Deals 6 geo damage. Applies dmg effects."
+          "description": "Costs 3 geo, 3 energy. Deals 6 geo damage. Applies dmg effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -1724,7 +1801,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 geo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 geo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Breastplate": {
           "type": [
@@ -1739,7 +1817,8 @@
           "create": {
             "Full Plate": 1
           },
-          "description": "Costs 3 geo. Deals 1 geo damage. Creates Full Plate."
+          "description": "Costs 3 geo. Deals 1 geo damage. Creates Full Plate.",
+          "maxUse": 1
         },
         "Sweeping Time": {
           "type": [
@@ -1755,7 +1834,8 @@
           "create": {
             "Sweeping Time": 1
           },
-          "description": "Costs 4 geo, 2 energy. Deals 4 geo damage. Creates Sweeping Time."
+          "description": "Costs 4 geo, 2 energy. Deals 4 geo damage. Creates Sweeping Time.",
+          "maxUse": 1
         }
       },
       "weapon": "Claymore",
@@ -1779,7 +1859,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 dendro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 dendro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Floral Brush": {
           "type": [
@@ -1791,7 +1872,8 @@
           "damage": {
             "DENDRO": 3
           },
-          "description": "Costs 3 dendro. Deals 3 dendro damage."
+          "description": "Costs 3 dendro. Deals 3 dendro damage.",
+          "maxUse": 1
         },
         "Trump-Card Kitty": {
           "type": [
@@ -1807,7 +1889,8 @@
           "summon": {
             "Cuilein-Anbar": 1
           },
-          "description": "Costs 3 dendro, 2 energy. Deals 2 dendro damage. Summons Cuilein-Anbar."
+          "description": "Costs 3 dendro, 2 energy. Deals 2 dendro damage. Summons Cuilein-Anbar.",
+          "maxUse": 1
         }
       },
       "weapon": "Bow",
@@ -1831,7 +1914,8 @@
           "damage": {
             "HYDRO": 1
           },
-          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage."
+          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage.",
+          "maxUse": 1
         },
         "Oceanid Mimic Summoning": {
           "type": [
@@ -1843,7 +1927,8 @@
           "summon": {
             "Oceanid Mimic": 1
           },
-          "description": "Costs 3 hydro. Summons Oceanid Mimic."
+          "description": "Costs 3 hydro. Summons Oceanid Mimic.",
+          "maxUse": 1
         },
         "The Myriad Wilds": {
           "type": [
@@ -1855,7 +1940,8 @@
           "summon": {
             "Oceanid Mimic": 2
           },
-          "description": "Costs 5 hydro. Summons Oceanid Mimic."
+          "description": "Costs 5 hydro. Summons Oceanid Mimic.",
+          "maxUse": 1
         },
         "Tide and Torrent": {
           "type": [
@@ -1890,7 +1976,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 hydro, 3 energy. Deals 2 hydro damage. Applies dmg effects."
+          "description": "Costs 3 hydro, 3 energy. Deals 2 hydro damage. Applies dmg effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -1914,7 +2001,8 @@
           "damage": {
             "HYDRO": 1
           },
-          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage."
+          "description": "Costs 1 hydro, 2 any. Deals 1 hydro damage.",
+          "maxUse": 1
         },
         "Influx Blast": {
           "type": [
@@ -1929,7 +2017,8 @@
           "create": {
             "Influx Blast": 1
           },
-          "description": "Costs 3 hydro. Deals 3 hydro damage. Creates Influx Blast."
+          "description": "Costs 3 hydro. Deals 3 hydro damage. Creates Influx Blast.",
+          "maxUse": 1
         },
         "Rippled Reflection": {
           "type": [
@@ -1942,7 +2031,8 @@
           "damage": {
             "HYDRO": 5
           },
-          "description": "Costs 3 hydro, 2 energy. Deals 5 hydro damage."
+          "description": "Costs 3 hydro, 2 energy. Deals 5 hydro damage.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -1966,7 +2056,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Prowl": {
           "type": [
@@ -1981,7 +2072,8 @@
           "create": {
             "Stealth": 1
           },
-          "description": "Costs 3 pyro. Deals 1 pyro damage. Creates Stealth."
+          "description": "Costs 3 pyro. Deals 1 pyro damage. Creates Stealth.",
+          "maxUse": 1
         },
         "Blade Ablaze": {
           "type": [
@@ -1994,7 +2086,8 @@
           "damage": {
             "PYRO": 5
           },
-          "description": "Costs 3 pyro, 2 energy. Deals 5 pyro damage."
+          "description": "Costs 3 pyro, 2 energy. Deals 5 pyro damage.",
+          "maxUse": 1
         },
         "Stealth Master": {
           "type": [
@@ -2004,7 +2097,8 @@
           "create": {
             "Stealth": 1
           },
-          "description": "Creates Stealth."
+          "description": "Creates Stealth.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -2028,7 +2122,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 anemo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 anemo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Blustering Blade": {
           "type": [
@@ -2040,7 +2135,8 @@
           "summon": {
             "Shadowsword: Lone Gale": 1
           },
-          "description": "Costs 3 anemo. Summons Shadowsword: Lone Gale."
+          "description": "Costs 3 anemo. Summons Shadowsword: Lone Gale.",
+          "maxUse": 1
         },
         "Frosty Assault": {
           "type": [
@@ -2052,7 +2148,8 @@
           "summon": {
             "Shadowsword: Galloping Frost": 1
           },
-          "description": "Costs 3 cryo. Summons Shadowsword: Galloping Frost."
+          "description": "Costs 3 cryo. Summons Shadowsword: Galloping Frost.",
+          "maxUse": 1
         },
         "Pseudo Tengu Sweeper": {
           "type": [
@@ -2083,7 +2180,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 anemo, 3 energy. Deals 4 anemo damage. Applies trigger effects."
+          "description": "Costs 3 anemo, 3 energy. Deals 4 anemo damage. Applies trigger effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -2107,7 +2205,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 geo, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 geo, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Movo Lawa": {
           "type": [
@@ -2119,7 +2218,8 @@
           "damage": {
             "PHYSICAL": 3
           },
-          "description": "Costs 3 geo. Deals 3 physical damage."
+          "description": "Costs 3 geo. Deals 3 physical damage.",
+          "maxUse": 1
         },
         "Upa Shato": {
           "type": [
@@ -2132,7 +2232,8 @@
           "damage": {
             "PHYSICAL": 5
           },
-          "description": "Costs 3 geo, 2 energy. Deals 5 physical damage."
+          "description": "Costs 3 geo, 2 energy. Deals 5 physical damage.",
+          "maxUse": 1
         },
         "Infused Stonehide": {
           "type": [
@@ -2143,7 +2244,8 @@
             "Stonehide": 1,
             "Stone Force": 1
           },
-          "description": "Creates Stonehide, Stone Force."
+          "description": "Creates Stonehide, Stone Force.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -2168,7 +2270,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 dendro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 dendro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Volatile Spore Cloud": {
           "type": [
@@ -2180,7 +2283,8 @@
           "damage": {
             "DENDRO": 3
           },
-          "description": "Costs 3 dendro. Deals 3 dendro damage."
+          "description": "Costs 3 dendro. Deals 3 dendro damage.",
+          "maxUse": 1
         },
         "Feather Spreading": {
           "type": [
@@ -2213,7 +2317,8 @@
             "store": "SELF",
             "immediate": true
           },
-          "description": "Costs 3 dendro, 2 energy. Deals 4 dendro damage. Applies dmg effects."
+          "description": "Costs 3 dendro, 2 energy. Deals 4 dendro damage. Applies dmg effects.",
+          "maxUse": 1
         },
         "Radical Vitality": {
           "type": [
@@ -2223,7 +2328,8 @@
           "create": {
             "Radical Vitality": 1
           },
-          "description": "Creates Radical Vitality."
+          "description": "Creates Radical Vitality.",
+          "maxUse": 1
         }
       },
       "counter": [
@@ -2250,7 +2356,8 @@
           "damage": {
             "DENDRO": 1
           },
-          "description": "Costs 1 dendro, 2 any. Deals 1 dendro damage."
+          "description": "Costs 1 dendro, 2 any. Deals 1 dendro damage.",
+          "maxUse": 1
         },
         "All Schemes to Know": {
           "type": [
@@ -2262,7 +2369,8 @@
           "create": {
             "Seed of Skandha": 1
           },
-          "description": "Costs 4 dendro. Creates Seed of Skandha."
+          "description": "Costs 4 dendro. Creates Seed of Skandha.",
+          "maxUse": 1
         },
         "Illusory Heart": {
           "type": [
@@ -2275,7 +2383,8 @@
           "create": {
             "Shrine of Maya": 1
           },
-          "description": "Costs 3 dendro, 3 energy. Creates Shrine of Maya."
+          "description": "Costs 3 dendro, 3 energy. Creates Shrine of Maya.",
+          "maxUse": 1
         }
       },
       "weapon": "Catalyst",
@@ -2299,7 +2408,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 electro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 electro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Sanctifying Ring": {
           "type": [
@@ -2328,7 +2438,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 electro. Deals 1 electro damage. Summons Grass Ring of Sanctification. Applies heal effects."
+          "description": "Costs 3 electro. Deals 1 electro damage. Summons Grass Ring of Sanctification. Applies heal effects.",
+          "maxUse": 1
         },
         "Gyoei Narukami Kariyama Rite": {
           "type": [
@@ -2341,7 +2452,8 @@
           "damage": {
             "ELECTRO": 7
           },
-          "description": "Costs 3 electro, 3 energy. Deals 7 electro damage."
+          "description": "Costs 3 electro, 3 energy. Deals 7 electro damage.",
+          "maxUse": 1
         }
       },
       "weapon": "Sword",
@@ -2365,7 +2477,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Molten Inferno": {
           "type": [
@@ -2377,7 +2490,8 @@
           "create": {
             "Fiery Sanctum": 1
           },
-          "description": "Costs 3 pyro. Creates Fiery Sanctum."
+          "description": "Costs 3 pyro. Creates Fiery Sanctum.",
+          "maxUse": 1
         },
         "Flame-Mane's Fists": {
           "type": [
@@ -2388,7 +2502,8 @@
           "damage": {
             "PYRO": 2
           },
-          "description": "Deals 2 pyro damage."
+          "description": "Deals 2 pyro damage.",
+          "maxUse": 1
         },
         "Leonine Bite": {
           "type": [
@@ -2421,7 +2536,8 @@
               }
             }
           ],
-          "description": "Costs 3 pyro, 2 energy. Applies prepare effects."
+          "description": "Costs 3 pyro, 2 energy. Applies prepare effects.",
+          "maxUse": 1
         }
       },
       "weapon": "Claymore",
@@ -2445,7 +2561,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 pyro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Scorching Loremaster's Elemental Skill": {
           "type": [
@@ -2457,7 +2574,8 @@
           "damage": {
             "PYRO": 3
           },
-          "description": "Costs 3 pyro. Deals 3 pyro damage."
+          "description": "Costs 3 pyro. Deals 3 pyro damage.",
+          "maxUse": 1
         },
         "Scorching Loremaster's Elemental Burst": {
           "type": [
@@ -2470,7 +2588,8 @@
           "damage": {
             "PYRO": 7
           },
-          "description": "Costs 3 pyro, 3 energy. Deals 7 pyro damage."
+          "description": "Costs 3 pyro, 3 energy. Deals 7 pyro damage.",
+          "maxUse": 1
         },
         "Scorching Loremaster's Passive Skill": {
           "type": [
@@ -2480,7 +2599,8 @@
           "create": {
             "Pyro Scorpion": 1
           },
-          "description": "Creates Pyro Scorpion."
+          "description": "Creates Pyro Scorpion.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -2504,7 +2624,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 dendro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 dendro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Floral Ring-Dancer's Elemental Skill": {
           "type": [
@@ -2516,7 +2637,8 @@
           "create": {
             "Floral Ring": 1
           },
-          "description": "Costs 3 dendro. Creates Floral Ring."
+          "description": "Costs 3 dendro. Creates Floral Ring.",
+          "maxUse": 1
         },
         "Floral Ring-Dancer's Elemental Burst": {
           "type": [
@@ -2532,7 +2654,8 @@
           "create": {
             "Dendro Spirit-Serpent": 1
           },
-          "description": "Costs 3 dendro, 2 energy. Deals 3 dendro damage. Creates Dendro Spirit-Serpent."
+          "description": "Costs 3 dendro, 2 energy. Deals 3 dendro damage. Creates Dendro Spirit-Serpent.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",
@@ -2556,7 +2679,8 @@
           "damage": {
             "PHYSICAL": 2
           },
-          "description": "Costs 1 hydro, 2 any. Deals 2 physical damage."
+          "description": "Costs 1 hydro, 2 any. Deals 2 physical damage.",
+          "maxUse": 1
         },
         "Desert Clearwater's Elemental Skill": {
           "type": [
@@ -2580,7 +2704,8 @@
               "immediate": true
             }
           ],
-          "description": "Costs 3 hydro. Deals 2 hydro damage. Applies change_character effects."
+          "description": "Costs 3 hydro. Deals 2 hydro damage. Applies change_character effects.",
+          "maxUse": 1
         },
         "Desert Clearwater's Elemental Burst": {
           "type": [
@@ -2596,7 +2721,8 @@
           "create": {
             "Desert Clearwater's state": 1
           },
-          "description": "Costs 3 hydro, 2 energy. Deals 2 hydro damage. Creates Desert Clearwater's state."
+          "description": "Costs 3 hydro, 2 energy. Deals 2 hydro damage. Creates Desert Clearwater's state.",
+          "maxUse": 1
         }
       },
       "weapon": "Other Weapons",

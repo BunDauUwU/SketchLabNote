@@ -32,6 +32,7 @@ void DeckManager::initDatabase()
     }
 
     const QString dbPath = dir.filePath(QStringLiteral("users.sqlite"));
+
     QSqlDatabase db;
 
     if (QSqlDatabase::contains(DB_CONN_NAME)) {
@@ -85,6 +86,7 @@ void DeckManager::refreshValidDecks(const QString& username)
             const QString id = card.toString().trimmed();
             if (id.isEmpty() || ++cardCopies[id] > 3) valid = false;
         }
+
         if (!valid) continue;
         QVariantMap item;
         item.insert("deckId", QStringLiteral("deck%1").arg(index));
@@ -118,7 +120,6 @@ void DeckManager::changeDeckIndex(int val)
 
 bool DeckManager::addCharacter(const QString &cardId, const QString& username)
 {
-    qDebug() << ' ' << cardId << '\n';
     if (cardId.isEmpty())
         return false;
 
@@ -135,6 +136,7 @@ bool DeckManager::addCharacter(const QString &cardId, const QString& username)
     }
 
     m_characters.append(cardId);
+
     std::sort(m_characters.begin(), m_characters.end());
     emit charactersChanged();
     emit deckChanged();

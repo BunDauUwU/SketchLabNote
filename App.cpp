@@ -10,6 +10,7 @@
 #include "src/Data/CharacterDatabase.h"
 #include "src/Data/CardDatabase.h"
 #include "src/Data/AssetResolver.h"
+#include "src/Managers/AssetManager.h"
 #include "src/Managers/DeckManager.h"
 
 int main(int argc, char *argv[])
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     authManager.setNetworkClient(&networkClient);
 
     AssetResolver assetResolver;
+    AssetManager assetsManager;
 
     QObject::connect(
         &networkClient,
@@ -58,13 +60,14 @@ int main(int argc, char *argv[])
         );
 
     QQmlApplicationEngine engine;
+    engine.addImportPath(QStringLiteral("qrc:/"));
 
     engine.rootContext()->setContextProperty("networkClient", &networkClient);
     engine.rootContext()->setContextProperty("matchmakingManager", &matchmakingManager);
     engine.rootContext()->setContextProperty("gameManager", &gameManager);
     engine.rootContext()->setContextProperty("authManager", &authManager);
     engine.rootContext()->setContextProperty("assetResolver", &assetResolver);
-    engine.rootContext()->setContextProperty("assetsManager", &assetResolver);
+    engine.rootContext()->setContextProperty("assetsManager", &assetsManager);
 
     // Network
     networkClient.connectToServer("ws://127.0.0.1:14095");
