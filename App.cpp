@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("assetsManager", &assetsManager);
 
     // Network
-    networkClient.connectToServer("ws://127.0.0.1:14095");
+    networkClient.connectToServer(networkClient.serverUrl());
 
     // Deck data
     CharacterDataBase characterDataBase;

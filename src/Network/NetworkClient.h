@@ -11,12 +11,14 @@ class NetworkClient : public QObject {
 
     Q_PROPERTY(bool connected READ isConnected NOTIFY connectedChanged)
     Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
+    Q_PROPERTY(QString serverUrl READ serverUrl CONSTANT)
 
 public:
     explicit NetworkClient(QObject* parent = nullptr);
 
     bool isConnected() const;
     QString lastError() const;
+    QString serverUrl() const;
 
     Q_INVOKABLE void connectToServer(const QString& url);
     Q_INVOKABLE void disconnectFromServer();
@@ -43,6 +45,7 @@ private:
 
 private:
     QWebSocket m_socket;
+    const QString m_serverUrl;
     bool m_connected = false;
     QString m_lastError;
 };

@@ -7,7 +7,6 @@ import "../Components/battle"
 import "../Components/layout"
 import lumieTcg
 
-
 Rectangle {
     id: mainMenuRoot
     implicitWidth: 1280
@@ -21,13 +20,13 @@ Rectangle {
         target: matchmakingManager
 
         function onMatchFound(matchId, playerIndex, opponentName) {
-            console.log("Match found:", matchId, playerIndex, opponentName)
-            deckManager.refreshValidDecks(authManager.username)
-            stack.push("./DeckSelectScreen.qml")
+            console.log("Match found:", matchId, playerIndex, opponentName);
+            deckManager.refreshValidDecks(authManager.username);
+            stack.push("./DeckSelectScreen.qml");
         }
 
         function onMatchmakingError(message) {
-            console.log("Matchmaking error:", message)
+            console.log("Matchmaking error:", message);
         }
     }
 
@@ -35,7 +34,7 @@ Rectangle {
         target: networkClient
 
         function onErrorOccurred(error) {
-            console.log("Network error:", error)
+            console.log("Network error:", error);
         }
     }
 
@@ -45,8 +44,14 @@ Rectangle {
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
-            GradientStop { position: 0; color: "#27374D" }
-            GradientStop { position: 1; color: "#0F172A" }
+            GradientStop {
+                position: 0
+                color: "#27374D"
+            }
+            GradientStop {
+                position: 1
+                color: "#0F172A"
+            }
         }
     }
 
@@ -158,17 +163,17 @@ Rectangle {
             width: 200
             text: matchmakingManager.searching ? "Cancel Match" : "Find Match"
             onClicked: {
-                console.log("Matchmaking action triggered")
+                console.log("Matchmaking action triggered");
                 if (matchmakingManager.searching) {
-                    matchmakingManager.cancelMatchmaking()
+                    matchmakingManager.cancelMatchmaking();
                 } else {
-                    deckManager.refreshValidDecks(authManager.username)
+                    deckManager.refreshValidDecks(authManager.username);
                     if (deckManager.validDecks.length === 0) {
-                        mainMenuRoot.deckError = "Create a deck with exactly 3 unique characters and 30 valid cards first."
-                        return
+                        mainMenuRoot.deckError = "Create a deck with exactly 3 unique characters and 30 valid cards first.";
+                        return;
                     }
-                    mainMenuRoot.deckError = ""
-                    matchmakingManager.startMatchmaking("Game1", "")
+                    mainMenuRoot.deckError = "";
+                    matchmakingManager.startMatchmaking("Game1", "");
                 }
             }
         }
@@ -178,8 +183,8 @@ Rectangle {
             width: 200
             text: qsTr("Connect to server again")
             onClicked: {
-                networkClient.disconnectFromServer()
-                reconnectTimer.restart()
+                networkClient.disconnectFromServer();
+                reconnectTimer.restart();
             }
         }
 
@@ -188,7 +193,7 @@ Rectangle {
             width: 200
             text: qsTr("Deck Builder")
             onClicked: {
-                stack.push("./DeckScreen.qml")
+                stack.push("./DeckScreen.qml");
             }
         }
 
@@ -197,7 +202,7 @@ Rectangle {
             width: 200
             text: qsTr("Settings")
             onClicked: {
-                stack.push("./SettingsScreen.qml")
+                stack.push("./SettingsScreen.qml");
             }
         }
 
@@ -206,8 +211,8 @@ Rectangle {
             width: 200
             text: qsTr("Log Out")
             onClicked: {
-                authManager.logout()
-                stack.replace("./LoginScreen.qml")
+                authManager.logout();
+                stack.replace("./LoginScreen.qml");
             }
         }
     }
@@ -216,6 +221,6 @@ Rectangle {
         id: reconnectTimer
         interval: 250
         repeat: false
-        onTriggered: networkClient.connectToServer("ws://127.0.0.1:14095")
+        onTriggered: networkClient.connectToServer(Constants.serverUrl)
     }
 }

@@ -6,6 +6,8 @@
 
 NetworkClient::NetworkClient(QObject* parent)
     : QObject(parent)
+    , m_serverUrl(qEnvironmentVariable("LUMIETCG_SERVER_URL",
+                                      QStringLiteral("wss://lumietcg.hw.io.vn/")).trimmed())
 {
     connect(&m_socket, &QWebSocket::connected,
             this, &NetworkClient::handleConnected);
@@ -32,7 +34,21 @@ QString NetworkClient::lastError() const
 
 void NetworkClient::connectToServer(const QString& url)
 {
-    m_socket.open(QUrl(url));
+    const QUrl endpoint(url.trimmed(), QUrl::StrictMode);
+    if (!endpoint.isValid() || endpoint.host().isEmpty()
+        || (endpoint.scheme() != QStringLiteral("ws")
+            && endpoint.scheme() != QStringLiteral("wss"))) {
+        setLastError(QStringLiteral("Invalid WebSocket URL. Use wss://hostname or ws://host:port for local development."));
+        emit errorOccurred(m_lastError);
+        return;
+    }
+    setLastError(QString());
+    m_socket.open(endpoint);
+}
+
+QString NetworkClient::serverUrl() const
+{
+    return m_serverUrl;
 }
 
 void NetworkClient::disconnectFromServer()

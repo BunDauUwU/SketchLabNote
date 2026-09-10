@@ -111,8 +111,13 @@ The project should remain cross-platform where reasonably possible.
 
 ## Running the multiplayer server
 
-The client connects to `ws://127.0.0.1:14095`. Start the compatible JavaScript
-WebSocket server in a separate terminal before launching the client:
+The client defaults to `wss://lumietcg.hw.io.vn/`. Startup and the reconnect
+button share the same endpoint. Set the client environment variable
+`LUMIETCG_SERVER_URL` to change it without rebuilding (in Qt Creator, add it
+to the project's Run Environment). Use `wss://your-domain/` for online play
+or `ws://127.0.0.1:14095` for local development; `https://` is not a WebSocket URL.
+
+Start the compatible JavaScript WebSocket server in a separate terminal:
 
 ```bash
 cd server
@@ -124,6 +129,17 @@ Set `HOST` or `PORT` to override the listening address. The server uses the same
 JSON `{ "type", "payload" }` envelopes as the C++ `Protocol` implementation and
 supports guest authentication, deck submission, matchmaking, game snapshots,
 game commands, cancellation, and disconnect cleanup.
+
+For Cloudflare Tunnel, publish the hostname `lumietcg.hw.io.vn` with service
+type **HTTP** and origin URL `http://127.0.0.1:14095` when `cloudflared` runs
+on the same host as Node. Run the tunnel alongside the Node server. Cloudflare
+terminates public TLS and forwards WebSocket upgrades to the local WS server;
+the Node listener therefore remains `ws://127.0.0.1:14095`. The client verifies
+the public TLS certificate normally. Simply enabling the WARP application
+does not configure this public hostname route.
+
+See [Cloudflare Tunnel routing](https://developers.cloudflare.com/tunnel/routing/)
+and [WebSocket support](https://developers.cloudflare.com/network/websockets/).
 
 Battle decks must contain exactly 3 unique characters and 30 cards, with no
 more than 3 copies of a card. After matchmaking, both players have 10 seconds
@@ -784,7 +800,7 @@ sequenceDiagram
     QML->>QML: animate event and redraw board/effects
 ```
 
-Connection flow is `AuthRequest` → `SubmitDeck`/`DeckValidationResult` → `MatchmakingStart` → `MatchFound` → deck selection → `GameStarted`. During debug, **Connect to server again** closes the existing socket and opens `ws://127.0.0.1:14095` after a short delay.
+Connection flow is `AuthRequest` → `SubmitDeck`/`DeckValidationResult` → `MatchmakingStart` → `MatchFound` → deck selection → `GameStarted`. **Connect to server again** closes the existing socket and reopens the configured `networkClient.serverUrl` after a short delay.
 
 ### Debugging
 
