@@ -2,12 +2,15 @@ module lumieTcg
 typeinfo applumieTcg.qmltypes
 prefer :/lumieTcg/
 App 1.0 qml/App.qml
-SceneManager 1.0 qml/Core/SceneManager.qml
 DiceBar 1.0 qml/Components/battle/DiceBar.qml
 ElementPointBar 1.0 qml/Components/battle/ElementPointBar.qml
 EnergyBar 1.0 qml/Components/battle/EnergyBar.qml
 HpBar 1.0 qml/Components/battle/HpBar.qml
 WeatherBanner 1.0 qml/Components/battle/WeatherBanner.qml
+BattleCharacter 1.0 qml/Components/battle/BattleCharacter.qml
+ElementBurst 1.0 qml/Components/battle/ElementBurst.qml
+CountdownClock 1.0 qml/Components/battle/CountdownClock.qml
+ActionPreviewPanel 1.0 qml/Components/battle/ActionPreviewPanel.qml
 Card 1.0 qml/Components/cards/Card.qml
 CharacterCard 1.0 qml/Components/cards/CharacterCard.qml
 SupportCard 1.0 qml/Components/cards/SupportCard.qml
@@ -23,15 +26,19 @@ GameBackground 1.0 qml/Components/layout/GameBackground.qml
 BattleScreen 1.0 qml/Screens/BattleScreen.qml
 CollectionScreen 1.0 qml/Screens/CollectionScreen.qml
 DeckScreen 1.0 qml/Screens/DeckScreen.qml
+DeckSelectScreen 1.0 qml/Screens/DeckSelectScreen.qml
 MainMenu 1.0 qml/Screens/MainMenu.qml
 SettingsScreen 1.0 qml/Screens/SettingsScreen.qml
 SplashScreen 1.0 qml/Screens/SplashScreen.qml
-Constants 1.0 qml/Core/Constants.qml
-Motion 1.0 qml/Core/Motion.qml
-Radius 1.0 qml/Core/Radius.qml
-Resources 1.0 qml/Core/Resources.qml
-Spacing 1.0 qml/Core/Spacing.qml
-Theme 1.0 qml/Core/Theme.qml
-Typography 1.0 qml/Core/Typography.qml
+SceneManager 1.0 qml/Core/SceneManager.qml
+singleton Constants 1.0 qml/Core/Constants.qml
+CardDescription 1.0 qml/Core/CardDescription.js
+singleton Motion 1.0 qml/Core/Motion.qml
+singleton Radius 1.0 qml/Core/Radius.qml
+singleton Resources 1.0 qml/Core/Resources.qml
+singleton Spacing 1.0 qml/Core/Spacing.qml
+singleton Theme 1.0 qml/Core/Theme.qml
+singleton Typography 1.0 qml/Core/Typography.qml
+LoginScreen 1.0 qml/Screens/LoginScreen.qml
 depends QtQuick
 

@@ -4,11 +4,14 @@ import QtQuick.Layouts
 import "../Components/controls"
 import "../Components/layout"
 import "../Core"
+import lumieTcg
+
 
 Rectangle {
     id: root
 
-    anchors.fill: parent
+    implicitWidth: 1280
+    implicitHeight: 720
 
     property bool isRegisterMode: false
 
@@ -32,9 +35,11 @@ Rectangle {
     }
 
     ColumnLayout {
-        anchors.centerIn: parent
+        // anchors.centerIn: parent
+        x:380
+        y:50
         spacing: Spacing.xl
-        width: 420
+        width: 480
 
         // Title Block
         ColumnLayout {
@@ -61,7 +66,7 @@ Rectangle {
         // Login / Register Card Panel
         GamePanel {
             Layout.fillWidth: true
-            implicitHeight: 380
+            implicitHeight: 480
             radius: Radius.xl
 
             ColumnLayout {
@@ -90,7 +95,7 @@ Rectangle {
 
                     Rectangle {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 46
+                        Layout.preferredHeight: 56
                         radius: Radius.md
                         color: Qt.rgba(0, 0, 0, 0.35)
                         border.width: userInput.activeFocus ? 2 : 1
@@ -130,7 +135,7 @@ Rectangle {
 
                     Rectangle {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 46
+                        Layout.preferredHeight: 56
                         radius: Radius.md
                         color: Qt.rgba(0, 0, 0, 0.35)
                         border.width: passInput.activeFocus ? 2 : 1

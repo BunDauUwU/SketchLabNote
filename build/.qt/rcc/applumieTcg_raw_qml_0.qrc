@@ -1,12 +1,15 @@
 <RCC>
   <qresource prefix="/lumieTcg/">
     <file alias="qml/App.qml">/home/lumie/Projects/lumieTcg/qml/App.qml</file>
-    <file alias="qml/Core/SceneManager.qml">/home/lumie/Projects/lumieTcg/qml/Core/SceneManager.qml</file>
     <file alias="qml/Components/battle/DiceBar.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/DiceBar.qml</file>
     <file alias="qml/Components/battle/ElementPointBar.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/ElementPointBar.qml</file>
     <file alias="qml/Components/battle/EnergyBar.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/EnergyBar.qml</file>
     <file alias="qml/Components/battle/HpBar.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/HpBar.qml</file>
     <file alias="qml/Components/battle/WeatherBanner.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/WeatherBanner.qml</file>
+    <file alias="qml/Components/battle/BattleCharacter.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/BattleCharacter.qml</file>
+    <file alias="qml/Components/battle/ElementBurst.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/ElementBurst.qml</file>
+    <file alias="qml/Components/battle/CountdownClock.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/CountdownClock.qml</file>
+    <file alias="qml/Components/battle/ActionPreviewPanel.qml">/home/lumie/Projects/lumieTcg/qml/Components/battle/ActionPreviewPanel.qml</file>
     <file alias="qml/Components/cards/Card.qml">/home/lumie/Projects/lumieTcg/qml/Components/cards/Card.qml</file>
     <file alias="qml/Components/cards/CharacterCard.qml">/home/lumie/Projects/lumieTcg/qml/Components/cards/CharacterCard.qml</file>
     <file alias="qml/Components/cards/SupportCard.qml">/home/lumie/Projects/lumieTcg/qml/Components/cards/SupportCard.qml</file>
@@ -22,17 +25,20 @@
     <file alias="qml/Screens/BattleScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/BattleScreen.qml</file>
     <file alias="qml/Screens/CollectionScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/CollectionScreen.qml</file>
     <file alias="qml/Screens/DeckScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/DeckScreen.qml</file>
+    <file alias="qml/Screens/DeckSelectScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/DeckSelectScreen.qml</file>
     <file alias="qml/Screens/MainMenu.qml">/home/lumie/Projects/lumieTcg/qml/Screens/MainMenu.qml</file>
     <file alias="qml/Screens/SettingsScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/SettingsScreen.qml</file>
     <file alias="qml/Screens/SplashScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/SplashScreen.qml</file>
-    <file alias="SINGLETONS">/home/lumie/Projects/lumieTcg/SINGLETONS</file>
+    <file alias="qml/Core/SceneManager.qml">/home/lumie/Projects/lumieTcg/qml/Core/SceneManager.qml</file>
     <file alias="qml/Core/Constants.qml">/home/lumie/Projects/lumieTcg/qml/Core/Constants.qml</file>
+    <file alias="qml/Core/CardDescription.js">/home/lumie/Projects/lumieTcg/qml/Core/CardDescription.js</file>
     <file alias="qml/Core/Motion.qml">/home/lumie/Projects/lumieTcg/qml/Core/Motion.qml</file>
     <file alias="qml/Core/Radius.qml">/home/lumie/Projects/lumieTcg/qml/Core/Radius.qml</file>
     <file alias="qml/Core/Resources.qml">/home/lumie/Projects/lumieTcg/qml/Core/Resources.qml</file>
     <file alias="qml/Core/Spacing.qml">/home/lumie/Projects/lumieTcg/qml/Core/Spacing.qml</file>
     <file alias="qml/Core/Theme.qml">/home/lumie/Projects/lumieTcg/qml/Core/Theme.qml</file>
     <file alias="qml/Core/Typography.qml">/home/lumie/Projects/lumieTcg/qml/Core/Typography.qml</file>
+    <file alias="qml/Screens/LoginScreen.qml">/home/lumie/Projects/lumieTcg/qml/Screens/LoginScreen.qml</file>
   </qresource>
 </RCC>
 

@@ -2,7 +2,7 @@ pragma Singleton
 
 import QtQuick
 
-Item {
+QtObject {
 
     // Window
 

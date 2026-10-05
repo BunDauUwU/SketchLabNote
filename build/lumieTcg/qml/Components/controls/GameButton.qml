@@ -1,50 +1,42 @@
 import QtQuick
-import QtQuick.Controls
-import "../../Core"
+import lumieTcg
 
 Rectangle {
-    id : root
+    id: root
     property alias text: label.text
-
     property color backgroundColor: Theme.panelBackground
-
     property color accentColor: Theme.primary
+    signal clicked
 
-    property bool enabled: true
-
-    signal clicked()
-
-    scale: mouse.pressed ? 0.97 : mouse.containsMouse ? 1.03 : 1.0
-
-    Behavior on scale{
-
-        NumberAnimation{
-
-            duration: Motion.Fast
-
+    implicitWidth: 160
+    implicitHeight: 46
+    radius: 7
+    opacity: enabled ? 1 : 0.5
+    color: mouse.pressed ? Theme.primary : mouse.containsMouse ? Theme.secondary : backgroundColor
+    border.width: 2
+    border.color: accentColor
+    scale: mouse.pressed ? 0.97 : 1
+    Behavior on scale {
+        NumberAnimation {
+            duration: Motion.fast
         }
-
     }
-
-    color: mouse.pressed ? Theme.primary:mouse.containsMouse ? Theme.secondary:backgroundColor
-
-    border.width:2
-
-    border.color:accentColor
-
-    HoverHandler {
-            cursorShape: Qt.PointingHandCursor
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: root.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+        onClicked: root.clicked()
     }
-
-    GameText{
-
-        id:label
-
-        anchors.centerIn:parent
-
+    Text {
+        id: label
+        anchors.fill: parent
+        anchors.margins: 8
+        color: Theme.text
+        font.pixelSize: 16
+        font.bold: true
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
     }
-
-    TapHandler {
-            onTapped: root.clicked()
-        }
 }

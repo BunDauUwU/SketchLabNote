@@ -4,13 +4,12 @@ import "./Screens"
 import "./Core"
 
 ApplicationWindow {
-
     id: root
 
     visible: true
 
-    width: 1280
-    height: 720
+    width: 1440
+    height: 900
 
     minimumWidth: 1280
     minimumHeight: 720
@@ -23,7 +22,5 @@ ApplicationWindow {
     SceneManager {
 
         anchors.fill: parent
-
     }
 }
-

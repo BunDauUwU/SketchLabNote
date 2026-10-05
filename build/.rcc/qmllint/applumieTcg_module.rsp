@@ -4,8 +4,6 @@
 /home/lumie/Projects/lumieTcg/build/lumieTcg
 -I
 /home/lumie/Projects/lumieTcg/build
--I
-/usr/lib/qt6/qml
 --resource
 /home/lumie/Projects/lumieTcg/build/.qt/rcc/qmake_lumieTcg.qrc
 --resource

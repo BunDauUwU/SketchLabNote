@@ -1,5 +1,5 @@
 import QtQuick
-import "../../Core"
+import lumieTcg
 
 Text {
     id: root
@@ -14,14 +14,12 @@ Text {
 
     property int type: GameText.Type.Body
 
-    font.family: Typography ? Typography.family : "Arial" // Bảo vệ nếu Typography chưa load xong
-    color: Theme ? Theme.text : "#FFFFFF"                  // Bảo vệ nếu Theme chưa load xong
+    font.family: Typography.family
+    color: Theme.text
     renderType: Text.QtRendering
     font.hintingPreference: Font.PreferFullHinting
 
-    // SỬA TẠI ĐÂY: Bảo vệ switch-case bằng cách kiểm tra biến `Typography` trước
     font.pixelSize: {
-        // Nếu Singleton Typography chưa khởi tạo xong, trả về tạm một kích thước mặc định (ví dụ: 16)
         if (!Typography) return 16;
 
         switch(type) {

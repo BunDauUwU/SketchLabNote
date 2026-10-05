@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import "../controls"
+import lumieTcg
 
 GamePanel {
     id: root
@@ -20,8 +21,8 @@ GamePanel {
         spacing: Spacing.md
 
         Rectangle {
-            Layout.preferredWidth: 56
-            Layout.preferredHeight: 56
+            Layout.preferredWidth: 30
+            Layout.preferredHeight: 30
             radius: Radius.pill
             color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.18)
             border.width: 1
@@ -29,8 +30,16 @@ GamePanel {
 
             GameText {
                 anchors.centerIn: parent
-                text: "☔"
-                type: GameText.Heading
+                text: ({
+                        Rain: "☔",
+                        Snow: "❄",
+                        Thunderstorm: "⚡",
+                        Sandstorm: "🌪",
+                        Cataclysm: "☄",
+                        BurningField: "🔥",
+                        Tornado: "🌪"
+                    })[root.weatherName] || "☀"
+                type: GameText.Body
             }
         }
 
@@ -40,7 +49,7 @@ GamePanel {
 
             GameText {
                 text: root.weatherName
-                type: GameText.Heading
+                type: GameText.Body
                 color: Theme.primary
                 Layout.fillWidth: true
             }
@@ -55,7 +64,8 @@ GamePanel {
         }
 
         GameText {
-            text: root.remainingRounds + "R"
+            visible: root.width >= 360
+            text: root.remainingRounds + " rounds left"
             type: GameText.Body
             color: Theme.text
         }

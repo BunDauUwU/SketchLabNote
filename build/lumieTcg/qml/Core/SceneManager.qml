@@ -12,7 +12,7 @@ Item {
 
         anchors.fill: parent
 
-        initialItem: authManager.isAuthenticated ? "../Screens/MainMenu.qml" : "../Screens/SplashScreen.qml"
+        initialItem: authManager.isAuthenticated ? "../Screens/MainMenu.qml" : "../Screens/LoginScreen.qml"
 
     }
 
